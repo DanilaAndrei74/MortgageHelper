@@ -1,0 +1,13 @@
+﻿@page "/installments"
+@inject AppState appState;
+
+<InstallmentSummaryTable Installment="appState.Mortgage.AdditionalPaymentSummary.OldInstallment" 
+                         RemainingMonths="appState.Mortgage.AdditionalPaymentSummary.OldPeriod"/>
+
+<InstallmentTable Installments="appState.Mortgage.Installments" />
+
+<InstallmentSummaryTable Installment="appState.Mortgage.AdditionalPaymentSummary.OldInstallment"
+                         RemainingMonths="appState.Mortgage.AdditionalPaymentSummary.OldPeriod" />
+
+@code {
+}

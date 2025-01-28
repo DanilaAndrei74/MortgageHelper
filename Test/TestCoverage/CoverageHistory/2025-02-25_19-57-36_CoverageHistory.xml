@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<coverage version="1.0" date="2025-02-25_19-57-36" tag="">
+  <assembly name="BusinessLogic">
+    <class name="BusinessLogic.BankFactories.BankFactory" coveredlines="8" coverablelines="8" totallines="20" coveredbranches="4" totalbranches="4" coveredcodeelements="1" fullcoveredcodeelements="1" totalcodeelements="1" />
+    <class name="BusinessLogic.BankFactories.Extractors.BaseInstallmentExtractor" coveredlines="17" coverablelines="17" totallines="39" coveredbranches="2" totalbranches="2" coveredcodeelements="3" fullcoveredcodeelements="2" totalcodeelements="3" />
+    <class name="BusinessLogic.BankFactories.Extractors.BCRInstallmentExtractor" coveredlines="5" coverablelines="5" totallines="22" coveredbranches="0" totalbranches="0" coveredcodeelements="1" fullcoveredcodeelements="0" totalcodeelements="1" />
+    <class name="BusinessLogic.Files.PdfExtractor" coveredlines="12" coverablelines="12" totallines="25" coveredbranches="2" totalbranches="2" coveredcodeelements="1" fullcoveredcodeelements="0" totalcodeelements="1" />
+    <class name="BusinessLogic.Helpers.ObjectExtensions" coveredlines="13" coverablelines="13" totallines="29" coveredbranches="8" totalbranches="8" coveredcodeelements="1" fullcoveredcodeelements="0" totalcodeelements="1" />
+    <class name="BusinessLogic.Services.Calculator" coveredlines="62" coverablelines="62" totallines="120" coveredbranches="10" totalbranches="10" coveredcodeelements="11" fullcoveredcodeelements="6" totalcodeelements="11" />
+    <class name="BusinessLogic.Services.DueDateIterator" coveredlines="17" coverablelines="17" totallines="37" coveredbranches="2" totalbranches="2" coveredcodeelements="5" fullcoveredcodeelements="4" totalcodeelements="5" />
+    <class name="BusinessLogic.Services.Insurance" coveredlines="17" coverablelines="17" totallines="38" coveredbranches="6" totalbranches="6" coveredcodeelements="2" fullcoveredcodeelements="1" totalcodeelements="2" />
+    <class name="BusinessLogic.Services.InterestRatesIterator" coveredlines="26" coverablelines="26" totallines="46" coveredbranches="4" totalbranches="4" coveredcodeelements="8" fullcoveredcodeelements="7" totalcodeelements="8" />
+    <class name="BusinessLogic.Services.Mapper" coveredlines="159" coverablelines="159" totallines="229" coveredbranches="12" totalbranches="12" coveredcodeelements="7" fullcoveredcodeelements="1" totalcodeelements="7" />
+    <class name="BusinessLogic.Services.MortgageService" coveredlines="64" coverablelines="64" totallines="110" coveredbranches="0" totalbranches="0" coveredcodeelements="16" fullcoveredcodeelements="12" totalcodeelements="16" />
+    <class name="Exporter" coveredlines="16" coverablelines="16" totallines="38" coveredbranches="6" totalbranches="6" coveredcodeelements="2" fullcoveredcodeelements="1" totalcodeelements="2" />
+  </assembly>
+  <assembly name="Models">
+    <class name="Models.InstallmentDifference" coveredlines="7" coverablelines="7" totallines="15" coveredbranches="0" totalbranches="0" coveredcodeelements="7" fullcoveredcodeelements="7" totalcodeelements="7" />
+    <class name="Models.Models.Mortgage" coveredlines="3" coverablelines="3" totallines="15" coveredbranches="0" totalbranches="0" coveredcodeelements="1" fullcoveredcodeelements="0" totalcodeelements="1" />
+    <class name="Models.SimpleInstallment" coveredlines="4" coverablelines="4" totallines="12" coveredbranches="0" totalbranches="0" coveredcodeelements="4" fullcoveredcodeelements="4" totalcodeelements="4" />
+    <class name="MortgageHelper.Models.Installment" coveredlines="6" coverablelines="6" totallines="14" coveredbranches="0" totalbranches="0" coveredcodeelements="6" fullcoveredcodeelements="6" totalcodeelements="6" />
+    <class name="MortgageHelper.Models.YearlyInstallment" coveredlines="15" coverablelines="15" totallines="25" coveredbranches="4" totalbranches="4" coveredcodeelements="2" fullcoveredcodeelements="1" totalcodeelements="2" />
+  </assembly>
+</coverage>

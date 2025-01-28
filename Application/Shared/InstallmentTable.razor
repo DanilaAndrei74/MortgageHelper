@@ -1,0 +1,33 @@
+
+<MudTable Items="Installments" Dense="true" Hover="true" Bordered="true" Striped="true" FixedHeader="true" SortLabel="Sort By" Elevation="0" AllowUnsorted="false">
+    <HeaderContent>
+        <MudTh>Number</MudTh>
+        <MudTh>Due date</MudTh>
+        <MudTh>Principal</MudTh>
+        <MudTh>Interest</MudTh>
+        <MudTh>Insurance</MudTh>
+        <MudTh>Interest rate</MudTh>
+        <MudTh>Total</MudTh>
+        <MudTh>Credit balance</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Number">@context.Id</MudTd>
+        <MudTd DataLabel="Due date">@context.DueDate</MudTd>
+        <MudTd DataLabel="Principal">@context.Principal</MudTd>
+        <MudTd DataLabel="Interest">@context.Interest</MudTd>
+        <MudTd DataLabel="Insurance">@context.Insurance</MudTd>
+        <MudTd DataLabel="Interest rate">@context.InterestRate</MudTd>
+        <MudTd DataLabel="Total">@context.Total</MudTd>
+        <MudTd DataLabel="Credit balance">@context.CreditBalance</MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[] { 25, 50, 100 }" />
+    </PagerContent>
+</MudTable>
+
+@code{
+
+    [Parameter]
+    public List<Installment> Installments { get; set; }
+
+}

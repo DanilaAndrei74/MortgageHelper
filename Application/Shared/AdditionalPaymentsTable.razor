@@ -1,0 +1,27 @@
+@using Models.Models
+
+<MudTable Items="OptimalPayments" Dense="true" Hover="true" Bordered="true" Striped="true" FixedHeader="true" SortLabel="Sort By" Elevation="0" AllowUnsorted="false">
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortBy="new Func<EstimatedPerformance, object>(x=>x.Principal)">Principal</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<EstimatedPerformance, object>(x=>x.EstimatedReturn)">Annualized return</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Principal">@context.Principal</MudTd>
+        <MudTd DataLabel="Annualized return">@context.EstimatedReturn</MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[] { 25, 50, 100 }" />
+    </PagerContent>
+</MudTable>
+
+@code{
+
+    [Parameter]
+    public List<EstimatedPerformance> OptimalPayments { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        OptimalPayments.Count();
+    }
+}

@@ -1,0 +1,110 @@
+﻿@page "/"
+
+<span>
+    <MudSelect T="Banks" SelectedValuesChanged="BankChanged" Label="Select a Bank">
+        @foreach (var bank in Enum.GetValues(typeof(Banks)).Cast<Banks>())
+        {
+            <MudSelectItem Value="@bank">@bank</MudSelectItem>
+        }
+    </MudSelect>
+</span>
+
+
+<span>
+    <MudFileUpload T="IBrowserFile" Accept=".pdf" FilesChanged="ReadFile" MaximumFileCount="1">
+        <ActivatorContent>
+            <MudButton Variant="Variant.Filled"
+            Color="Color.Primary"
+            StartIcon="@Icons.Material.Filled.CloudUpload">
+                Only .pdf files
+            </MudButton>
+        </ActivatorContent>
+    </MudFileUpload>
+</span>
+
+<MudItem xs="12" sm="6" md="4">
+    <MudTextField @bind-Value="additionalPayment" Label="Additional payment" Format="F1" />
+</MudItem>
+
+<MudButton OnClick="ProcessData" Variant="Variant.Filled" Color="Color.Primary">Calculate </MudButton>
+
+@code{
+    [Inject]
+    public AppState AppState { get; set; }
+
+    [Inject]
+    NavigationManager Navigation { get; set; }
+
+    [Parameter]
+    public List<Installment> Installments { get; set; }
+
+    private string tempFilePath;
+    private Banks _selectedBank;
+    private double additionalPayment = 0;
+
+    private async void ReadFile(IBrowserFile file)
+    {
+        // Generate a temporary file path
+        tempFilePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.pdf");
+
+        try
+        {
+            // Save the uploaded file to disk
+            using var stream = file.OpenReadStream();
+            using var fileStream = File.Create(tempFilePath);
+            await stream.CopyToAsync(fileStream);
+
+            // Extract text from the saved PDF file
+            AppState.Mortgage.ExtractInstallmentsFrom(tempFilePath);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error deleting temp file: {ex.Message}");
+        }
+        finally
+        {
+            // Delete the temporary file
+            DeleteTempFile();
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        AppState.Mortgage.SetBank(_selectedBank);
+    }
+
+    private void DeleteTempFile()
+    {
+        if (!string.IsNullOrEmpty(tempFilePath) && File.Exists(tempFilePath))
+        {
+            try
+            {
+                File.Delete(tempFilePath);
+                tempFilePath = null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting temp file: {ex.Message}");
+            }
+        }
+    }
+
+
+    private void BankChanged(IEnumerable<Banks> selectedBanks)
+    {
+        _selectedBank = selectedBanks.FirstOrDefault(); // Assuming single selection
+        AppState.Mortgage.SetBank(_selectedBank);
+    }
+    private void ProcessData(MouseEventArgs args)
+    {
+        AppState.Mortgage.SetInterestRatesBasedOnInstallments()
+                    .SetInsuranceBasedOnBank()
+                    .SetAdditionalPayment(additionalPayment)
+                    .CalculateDerivates()
+                    .SimulateOptimalPayments();
+
+        AppState.NavbarEnabled = true;
+        StateHasChanged();
+        Navigation.NavigateTo("newInstallments");
+    }
+}

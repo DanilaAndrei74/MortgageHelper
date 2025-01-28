@@ -1,0 +1,26 @@
+<MudSimpleTable Dense="true" Hover="true" Bordered="true" Striped="true" FixedHeader="true" Elevation="0" AllowUnsorted="false">
+    <thead>
+        <th>Principal</th>
+        <th>Interest</th>
+        <th>Insurance</th>
+        <th>Credit balance</th>
+        <th>Remaining Months</th>
+    </thead>
+    <tbody>
+        <td>@Installment.Principal</td>
+        <td>@Installment.Interest</td>
+        <td>@Installment.Insurance</td>
+        <td>@Installment.Total</td>
+        <td>@RemainingMonths</td>
+    </tbody>
+</MudSimpleTable>
+
+@code {
+
+    [Parameter]
+    public IInstallment Installment { get; set; }
+
+    [Parameter]
+    public int RemainingMonths { get; set; }
+
+}
