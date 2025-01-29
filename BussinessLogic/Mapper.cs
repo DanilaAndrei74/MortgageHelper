@@ -1,5 +1,4 @@
 ﻿using iText.Kernel.Geom;
-using MortgageHelper.Interfaces;
 using MortgageHelper.Models;
 using System;
 using System.Collections.Generic;
@@ -40,14 +39,16 @@ namespace MortgageHelper
         public static List<YearlyInstallment> ToYearlyInstallment(List<Installment> installments)
         {
             var sortedInstallments = installments.OrderBy(x => x.Id).ToList();  
-
             var yearlyInstallments = new List<YearlyInstallment>();
 
+            int numberOfYears = 0;
             for (int i = 0; i < installments.Count; i += 12)
             {
+                numberOfYears++;
                 var batch = installments.Skip(i).Take(12).ToList(); // Take the next 12 installments
                 yearlyInstallments.Add(new YearlyInstallment(batch)); // Create a new YearlyInstallment with the batch
             }
+            YearlyInstallment.LastYear = numberOfYears;
 
             return yearlyInstallments;
         }

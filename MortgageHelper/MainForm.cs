@@ -1,3 +1,5 @@
+using BussinessLogic;
+using MortgageHelper.Models;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -7,6 +9,8 @@ namespace MortgageHelper
     {
 
         private string _filePath;
+        private List<Installment> _installments;
+        private List<YearlyInstallment> _yearlyInstallments;
         public MainForm()
         {
             InitializeComponent();
@@ -43,14 +47,39 @@ namespace MortgageHelper
 
                 var filteredLines = textFilter.GetLines(pdfText);
 
-                var installments = Mapper.ToInstallment(filteredLines);
-                var yearlyInstallments = Mapper.ToYearlyInstallment(installments);
+                _installments = Mapper.ToInstallment(filteredLines);
+                _yearlyInstallments = Mapper.ToYearlyInstallment(_installments);
 
-                installmentsDataGridView.DataSource = installments;
-                yearlyInstallmentsDataGridView.DataSource = yearlyInstallments;
+                installmentsDataGridView.DataSource = _installments;
+                yearlyInstallmentsDataGridView.DataSource = _yearlyInstallments;
             }
             catch (Exception ex) { MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
 
+        private void ExportButton_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*";
+                saveFileDialog.DefaultExt = "csv"; 
+                saveFileDialog.AddExtension = true; 
+
+                // Show the dialog to the user
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        Exporter.ToCSV(_yearlyInstallments, saveFileDialog.FileName);
+                        MessageBox.Show("Data successfully exported to CSV.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Handle any errors during file writing
+                        MessageBox.Show($"Error exporting data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+
+        }
     }
 }

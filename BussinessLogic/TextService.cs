@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Models;
 
 namespace MortgageHelper
 {
@@ -37,7 +38,7 @@ namespace MortgageHelper
         public List<string> GetLines(string text)
         {
             // Define a regular expression to match lines starting with the pattern
-            string regexPattern = @"^\d{1,3}\s\d{2}/\d{2}/\d{4}.*";
+            string regexPattern = Constants.LINES_REGEX_PATTERN;
             Regex regex = new Regex(regexPattern, RegexOptions.Multiline);
 
             List<string> matchedLines = new List<string>();
