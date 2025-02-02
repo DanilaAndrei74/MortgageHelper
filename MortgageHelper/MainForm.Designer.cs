@@ -435,7 +435,7 @@
             // 
             // TabelDataGroupbox
             // 
-            TabelDataGroupbox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
+            TabelDataGroupbox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             TabelDataGroupbox.Controls.Add(TotalValuesBox);
             TabelDataGroupbox.Controls.Add(TabControl);
             TabelDataGroupbox.Location = new Point(20, 84);

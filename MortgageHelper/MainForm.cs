@@ -124,7 +124,7 @@ namespace MortgageHelper
                 Interest = Math.Round(installments.Sum(p => p.Interest), 2),
                 Insurance = Math.Round(installments.Sum(p => p.Insurance), 2)
             };
-            summary.Total = summary.Principal + summary.Total + summary.Interest;
+            summary.Total = Math.Round(summary.Principal + summary.Total + summary.Interest , 2);
 
             return summary;
         }
