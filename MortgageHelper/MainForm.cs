@@ -1,4 +1,6 @@
 using BussinessLogic;
+using Models.Interfaces;
+using Models.Models;
 using MortgageHelper.Models;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -9,13 +11,19 @@ namespace MortgageHelper
     {
 
         private string _filePath;
+        private double _totalPrincipal;
+        private double _totalInterest;
+        private double _totalInsurance;
+        private double _totalTotal;
         private List<Installment> _installments;
         private List<YearlyInstallment> _yearlyInstallments;
+        private IInstallment _summary;
         public MainForm()
         {
             InitializeComponent();
         }
 
+        #region Controls
         private void SelectFileButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -54,6 +62,8 @@ namespace MortgageHelper
                 yearlyInstallmentsDataGridView.DataSource = _yearlyInstallments;
             }
             catch (Exception ex) { MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+
+            InitializeTotalBox();
         }
 
         private void ExportButton_Click(object sender, EventArgs e)
@@ -69,7 +79,8 @@ namespace MortgageHelper
                 {
                     try
                     {
-                        Exporter.ToCSV(_yearlyInstallments, saveFileDialog.FileName);
+                        var data = GetListBasedOnSelectedTab();
+                        Exporter.ToCSV(data, saveFileDialog.FileName);
                         MessageBox.Show("Data successfully exported to CSV.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     catch (Exception ex)
@@ -81,5 +92,57 @@ namespace MortgageHelper
             }
 
         }
+
+        public void InitializeTotalBox()
+        {
+            _summary = CalculateSummary(new List<IInstallment>(_installments));
+            UpdateTotals();
+            TotalValuesBox.Visible = true;
+        }
+
+        public List<Object> GetListBasedOnSelectedTab()
+        {
+            switch (TabControl.SelectedIndex)
+            {
+                case ((int)InstallmentTab.Installment):
+                    return new List<object>(_installments);
+                case (int)InstallmentTab.YearlyInstallment:
+                    return new List<object>(_yearlyInstallments);
+                default:
+                    return null; 
+            }
+        }
+        #endregion
+
+        #region Data
+
+        private IInstallment CalculateSummary(List<IInstallment> installments)
+        {
+            var summary =  new BaseInstallment
+            {
+                Principal = Math.Round(installments.Sum(p => p.Principal), 2),
+                Interest = Math.Round(installments.Sum(p => p.Interest), 2),
+                Insurance = Math.Round(installments.Sum(p => p.Insurance), 2)
+            };
+            summary.Total = summary.Principal + summary.Total + summary.Interest;
+
+            return summary;
+        }
+        private void UpdateTotals()
+        {
+            TotalPrincipalLabel.Text = _summary.Principal.ToString();
+            TotalInterestLabel.Text = _summary.Interest.ToString();
+            TotalInsuranceLabel.Text = _summary.Insurance.ToString();
+            TotalLabel.Text = _summary.Total.ToString();
+        }
+
+        #endregion
+
+        public enum InstallmentTab
+        {
+            Installment,
+            YearlyInstallment
+        }
+
     }
 }

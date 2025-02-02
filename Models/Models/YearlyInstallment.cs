@@ -1,4 +1,5 @@
 ﻿using Models;
+using Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MortgageHelper.Models
 {
-    public class YearlyInstallment : Installment
+    public class YearlyInstallment : Installment, IInstallment
     {
         private List<Installment> _installments { get; }
         public int Id => (_installments.FirstOrDefault()?.Id / 12 + 1) ?? 1 ;
