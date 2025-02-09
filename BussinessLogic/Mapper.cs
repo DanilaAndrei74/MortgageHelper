@@ -14,6 +14,7 @@ namespace MortgageHelper
         public static List<Installment> ToInstallment(List<string> lines)
         {
             var installments = new List<Installment>();
+            Installment.LastIndex = lines.Count - 1;
             foreach (var line in lines)
             {
                 // Split the line into columns
@@ -33,6 +34,7 @@ namespace MortgageHelper
                 });
             }
 
+
             return installments;
         }
 
@@ -41,14 +43,12 @@ namespace MortgageHelper
             var sortedInstallments = installments.OrderBy(x => x.Id).ToList();  
             var yearlyInstallments = new List<YearlyInstallment>();
 
-            int numberOfYears = 0;
             for (int i = 0; i < installments.Count; i += 12)
             {
-                numberOfYears++;
                 var batch = installments.Skip(i).Take(12).ToList(); // Take the next 12 installments
                 yearlyInstallments.Add(new YearlyInstallment(batch)); // Create a new YearlyInstallment with the batch
             }
-            YearlyInstallment.LastYear = numberOfYears;
+            YearlyInstallment.LastIndex = (installments.Count-1)/12;
 
             return yearlyInstallments;
         }

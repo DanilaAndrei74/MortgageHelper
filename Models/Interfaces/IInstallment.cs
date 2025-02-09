@@ -8,9 +8,9 @@ namespace Models.Interfaces
 {
     public interface IInstallment
     {
-        public double Principal { get; set; }
-        public double Interest { get; set; }
-        public double Insurance { get; set; }
-        public double Total { get; set; }
+        double Principal { get; }
+        double Interest { get; }
+        double Insurance { get; }
+        double Total { get; }
     }
 }

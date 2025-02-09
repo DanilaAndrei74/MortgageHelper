@@ -118,7 +118,7 @@ namespace MortgageHelper
 
         private IInstallment CalculateSummary(List<IInstallment> installments)
         {
-            var summary =  new BaseInstallment
+            var summary =  new SimpleInstallment
             {
                 Principal = Math.Round(installments.Sum(p => p.Principal), 2),
                 Interest = Math.Round(installments.Sum(p => p.Interest), 2),

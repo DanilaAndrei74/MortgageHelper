@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Models.Models
 {
-    public class BaseInstallment : IInstallment
+    public class SimpleInstallment : IInstallment
     {
         public double Principal { get; set; }
         public double Interest { get; set; }
