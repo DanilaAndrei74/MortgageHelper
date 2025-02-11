@@ -9,11 +9,9 @@ using System.Threading.Tasks;
 
 namespace MortgageHelper.Models
 {
-    public class YearlyInstallment : Installment, ICagr
+    public class YearlyInstallment : Installment
     {
         private List<Installment> _installments { get; }
-
-        public double CAGR { get; set; }
 
         public YearlyInstallment(List<Installment> installments) 
         {

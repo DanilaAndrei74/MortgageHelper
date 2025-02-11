@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Models.Interfaces;
+using MortgageHelper.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -9,7 +11,7 @@ namespace BussinessLogic
 {
     public class Exporter
     {
-        public static bool ToCSV<T>(List<T> data, string filePath)
+        public static bool ToCSV(List<IInstallment> data, string filePath)
         {
             if (data == null || data.Count == 0)
             {
@@ -17,16 +19,26 @@ namespace BussinessLogic
             }
 
             var sb = new StringBuilder();
-            var properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
             // Write Header Row (Column Names)
-            sb.AppendLine(string.Join(",", properties.Select(p => p.Name)));
+            sb.AppendLine(string.Join(",", 
+                [
+                    "Principal",
+                    "Interest",
+                    "Insurance",
+                    "Total",
+                ]));
 
             // Write Data Rows
             foreach (var item in data)
             {
-                var values = properties.Select(p => p.GetValue(item)?.ToString()?.Replace(",", " ") ?? "");
-                sb.AppendLine(string.Join(",", values));
+                sb.AppendLine(string.Join(",",
+                    [
+                        item.Principal.ToString(),
+                        item.Interest.ToString(),
+                        item.Insurance.ToString(),
+                        item.Total.ToString()
+                    ]));
             }
 
             try

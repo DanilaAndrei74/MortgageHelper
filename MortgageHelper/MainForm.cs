@@ -96,14 +96,14 @@ namespace MortgageHelper
             TotalValuesBox.Visible = true;
         }
 
-        public List<Object> GetListBasedOnSelectedTab()
+        public List<IInstallment> GetListBasedOnSelectedTab()
         {
             switch (TabControl.SelectedIndex)
             {
                 case ((int)InstallmentTab.Installment):
-                    return new List<object>(_installments);
+                    return new List<IInstallment>(_installments);
                 case (int)InstallmentTab.YearlyInstallment:
-                    return new List<object>(_yearlyInstallments);
+                    return new List<IInstallment>(_yearlyInstallments);
                 default:
                     return null; 
             }

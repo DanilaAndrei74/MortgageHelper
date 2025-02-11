@@ -16,7 +16,7 @@ namespace MortgageHelper
         public static List<Installment> ToInstallment(List<string> lines)
         {
             var installments = new List<Installment>();
-            Installment.RemainingMonths = lines.Count;
+            var lastMonth = lines.Count;
             foreach (var line in lines)
             {
                 // Split the line into columns
@@ -37,7 +37,7 @@ namespace MortgageHelper
                 };
 
                 var growthFactor = CalculatorService.CalculateGrowthFactor(installment.Principal, installment.Interest, installment.Insurance);
-                var remainingYears = (Installment.RemainingMonths - installment.Id) / 12.00;
+                var remainingYears = (lastMonth - installment.Id) / 12.00;
                 installment.CAGR = CalculatorService.CalculateCAGR(growthFactor, remainingYears);
 
                 installments.Add(installment);
@@ -51,6 +51,7 @@ namespace MortgageHelper
         {
             var sortedInstallments = installments.OrderBy(x => x.Id).ToList();  
             var yearlyInstallments = new List<YearlyInstallment>();
+            var lastMonth = installments.Count;
 
             for (int i = 0; i < installments.Count; i += 12)
             {
@@ -58,7 +59,7 @@ namespace MortgageHelper
                 var yearlyInstallment = new YearlyInstallment(batch);
 
                 var growthFactor = CalculatorService.CalculateGrowthFactor(yearlyInstallment.Principal, yearlyInstallment.Interest, yearlyInstallment.Insurance);
-                var remainingYears = (Installment.RemainingMonths - yearlyInstallment.Id * 12) / 12.00;
+                var remainingYears = lastMonth / 12.00 - yearlyInstallment.Id;
                 yearlyInstallment.CAGR = CalculatorService.CalculateCAGR(growthFactor, remainingYears);
 
                 yearlyInstallments.Add(yearlyInstallment); // Create a new YearlyInstallment with the batch
