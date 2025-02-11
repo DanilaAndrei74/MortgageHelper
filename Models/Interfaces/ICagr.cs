@@ -8,7 +8,6 @@ namespace Models.Interfaces
 {
     internal interface ICagr
     {
-        public static int LastIndex { private get; set; }
         public double CAGR { get; }
     }
 }

@@ -14,7 +14,7 @@ namespace MortgageHelper
         public static List<Installment> ToInstallment(List<string> lines)
         {
             var installments = new List<Installment>();
-            Installment.LastIndex = lines.Count - 1;
+            Installment.LastYear = lines.Count - 1;
             foreach (var line in lines)
             {
                 // Split the line into columns
@@ -22,7 +22,7 @@ namespace MortgageHelper
 
                 installments.Add(new Installment
                 {
-                    Id = int.Parse(columns[(int)TableHeader.Number]),
+                    YearNumber = int.Parse(columns[(int)TableHeader.Number]),
                     DueDate = DateOnly.ParseExact(columns[(int)TableHeader.DueDate], "dd/MM/yyyy", CultureInfo.InvariantCulture),
                     Principal = double.Parse(columns[(int)TableHeader.Principal].Replace(",", ""), CultureInfo.InvariantCulture),
                     Interest = double.Parse(columns[(int)TableHeader.Interest].Replace(",", ""), CultureInfo.InvariantCulture),
@@ -40,7 +40,7 @@ namespace MortgageHelper
 
         public static List<YearlyInstallment> ToYearlyInstallment(List<Installment> installments)
         {
-            var sortedInstallments = installments.OrderBy(x => x.Id).ToList();  
+            var sortedInstallments = installments.OrderBy(x => x.YearNumber).ToList();  
             var yearlyInstallments = new List<YearlyInstallment>();
 
             for (int i = 0; i < installments.Count; i += 12)
@@ -48,7 +48,7 @@ namespace MortgageHelper
                 var batch = installments.Skip(i).Take(12).ToList(); // Take the next 12 installments
                 yearlyInstallments.Add(new YearlyInstallment(batch)); // Create a new YearlyInstallment with the batch
             }
-            YearlyInstallment.LastIndex = (installments.Count-1)/12;
+            YearlyInstallment.LastYear = (installments.Count-1)/12;
 
             return yearlyInstallments;
         }
