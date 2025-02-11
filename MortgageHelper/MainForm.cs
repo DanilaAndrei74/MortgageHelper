@@ -81,7 +81,6 @@ namespace MortgageHelper
                     }
                     catch (Exception ex)
                     {
-                        // Handle any errors during file writing
                         MessageBox.Show($"Error exporting data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }

@@ -42,23 +42,6 @@
             creditBalanceDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             YearlyInstallmentsTab = new TabPage();
             yearlyInstallmentsDataGridView = new DataGridView();
-            yearlyInstallmentBindingSource = new BindingSource(components);
-            InstallmentsTab = new TabPage();
-            installmentsDataGridView = new DataGridView();
-            installmentBindingSource = new BindingSource(components);
-            TabControl = new TabControl();
-            ExportButton = new Button();
-            groupBox2 = new GroupBox();
-            TabelDataGroupbox = new GroupBox();
-            TotalValuesBox = new GroupBox();
-            TotalPrincipalLabelText = new Label();
-            TotalLabel = new Label();
-            TotalPrincipalLabel = new Label();
-            TotalLabelText = new Label();
-            TotalInterestLabelText = new Label();
-            TotalInsuranceLabel = new Label();
-            TotalInterestLabel = new Label();
-            TotalInsuranceLabelText = new Label();
             Year = new DataGridViewTextBoxColumn();
             dueDateDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
             principalDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
@@ -67,6 +50,10 @@
             totalDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
             cAGRDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             creditBalanceDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            installmentBindingSource = new BindingSource(components);
+            yearlyInstallmentBindingSource = new BindingSource(components);
+            InstallmentsTab = new TabPage();
+            installmentsDataGridView = new DataGridView();
             Month = new DataGridViewTextBoxColumn();
             dueDateDataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
             principalDataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
@@ -75,13 +62,26 @@
             totalDataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
             cAGRDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
             creditBalanceDataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
+            TabControl = new TabControl();
+            ExportButton = new Button();
+            groupBox2 = new GroupBox();
+            TabelDataGroupbox = new GroupBox();
+            TotalValuesBox = new GroupBox();
+            TotalPrincipalLabelText = new Label();
+            TotalLabelText = new Label();
+            TotalInterestLabelText = new Label();
+            TotalInsuranceLabelText = new Label();
+            TotalPrincipalLabel = new TextBox();
+            TotalInterestLabel = new TextBox();
+            TotalInsuranceLabel = new TextBox();
+            TotalLabel = new TextBox();
             groupBox1.SuspendLayout();
             YearlyInstallmentsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)yearlyInstallmentsDataGridView).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)installmentBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)yearlyInstallmentBindingSource).BeginInit();
             InstallmentsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)installmentsDataGridView).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)installmentBindingSource).BeginInit();
             TabControl.SuspendLayout();
             groupBox2.SuspendLayout();
             TabelDataGroupbox.SuspendLayout();
@@ -220,180 +220,6 @@
             yearlyInstallmentsDataGridView.Size = new Size(823, 387);
             yearlyInstallmentsDataGridView.TabIndex = 0;
             // 
-            // yearlyInstallmentBindingSource
-            // 
-            yearlyInstallmentBindingSource.DataSource = typeof(Models.YearlyInstallment);
-            // 
-            // InstallmentsTab
-            // 
-            InstallmentsTab.Controls.Add(installmentsDataGridView);
-            InstallmentsTab.Location = new Point(4, 24);
-            InstallmentsTab.Name = "InstallmentsTab";
-            InstallmentsTab.Padding = new Padding(3);
-            InstallmentsTab.Size = new Size(829, 393);
-            InstallmentsTab.TabIndex = 0;
-            InstallmentsTab.Text = "Installments";
-            InstallmentsTab.UseVisualStyleBackColor = true;
-            // 
-            // installmentsDataGridView
-            // 
-            installmentsDataGridView.AllowUserToAddRows = false;
-            installmentsDataGridView.AllowUserToDeleteRows = false;
-            installmentsDataGridView.AutoGenerateColumns = false;
-            installmentsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            installmentsDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            installmentsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            installmentsDataGridView.Columns.AddRange(new DataGridViewColumn[] { Month, dueDateDataGridViewTextBoxColumn2, principalDataGridViewTextBoxColumn2, interestDataGridViewTextBoxColumn2, insuranceDataGridViewTextBoxColumn2, totalDataGridViewTextBoxColumn2, cAGRDataGridViewTextBoxColumn1, creditBalanceDataGridViewTextBoxColumn2 });
-            installmentsDataGridView.DataSource = installmentBindingSource;
-            installmentsDataGridView.Dock = DockStyle.Fill;
-            installmentsDataGridView.Location = new Point(3, 3);
-            installmentsDataGridView.Name = "installmentsDataGridView";
-            installmentsDataGridView.ReadOnly = true;
-            installmentsDataGridView.RowHeadersWidth = 51;
-            installmentsDataGridView.Size = new Size(823, 387);
-            installmentsDataGridView.TabIndex = 0;
-            // 
-            // installmentBindingSource
-            // 
-            installmentBindingSource.DataSource = typeof(Models.Installment);
-            // 
-            // TabControl
-            // 
-            TabControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            TabControl.Controls.Add(InstallmentsTab);
-            TabControl.Controls.Add(YearlyInstallmentsTab);
-            TabControl.Location = new Point(5, 20);
-            TabControl.Name = "TabControl";
-            TabControl.SelectedIndex = 0;
-            TabControl.Size = new Size(837, 421);
-            TabControl.TabIndex = 3;
-            // 
-            // ExportButton
-            // 
-            ExportButton.Location = new Point(87, 17);
-            ExportButton.Name = "ExportButton";
-            ExportButton.Size = new Size(92, 23);
-            ExportButton.TabIndex = 4;
-            ExportButton.Text = "Export To CSV";
-            ExportButton.UseVisualStyleBackColor = true;
-            ExportButton.Click += ExportButton_Click;
-            // 
-            // groupBox2
-            // 
-            groupBox2.Controls.Add(ExportButton);
-            groupBox2.Controls.Add(GoButton);
-            groupBox2.Location = new Point(395, 12);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(191, 46);
-            groupBox2.TabIndex = 5;
-            groupBox2.TabStop = false;
-            groupBox2.Text = "Actions";
-            // 
-            // TabelDataGroupbox
-            // 
-            TabelDataGroupbox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            TabelDataGroupbox.Controls.Add(TotalValuesBox);
-            TabelDataGroupbox.Controls.Add(TabControl);
-            TabelDataGroupbox.Location = new Point(18, 63);
-            TabelDataGroupbox.Margin = new Padding(3, 2, 3, 2);
-            TabelDataGroupbox.Name = "TabelDataGroupbox";
-            TabelDataGroupbox.Padding = new Padding(3, 2, 3, 2);
-            TabelDataGroupbox.Size = new Size(847, 494);
-            TabelDataGroupbox.TabIndex = 6;
-            TabelDataGroupbox.TabStop = false;
-            // 
-            // TotalValuesBox
-            // 
-            TotalValuesBox.Anchor = AnchorStyles.Bottom;
-            TotalValuesBox.Controls.Add(TotalPrincipalLabelText);
-            TotalValuesBox.Controls.Add(TotalLabel);
-            TotalValuesBox.Controls.Add(TotalPrincipalLabel);
-            TotalValuesBox.Controls.Add(TotalLabelText);
-            TotalValuesBox.Controls.Add(TotalInterestLabelText);
-            TotalValuesBox.Controls.Add(TotalInsuranceLabel);
-            TotalValuesBox.Controls.Add(TotalInterestLabel);
-            TotalValuesBox.Controls.Add(TotalInsuranceLabelText);
-            TotalValuesBox.Location = new Point(-12, 438);
-            TotalValuesBox.Margin = new Padding(3, 2, 3, 2);
-            TotalValuesBox.Name = "TotalValuesBox";
-            TotalValuesBox.Padding = new Padding(3, 2, 3, 2);
-            TotalValuesBox.Size = new Size(870, 52);
-            TotalValuesBox.TabIndex = 11;
-            TotalValuesBox.TabStop = false;
-            TotalValuesBox.Visible = false;
-            // 
-            // TotalPrincipalLabelText
-            // 
-            TotalPrincipalLabelText.AutoSize = true;
-            TotalPrincipalLabelText.Location = new Point(14, 17);
-            TotalPrincipalLabelText.Name = "TotalPrincipalLabelText";
-            TotalPrincipalLabelText.Size = new Size(56, 15);
-            TotalPrincipalLabelText.TabIndex = 4;
-            TotalPrincipalLabelText.Text = "Principal:";
-            // 
-            // TotalLabel
-            // 
-            TotalLabel.AutoSize = true;
-            TotalLabel.Location = new Point(741, 17);
-            TotalLabel.Name = "TotalLabel";
-            TotalLabel.Size = new Size(29, 15);
-            TotalLabel.TabIndex = 10;
-            TotalLabel.Text = "N/A";
-            // 
-            // TotalPrincipalLabel
-            // 
-            TotalPrincipalLabel.AutoSize = true;
-            TotalPrincipalLabel.Location = new Point(80, 17);
-            TotalPrincipalLabel.Name = "TotalPrincipalLabel";
-            TotalPrincipalLabel.Size = new Size(29, 15);
-            TotalPrincipalLabel.TabIndex = 5;
-            TotalPrincipalLabel.Text = "N/A";
-            // 
-            // TotalLabelText
-            // 
-            TotalLabelText.AutoSize = true;
-            TotalLabelText.Location = new Point(696, 17);
-            TotalLabelText.Name = "TotalLabelText";
-            TotalLabelText.Size = new Size(35, 15);
-            TotalLabelText.TabIndex = 5;
-            TotalLabelText.Text = "Total:";
-            // 
-            // TotalInterestLabelText
-            // 
-            TotalInterestLabelText.AutoSize = true;
-            TotalInterestLabelText.Location = new Point(217, 17);
-            TotalInterestLabelText.Name = "TotalInterestLabelText";
-            TotalInterestLabelText.Size = new Size(49, 15);
-            TotalInterestLabelText.TabIndex = 6;
-            TotalInterestLabelText.Text = "Interest:";
-            // 
-            // TotalInsuranceLabel
-            // 
-            TotalInsuranceLabel.AutoSize = true;
-            TotalInsuranceLabel.Location = new Point(522, 17);
-            TotalInsuranceLabel.Name = "TotalInsuranceLabel";
-            TotalInsuranceLabel.Size = new Size(29, 15);
-            TotalInsuranceLabel.TabIndex = 9;
-            TotalInsuranceLabel.Text = "N/A";
-            // 
-            // TotalInterestLabel
-            // 
-            TotalInterestLabel.AutoSize = true;
-            TotalInterestLabel.Location = new Point(276, 17);
-            TotalInterestLabel.Name = "TotalInterestLabel";
-            TotalInterestLabel.Size = new Size(29, 15);
-            TotalInterestLabel.TabIndex = 7;
-            TotalInterestLabel.Text = "N/A";
-            // 
-            // TotalInsuranceLabelText
-            // 
-            TotalInsuranceLabelText.AutoSize = true;
-            TotalInsuranceLabelText.Location = new Point(452, 17);
-            TotalInsuranceLabelText.Name = "TotalInsuranceLabelText";
-            TotalInsuranceLabelText.Size = new Size(61, 15);
-            TotalInsuranceLabelText.TabIndex = 8;
-            TotalInsuranceLabelText.Text = "Insurance:";
-            // 
             // Year
             // 
             Year.DataPropertyName = "Id";
@@ -449,6 +275,43 @@
             creditBalanceDataGridViewTextBoxColumn1.HeaderText = "CreditBalance";
             creditBalanceDataGridViewTextBoxColumn1.Name = "creditBalanceDataGridViewTextBoxColumn1";
             creditBalanceDataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // installmentBindingSource
+            // 
+            installmentBindingSource.DataSource = typeof(Models.Installment);
+            // 
+            // yearlyInstallmentBindingSource
+            // 
+            yearlyInstallmentBindingSource.DataSource = typeof(Models.YearlyInstallment);
+            // 
+            // InstallmentsTab
+            // 
+            InstallmentsTab.Controls.Add(installmentsDataGridView);
+            InstallmentsTab.Location = new Point(4, 24);
+            InstallmentsTab.Name = "InstallmentsTab";
+            InstallmentsTab.Padding = new Padding(3);
+            InstallmentsTab.Size = new Size(829, 393);
+            InstallmentsTab.TabIndex = 0;
+            InstallmentsTab.Text = "Installments";
+            InstallmentsTab.UseVisualStyleBackColor = true;
+            // 
+            // installmentsDataGridView
+            // 
+            installmentsDataGridView.AllowUserToAddRows = false;
+            installmentsDataGridView.AllowUserToDeleteRows = false;
+            installmentsDataGridView.AutoGenerateColumns = false;
+            installmentsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            installmentsDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            installmentsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            installmentsDataGridView.Columns.AddRange(new DataGridViewColumn[] { Month, dueDateDataGridViewTextBoxColumn2, principalDataGridViewTextBoxColumn2, interestDataGridViewTextBoxColumn2, insuranceDataGridViewTextBoxColumn2, totalDataGridViewTextBoxColumn2, cAGRDataGridViewTextBoxColumn1, creditBalanceDataGridViewTextBoxColumn2 });
+            installmentsDataGridView.DataSource = installmentBindingSource;
+            installmentsDataGridView.Dock = DockStyle.Fill;
+            installmentsDataGridView.Location = new Point(3, 3);
+            installmentsDataGridView.Name = "installmentsDataGridView";
+            installmentsDataGridView.ReadOnly = true;
+            installmentsDataGridView.RowHeadersWidth = 51;
+            installmentsDataGridView.Size = new Size(823, 387);
+            installmentsDataGridView.TabIndex = 0;
             // 
             // Month
             // 
@@ -506,6 +369,139 @@
             creditBalanceDataGridViewTextBoxColumn2.Name = "creditBalanceDataGridViewTextBoxColumn2";
             creditBalanceDataGridViewTextBoxColumn2.ReadOnly = true;
             // 
+            // TabControl
+            // 
+            TabControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            TabControl.Controls.Add(InstallmentsTab);
+            TabControl.Controls.Add(YearlyInstallmentsTab);
+            TabControl.Location = new Point(5, 20);
+            TabControl.Name = "TabControl";
+            TabControl.SelectedIndex = 0;
+            TabControl.Size = new Size(837, 421);
+            TabControl.TabIndex = 3;
+            // 
+            // ExportButton
+            // 
+            ExportButton.Location = new Point(87, 17);
+            ExportButton.Name = "ExportButton";
+            ExportButton.Size = new Size(92, 23);
+            ExportButton.TabIndex = 4;
+            ExportButton.Text = "Export To CSV";
+            ExportButton.UseVisualStyleBackColor = true;
+            ExportButton.Click += ExportButton_Click;
+            // 
+            // groupBox2
+            // 
+            groupBox2.Controls.Add(ExportButton);
+            groupBox2.Controls.Add(GoButton);
+            groupBox2.Location = new Point(395, 12);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(191, 46);
+            groupBox2.TabIndex = 5;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Actions";
+            // 
+            // TabelDataGroupbox
+            // 
+            TabelDataGroupbox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            TabelDataGroupbox.Controls.Add(TotalValuesBox);
+            TabelDataGroupbox.Controls.Add(TabControl);
+            TabelDataGroupbox.Location = new Point(18, 63);
+            TabelDataGroupbox.Margin = new Padding(3, 2, 3, 2);
+            TabelDataGroupbox.Name = "TabelDataGroupbox";
+            TabelDataGroupbox.Padding = new Padding(3, 2, 3, 2);
+            TabelDataGroupbox.Size = new Size(847, 494);
+            TabelDataGroupbox.TabIndex = 6;
+            TabelDataGroupbox.TabStop = false;
+            // 
+            // TotalValuesBox
+            // 
+            TotalValuesBox.Anchor = AnchorStyles.Bottom;
+            TotalValuesBox.Controls.Add(TotalLabel);
+            TotalValuesBox.Controls.Add(TotalInsuranceLabel);
+            TotalValuesBox.Controls.Add(TotalInterestLabel);
+            TotalValuesBox.Controls.Add(TotalPrincipalLabel);
+            TotalValuesBox.Controls.Add(TotalPrincipalLabelText);
+            TotalValuesBox.Controls.Add(TotalLabelText);
+            TotalValuesBox.Controls.Add(TotalInterestLabelText);
+            TotalValuesBox.Controls.Add(TotalInsuranceLabelText);
+            TotalValuesBox.Location = new Point(-12, 438);
+            TotalValuesBox.Margin = new Padding(3, 2, 3, 2);
+            TotalValuesBox.Name = "TotalValuesBox";
+            TotalValuesBox.Padding = new Padding(3, 2, 3, 2);
+            TotalValuesBox.Size = new Size(870, 52);
+            TotalValuesBox.TabIndex = 11;
+            TotalValuesBox.TabStop = false;
+            TotalValuesBox.Visible = false;
+            // 
+            // TotalPrincipalLabelText
+            // 
+            TotalPrincipalLabelText.AutoSize = true;
+            TotalPrincipalLabelText.Location = new Point(14, 17);
+            TotalPrincipalLabelText.Name = "TotalPrincipalLabelText";
+            TotalPrincipalLabelText.Size = new Size(56, 15);
+            TotalPrincipalLabelText.TabIndex = 4;
+            TotalPrincipalLabelText.Text = "Principal:";
+            // 
+            // TotalLabelText
+            // 
+            TotalLabelText.AutoSize = true;
+            TotalLabelText.Location = new Point(696, 17);
+            TotalLabelText.Name = "TotalLabelText";
+            TotalLabelText.Size = new Size(35, 15);
+            TotalLabelText.TabIndex = 5;
+            TotalLabelText.Text = "Total:";
+            // 
+            // TotalInterestLabelText
+            // 
+            TotalInterestLabelText.AutoSize = true;
+            TotalInterestLabelText.Location = new Point(217, 17);
+            TotalInterestLabelText.Name = "TotalInterestLabelText";
+            TotalInterestLabelText.Size = new Size(49, 15);
+            TotalInterestLabelText.TabIndex = 6;
+            TotalInterestLabelText.Text = "Interest:";
+            // 
+            // TotalInsuranceLabelText
+            // 
+            TotalInsuranceLabelText.AutoSize = true;
+            TotalInsuranceLabelText.Location = new Point(452, 17);
+            TotalInsuranceLabelText.Name = "TotalInsuranceLabelText";
+            TotalInsuranceLabelText.Size = new Size(61, 15);
+            TotalInsuranceLabelText.TabIndex = 8;
+            TotalInsuranceLabelText.Text = "Insurance:";
+            // 
+            // TotalPrincipalLabel
+            // 
+            TotalPrincipalLabel.Location = new Point(76, 14);
+            TotalPrincipalLabel.Name = "TotalPrincipalLabel";
+            TotalPrincipalLabel.ReadOnly = true;
+            TotalPrincipalLabel.Size = new Size(100, 23);
+            TotalPrincipalLabel.TabIndex = 11;
+            // 
+            // TotalInterestLabel
+            // 
+            TotalInterestLabel.Location = new Point(269, 14);
+            TotalInterestLabel.Name = "TotalInterestLabel";
+            TotalInterestLabel.ReadOnly = true;
+            TotalInterestLabel.Size = new Size(100, 23);
+            TotalInterestLabel.TabIndex = 12;
+            // 
+            // TotalInsuranceLabel
+            // 
+            TotalInsuranceLabel.Location = new Point(519, 14);
+            TotalInsuranceLabel.Name = "TotalInsuranceLabel";
+            TotalInsuranceLabel.ReadOnly = true;
+            TotalInsuranceLabel.Size = new Size(100, 23);
+            TotalInsuranceLabel.TabIndex = 13;
+            // 
+            // TotalLabel
+            // 
+            TotalLabel.Location = new Point(737, 14);
+            TotalLabel.Name = "TotalLabel";
+            TotalLabel.ReadOnly = true;
+            TotalLabel.Size = new Size(100, 23);
+            TotalLabel.TabIndex = 14;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -520,10 +516,10 @@
             groupBox1.PerformLayout();
             YearlyInstallmentsTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)yearlyInstallmentsDataGridView).EndInit();
+            ((System.ComponentModel.ISupportInitialize)installmentBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)yearlyInstallmentBindingSource).EndInit();
             InstallmentsTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)installmentsDataGridView).EndInit();
-            ((System.ComponentModel.ISupportInitialize)installmentBindingSource).EndInit();
             TabControl.ResumeLayout(false);
             groupBox2.ResumeLayout(false);
             TabelDataGroupbox.ResumeLayout(false);
@@ -556,13 +552,9 @@
         private Button ExportButton;
         private GroupBox groupBox2;
         private GroupBox TabelDataGroupbox;
-        private Label TotalLabel;
         private Label TotalLabelText;
-        private Label TotalInsuranceLabel;
         private Label TotalInsuranceLabelText;
-        private Label TotalInterestLabel;
         private Label TotalInterestLabelText;
-        private Label TotalPrincipalLabel;
         private Label TotalPrincipalLabelText;
         private GroupBox TotalValuesBox;
         private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn1;
@@ -586,5 +578,9 @@
         private DataGridViewTextBoxColumn totalDataGridViewTextBoxColumn2;
         private DataGridViewTextBoxColumn cAGRDataGridViewTextBoxColumn1;
         private DataGridViewTextBoxColumn creditBalanceDataGridViewTextBoxColumn2;
+        private TextBox TotalInsuranceLabel;
+        private TextBox TotalInterestLabel;
+        private TextBox TotalPrincipalLabel;
+        private TextBox TotalLabel;
     }
 }
