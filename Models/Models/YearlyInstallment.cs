@@ -13,14 +13,13 @@ namespace MortgageHelper.Models
     {
         private List<Installment> _installments { get; }
 
-        public new static int LastYear { private get; set; }
-        public double CAGR => CalculateCAGR();
+        public double CAGR { get; set; }
 
         public YearlyInstallment(List<Installment> installments) 
         {
             _installments = installments;
 
-            YearNumber = (_installments.FirstOrDefault()?.YearNumber / 12 + 1) ?? 1;
+            Id = (_installments.FirstOrDefault()?.Id / 12 + 1) ?? 1;
             DueDate = _installments.FirstOrDefault()?.DueDate ?? DateOnly.MinValue;
             Principal = Math.Round(_installments.Sum(x => x.Principal), 2);
             Interest = Math.Round(_installments.Sum(x => x.Interest), 2);
@@ -28,25 +27,5 @@ namespace MortgageHelper.Models
             Total = Math.Round(_installments.Sum(x => x.Total), 2);
             CreditBalance = Math.Round(_installments.FirstOrDefault()?.CreditBalance ?? 0, 2);
         }
-
-        private double CalculateCAGR()
-        {
-            if (LastYear - YearNumber < 2)
-                return Constants.MIN_RETURN_PERCENTAGE;
-
-            double InitialValue = this.Principal; 
-            double FinalValue = this.Interest + this.Insurance;
-            double numberOfPeriods = (LastYear - this.YearNumber) / 12;
-            double growthFactor = FinalValue / InitialValue;
-
-            // Compute the annual (or per period) growth rate
-            double annualGrowthRate = Math.Pow(growthFactor, 1.0 / numberOfPeriods) - 1;
-
-            // Convert to percentage (CAGR)
-            double CAGR = annualGrowthRate * 100;
-
-            return Math.Round(CAGR,2);
-        }
-
     }
 }

@@ -8,6 +8,6 @@ namespace Models.Interfaces
 {
     internal interface ICagr
     {
-        public double CAGR { get; }
+        public double CAGR { get; set; }
     }
 }

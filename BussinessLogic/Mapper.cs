@@ -1,4 +1,6 @@
-﻿using iText.Kernel.Geom;
+﻿using BussinessLogic;
+using iText.Kernel.Geom;
+using Models.Interfaces;
 using MortgageHelper.Models;
 using System;
 using System.Collections.Generic;
@@ -14,15 +16,15 @@ namespace MortgageHelper
         public static List<Installment> ToInstallment(List<string> lines)
         {
             var installments = new List<Installment>();
-            Installment.LastYear = lines.Count - 1;
+            Installment.RemainingMonths = lines.Count;
             foreach (var line in lines)
             {
                 // Split the line into columns
                 string[] columns = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-                installments.Add(new Installment
+                var installment = new Installment()
                 {
-                    YearNumber = int.Parse(columns[(int)TableHeader.Number]),
+                    Id = int.Parse(columns[(int)TableHeader.Number]),
                     DueDate = DateOnly.ParseExact(columns[(int)TableHeader.DueDate], "dd/MM/yyyy", CultureInfo.InvariantCulture),
                     Principal = double.Parse(columns[(int)TableHeader.Principal].Replace(",", ""), CultureInfo.InvariantCulture),
                     Interest = double.Parse(columns[(int)TableHeader.Interest].Replace(",", ""), CultureInfo.InvariantCulture),
@@ -31,7 +33,14 @@ namespace MortgageHelper
                     Total = double.Parse(columns[(int)TableHeader.Total].Replace(",", ""), CultureInfo.InvariantCulture),
                     CreditBalance = double.Parse(columns[(int)TableHeader.CreditBalance].Replace(",", ""), CultureInfo.InvariantCulture),
                     //AdjustedInterest = columns.Length > (int)TableHeader.AdjustedInterest ? columns[(int)TableHeader.AdjustedInterest] : string.Empty
-                });
+
+                };
+
+                var growthFactor = CalculatorService.CalculateGrowthFactor(installment.Principal, installment.Interest, installment.Insurance);
+                var remainingYears = (Installment.RemainingMonths - installment.Id) / 12.00;
+                installment.CAGR = CalculatorService.CalculateCAGR(growthFactor, remainingYears);
+
+                installments.Add(installment);
             }
 
 
@@ -40,15 +49,20 @@ namespace MortgageHelper
 
         public static List<YearlyInstallment> ToYearlyInstallment(List<Installment> installments)
         {
-            var sortedInstallments = installments.OrderBy(x => x.YearNumber).ToList();  
+            var sortedInstallments = installments.OrderBy(x => x.Id).ToList();  
             var yearlyInstallments = new List<YearlyInstallment>();
 
             for (int i = 0; i < installments.Count; i += 12)
             {
                 var batch = installments.Skip(i).Take(12).ToList(); // Take the next 12 installments
-                yearlyInstallments.Add(new YearlyInstallment(batch)); // Create a new YearlyInstallment with the batch
+                var yearlyInstallment = new YearlyInstallment(batch);
+
+                var growthFactor = CalculatorService.CalculateGrowthFactor(yearlyInstallment.Principal, yearlyInstallment.Interest, yearlyInstallment.Insurance);
+                var remainingYears = (Installment.RemainingMonths - yearlyInstallment.Id * 12) / 12.00;
+                yearlyInstallment.CAGR = CalculatorService.CalculateCAGR(growthFactor, remainingYears);
+
+                yearlyInstallments.Add(yearlyInstallment); // Create a new YearlyInstallment with the batch
             }
-            YearlyInstallment.LastYear = (installments.Count-1)/12;
 
             return yearlyInstallments;
         }

@@ -11,14 +11,15 @@ using Models;
 
 namespace MortgageHelper
 {
-    public class TextService
+    public static class PdfService
     {
 
-        public TextService()
+        public static List<string> ExtractLinesFromPdf(string filePath)
         {
+            var pdfText = ExtractTextFromPdf(filePath);
+            return GetFilteredLines(pdfText);
         }
-
-        public string ExtractTextFromPdf(string pdfPath)
+        private static string ExtractTextFromPdf(string pdfPath)
         {
             using (PdfReader reader = new PdfReader(pdfPath))
             {
@@ -35,7 +36,7 @@ namespace MortgageHelper
             }
         }
 
-        public List<string> GetLines(string text)
+        private static List<string> GetFilteredLines(string text)
         {
             // Define a regular expression to match lines starting with the pattern
             string regexPattern = Constants.LINES_REGEX_PATTERN;

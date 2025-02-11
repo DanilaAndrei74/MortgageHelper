@@ -50,10 +50,7 @@ namespace MortgageHelper
 
             try
             {
-                TextService textFilter = new TextService();
-                var pdfText = textFilter.ExtractTextFromPdf(_filePath);
-
-                var filteredLines = textFilter.GetLines(pdfText);
+                var filteredLines = PdfService.ExtractLinesFromPdf(_filePath);
 
                 _installments = Mapper.ToInstallment(filteredLines);
                 _yearlyInstallments = Mapper.ToYearlyInstallment(_installments);
@@ -74,7 +71,6 @@ namespace MortgageHelper
                 saveFileDialog.DefaultExt = "csv"; 
                 saveFileDialog.AddExtension = true; 
 
-                // Show the dialog to the user
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     try
@@ -95,7 +91,7 @@ namespace MortgageHelper
 
         public void InitializeTotalBox()
         {
-            _summary = CalculateSummary(new List<IInstallment>(_installments));
+            _summary = CalculatorService.CalculateSummary(new List<IInstallment>(_installments));
             UpdateTotals();
             TotalValuesBox.Visible = true;
         }
@@ -112,22 +108,7 @@ namespace MortgageHelper
                     return null; 
             }
         }
-        #endregion
 
-        #region Data
-
-        private IInstallment CalculateSummary(List<IInstallment> installments)
-        {
-            var summary =  new SimpleInstallment
-            {
-                Principal = Math.Round(installments.Sum(p => p.Principal), 2),
-                Interest = Math.Round(installments.Sum(p => p.Interest), 2),
-                Insurance = Math.Round(installments.Sum(p => p.Insurance), 2)
-            };
-            summary.Total = Math.Round(summary.Principal + summary.Total + summary.Interest , 2);
-
-            return summary;
-        }
         private void UpdateTotals()
         {
             TotalPrincipalLabel.Text = _summary.Principal.ToString();
@@ -135,7 +116,6 @@ namespace MortgageHelper
             TotalInsuranceLabel.Text = _summary.Insurance.ToString();
             TotalLabel.Text = _summary.Total.ToString();
         }
-
         #endregion
 
         public enum InstallmentTab
