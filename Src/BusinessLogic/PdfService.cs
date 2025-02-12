@@ -49,7 +49,7 @@ namespace MortgageHelper
         }
 
         //TODO: Refector this method and child ones after adding unit tests 
-        private static List<string> GetFilteredLinesForMystery(string text)
+        private static List<string> GetFilteredLinesForMistery(string text)
         {
             //@"^\d{2}-\d{2}-\d{4}$";
             // Extract dates and numbers Remove(19, 20) -> These are not valid data
@@ -57,7 +57,7 @@ namespace MortgageHelper
             // First page is 19 entries then 27 for each one after. So last is (Count - 19 - 2)% 27
             var firstPageEntries = 19;
 
-            var dates = GetLinesFromRegex(text, Constants.RegexPatterns.MYSTERY_DATES);
+            var dates = GetLinesFromRegex(text, Constants.RegexPatterns.MISTERY_DATES);
 
             if (dates.Count >= 21)
                 dates.RemoveRange(19, 2); //Remove these values because they are useless data
@@ -75,7 +75,7 @@ namespace MortgageHelper
 
 
             var line = 0; // "{index},{dates[index - 1];}, {dates."
-            var data = GetLinesFromRegex(text, Constants.RegexPatterns.MYSTERY_DATA);
+            var data = GetLinesFromRegex(text, Constants.RegexPatterns.MISTERY_DATA);
             data.RemoveAt(data.Count - 1);
 
             var pages = new List<List<string>>();
@@ -153,7 +153,7 @@ namespace MortgageHelper
             _getFilteredLines = bank switch
             {
                 Banks.BCR => GetFilteredLinesForBCR,
-                Banks.MYSTERY => GetFilteredLinesForMystery,
+                Banks.MISTERY => GetFilteredLinesForMistery,
                 _ => throw new ArgumentException("Invalid bank strategy")
             };
         }
