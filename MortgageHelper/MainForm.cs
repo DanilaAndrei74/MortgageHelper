@@ -1,4 +1,5 @@
 using BussinessLogic;
+using Models.Enums;
 using Models.Interfaces;
 using Models.Models;
 using MortgageHelper.Models;
@@ -21,6 +22,7 @@ namespace MortgageHelper
         public MainForm()
         {
             InitializeComponent();
+            bankComboBox.DataSource = Enum.GetValues(typeof(Banks));
         }
 
         #region Controls
@@ -50,7 +52,7 @@ namespace MortgageHelper
 
             try
             {
-                var filteredLines = PdfService.ExtractLinesFromPdf(_filePath);
+                var filteredLines = PdfService.ExtractLinesFromBankPdf(_filePath, (Banks)bankComboBox.SelectedValue);
 
                 _installments = Mapper.ToInstallment(filteredLines);
                 _yearlyInstallments = Mapper.ToYearlyInstallment(_installments);
@@ -75,7 +77,7 @@ namespace MortgageHelper
                 {
                     try
                     {
-                        var data = GetListBasedOnSelectedTab();
+                        var data = GetListBasedOnInstallmentType();
                         Exporter.ToCSV(data, saveFileDialog.FileName);
                         MessageBox.Show("Data successfully exported to CSV.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
@@ -95,19 +97,6 @@ namespace MortgageHelper
             TotalValuesBox.Visible = true;
         }
 
-        public List<IInstallment> GetListBasedOnSelectedTab()
-        {
-            switch (TabControl.SelectedIndex)
-            {
-                case ((int)InstallmentTab.Installment):
-                    return new List<IInstallment>(_installments);
-                case (int)InstallmentTab.YearlyInstallment:
-                    return new List<IInstallment>(_yearlyInstallments);
-                default:
-                    return null; 
-            }
-        }
-
         private void UpdateTotals()
         {
             TotalPrincipalLabel.Text = _summary.Principal.ToString();
@@ -115,13 +104,21 @@ namespace MortgageHelper
             TotalInsuranceLabel.Text = _summary.Insurance.ToString();
             TotalLabel.Text = _summary.Total.ToString();
         }
-        #endregion
 
-        public enum InstallmentTab
+        public List<IInstallment> GetListBasedOnInstallmentType()
         {
-            Installment,
-            YearlyInstallment
+            switch (TabControl.SelectedIndex)
+            {
+                case (int)InstallmentTypes.Installment:
+                    return new List<IInstallment>(_installments);
+                case (int)InstallmentTypes.YearlyInstallment:
+                    return new List<IInstallment>(_yearlyInstallments);
+                default:
+                    return null;
+            }
         }
+
+        #endregion
 
     }
 }

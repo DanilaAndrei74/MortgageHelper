@@ -67,14 +67,16 @@
             groupBox2 = new GroupBox();
             TabelDataGroupbox = new GroupBox();
             TotalValuesBox = new GroupBox();
+            TotalLabel = new TextBox();
+            TotalInsuranceLabel = new TextBox();
+            TotalInterestLabel = new TextBox();
+            TotalPrincipalLabel = new TextBox();
             TotalPrincipalLabelText = new Label();
             TotalLabelText = new Label();
             TotalInterestLabelText = new Label();
             TotalInsuranceLabelText = new Label();
-            TotalPrincipalLabel = new TextBox();
-            TotalInterestLabel = new TextBox();
-            TotalInsuranceLabel = new TextBox();
-            TotalLabel = new TextBox();
+            bankComboBox = new ComboBox();
+            groupBox3 = new GroupBox();
             groupBox1.SuspendLayout();
             YearlyInstallmentsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)yearlyInstallmentsDataGridView).BeginInit();
@@ -86,6 +88,7 @@
             groupBox2.SuspendLayout();
             TabelDataGroupbox.SuspendLayout();
             TotalValuesBox.SuspendLayout();
+            groupBox3.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
@@ -394,7 +397,7 @@
             // 
             groupBox2.Controls.Add(ExportButton);
             groupBox2.Controls.Add(GoButton);
-            groupBox2.Location = new Point(395, 12);
+            groupBox2.Location = new Point(525, 12);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(191, 46);
             groupBox2.TabIndex = 5;
@@ -434,6 +437,38 @@
             TotalValuesBox.TabStop = false;
             TotalValuesBox.Visible = false;
             // 
+            // TotalLabel
+            // 
+            TotalLabel.Location = new Point(737, 14);
+            TotalLabel.Name = "TotalLabel";
+            TotalLabel.ReadOnly = true;
+            TotalLabel.Size = new Size(100, 23);
+            TotalLabel.TabIndex = 14;
+            // 
+            // TotalInsuranceLabel
+            // 
+            TotalInsuranceLabel.Location = new Point(519, 14);
+            TotalInsuranceLabel.Name = "TotalInsuranceLabel";
+            TotalInsuranceLabel.ReadOnly = true;
+            TotalInsuranceLabel.Size = new Size(100, 23);
+            TotalInsuranceLabel.TabIndex = 13;
+            // 
+            // TotalInterestLabel
+            // 
+            TotalInterestLabel.Location = new Point(269, 14);
+            TotalInterestLabel.Name = "TotalInterestLabel";
+            TotalInterestLabel.ReadOnly = true;
+            TotalInterestLabel.Size = new Size(100, 23);
+            TotalInterestLabel.TabIndex = 12;
+            // 
+            // TotalPrincipalLabel
+            // 
+            TotalPrincipalLabel.Location = new Point(76, 14);
+            TotalPrincipalLabel.Name = "TotalPrincipalLabel";
+            TotalPrincipalLabel.ReadOnly = true;
+            TotalPrincipalLabel.Size = new Size(100, 23);
+            TotalPrincipalLabel.TabIndex = 11;
+            // 
             // TotalPrincipalLabelText
             // 
             TotalPrincipalLabelText.AutoSize = true;
@@ -470,43 +505,31 @@
             TotalInsuranceLabelText.TabIndex = 8;
             TotalInsuranceLabelText.Text = "Insurance:";
             // 
-            // TotalPrincipalLabel
+            // bankComboBox
             // 
-            TotalPrincipalLabel.Location = new Point(76, 14);
-            TotalPrincipalLabel.Name = "TotalPrincipalLabel";
-            TotalPrincipalLabel.ReadOnly = true;
-            TotalPrincipalLabel.Size = new Size(100, 23);
-            TotalPrincipalLabel.TabIndex = 11;
+            bankComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            bankComboBox.FormattingEnabled = true;
+            bankComboBox.Location = new Point(6, 17);
+            bankComboBox.Name = "bankComboBox";
+            bankComboBox.Size = new Size(121, 23);
+            bankComboBox.TabIndex = 7;
             // 
-            // TotalInterestLabel
+            // groupBox3
             // 
-            TotalInterestLabel.Location = new Point(269, 14);
-            TotalInterestLabel.Name = "TotalInterestLabel";
-            TotalInterestLabel.ReadOnly = true;
-            TotalInterestLabel.Size = new Size(100, 23);
-            TotalInterestLabel.TabIndex = 12;
-            // 
-            // TotalInsuranceLabel
-            // 
-            TotalInsuranceLabel.Location = new Point(519, 14);
-            TotalInsuranceLabel.Name = "TotalInsuranceLabel";
-            TotalInsuranceLabel.ReadOnly = true;
-            TotalInsuranceLabel.Size = new Size(100, 23);
-            TotalInsuranceLabel.TabIndex = 13;
-            // 
-            // TotalLabel
-            // 
-            TotalLabel.Location = new Point(737, 14);
-            TotalLabel.Name = "TotalLabel";
-            TotalLabel.ReadOnly = true;
-            TotalLabel.Size = new Size(100, 23);
-            TotalLabel.TabIndex = 14;
+            groupBox3.Controls.Add(bankComboBox);
+            groupBox3.Location = new Point(381, 12);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Size = new Size(138, 46);
+            groupBox3.TabIndex = 8;
+            groupBox3.TabStop = false;
+            groupBox3.Text = "Bank";
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(875, 566);
+            Controls.Add(groupBox3);
             Controls.Add(TabelDataGroupbox);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
@@ -525,6 +548,7 @@
             TabelDataGroupbox.ResumeLayout(false);
             TotalValuesBox.ResumeLayout(false);
             TotalValuesBox.PerformLayout();
+            groupBox3.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -582,5 +606,7 @@
         private TextBox TotalInterestLabel;
         private TextBox TotalPrincipalLabel;
         private TextBox TotalLabel;
+        private ComboBox bankComboBox;
+        private GroupBox groupBox3;
     }
 }

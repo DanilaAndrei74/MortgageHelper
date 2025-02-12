@@ -8,14 +8,17 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Models;
+using Models.Enums;
 
 namespace MortgageHelper
 {
     public static class PdfService
     {
+        private static string _regexPattern;
 
-        public static List<string> ExtractLinesFromPdf(string filePath)
+        public static List<string> ExtractLinesFromBankPdf(string filePath, Banks bank)
         {
+            LoadStrategy(bank);
             var pdfText = ExtractTextFromPdf(filePath);
             return GetFilteredLines(pdfText);
         }
@@ -38,9 +41,7 @@ namespace MortgageHelper
 
         private static List<string> GetFilteredLines(string text)
         {
-            // Define a regular expression to match lines starting with the pattern
-            string regexPattern = Constants.LINES_REGEX_PATTERN;
-            Regex regex = new Regex(regexPattern, RegexOptions.Multiline);
+            Regex regex = new Regex(_regexPattern, RegexOptions.Multiline);
 
             List<string> matchedLines = new List<string>();
 
@@ -52,6 +53,16 @@ namespace MortgageHelper
             }
 
             return matchedLines;
+        }
+
+        private static void LoadStrategy(Banks bank)
+        {
+            switch (bank)
+            {
+                case Banks.BCR:
+                    _regexPattern = Constants.RegexPatterns.BCR;
+                    return;
+            }
         }
     }
 }

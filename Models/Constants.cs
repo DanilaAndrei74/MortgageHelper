@@ -9,7 +9,11 @@ namespace Models
     public static class Constants
     {
         public const int MIN_RETURN_PERCENTAGE = -100;
-        public const string LINES_REGEX_PATTERN = @"^\d{1,3}\s\d{2}/\d{2}/\d{4}.*"; //Matches line starting like "1 DATE" - "999 DATE"
+
+        public static class RegexPatterns
+        {
+            public const string BCR = @"^\d{1,3}\s\d{2}/\d{2}/\d{4}.*"; //Matches line starting like "1 DATE" - "999 DATE"
+        }
     }
 }
 /*
