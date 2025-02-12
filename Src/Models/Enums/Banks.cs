@@ -9,5 +9,6 @@ namespace Models.Enums
     public enum Banks
     {
         BCR = 0,
+        MYSTERY = 1,
     }
 }
