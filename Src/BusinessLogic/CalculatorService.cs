@@ -24,19 +24,24 @@ namespace BussinessLogic
             return summary;
         }
 
-        public static double CalculateCAGR(double growthFactor, double numberOfYears)
+        public static double CalculateCompoundInterest(double growthFactor, double numberOfYears)
         {
-            if (numberOfYears < 1) return Constants.MIN_RETURN_PERCENTAGE;
+
             // Compute the annual growth rate
             double annualGrowthRate = Math.Pow(growthFactor, 1.0 / numberOfYears) - 1;
 
-            // Convert to percentage (CAGR)
-            double CAGR = annualGrowthRate * 100;
+            // Convert to percentage
+            double compoundInterestRate = annualGrowthRate * 100;
 
-            return Math.Round(CAGR, 2);
+            return Math.Round(compoundInterestRate, 2);
         }
 
-        public static double CalculateGrowthFactor(double principal, double interest, double insurance)
+        public static double CalculateInterestGrowthFactor(double principal, double interest, double insurance)
+        {
+            return (principal + interest + insurance) / principal;
+        }
+
+        public static double CalculateCagrGrowthFactor(double principal, double interest, double insurance)
         {
             return (interest + insurance) / principal;
         }

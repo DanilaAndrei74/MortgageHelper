@@ -14,6 +14,8 @@ namespace MortgageHelper.Models
         public int Id { get; set; }
         public DateOnly DueDate { get; set; }
         public double CreditBalance { get; set; }
+        public double RemainingYears { get; set; }
+        public double InterestRate { get; set; }
         public double CAGR { get; set; }
     }
 }

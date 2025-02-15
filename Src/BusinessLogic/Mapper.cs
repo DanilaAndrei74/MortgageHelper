@@ -37,9 +37,11 @@ namespace MortgageHelper
 
                 };
 
-                var growthFactor = CalculatorService.CalculateGrowthFactor(installment.Principal, installment.Interest, installment.Insurance);
-                var remainingYears = (lastMonth - installment.Id) / 12.00;
-                installment.CAGR = CalculatorService.CalculateCAGR(growthFactor, remainingYears);
+                var cagrGrowthFactor = CalculatorService.CalculateCagrGrowthFactor(installment.Principal, installment.Interest, installment.Insurance);
+                var interestRateGrowthFactor = CalculatorService.CalculateInterestGrowthFactor(installment.Principal, installment.Interest, installment.Insurance);
+                installment.RemainingYears = (lastMonth - installment.Id) / 12.00;
+                installment.CAGR = CalculatorService.CalculateCompoundInterest(cagrGrowthFactor, installment.RemainingYears);
+                installment.InterestRate = CalculatorService.CalculateCompoundInterest(interestRateGrowthFactor, installment.RemainingYears);
 
                 installments.Add(installment);
             }
@@ -59,9 +61,11 @@ namespace MortgageHelper
                 var batch = installments.Skip(i).Take(12).ToList(); // Take the next 12 installments
                 var yearlyInstallment = new YearlyInstallment(batch);
 
-                var growthFactor = CalculatorService.CalculateGrowthFactor(yearlyInstallment.Principal, yearlyInstallment.Interest, yearlyInstallment.Insurance);
-                var remainingYears = lastMonth / 12.00 - yearlyInstallment.Id;
-                yearlyInstallment.CAGR = CalculatorService.CalculateCAGR(growthFactor, remainingYears);
+                var growthFactor = CalculatorService.CalculateCagrGrowthFactor(yearlyInstallment.Principal, yearlyInstallment.Interest, yearlyInstallment.Insurance);
+                var interestRateGrowthFactor = CalculatorService.CalculateInterestGrowthFactor(yearlyInstallment.Principal, yearlyInstallment.Interest, yearlyInstallment.Insurance);
+                yearlyInstallment.RemainingYears = Math.Max(0, (lastMonth / 12.0) - yearlyInstallment.Id);
+                yearlyInstallment.CAGR = CalculatorService.CalculateCompoundInterest(growthFactor, yearlyInstallment.RemainingYears);
+                yearlyInstallment.InterestRate = CalculatorService.CalculateCompoundInterest(interestRateGrowthFactor, yearlyInstallment.RemainingYears);
 
                 yearlyInstallments.Add(yearlyInstallment); // Create a new YearlyInstallment with the batch
             }
