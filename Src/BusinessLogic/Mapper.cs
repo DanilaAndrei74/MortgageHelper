@@ -39,7 +39,7 @@ namespace MortgageHelper
 
                 var cagrGrowthFactor = CalculatorService.CalculateCagrGrowthFactor(installment.Principal, installment.Interest, installment.Insurance);
                 var interestRateGrowthFactor = CalculatorService.CalculateInterestGrowthFactor(installment.Principal, installment.Interest, installment.Insurance);
-                installment.RemainingYears = (lastMonth - installment.Id) / 12.00;
+                installment.RemainingYears = (lastMonth - installment.Id + 1) / 12.00;
                 installment.CAGR = CalculatorService.CalculateCompoundInterest(cagrGrowthFactor, installment.RemainingYears);
                 installment.InterestRate = CalculatorService.CalculateCompoundInterest(interestRateGrowthFactor, installment.RemainingYears);
 
@@ -63,7 +63,7 @@ namespace MortgageHelper
 
                 var growthFactor = CalculatorService.CalculateCagrGrowthFactor(yearlyInstallment.Principal, yearlyInstallment.Interest, yearlyInstallment.Insurance);
                 var interestRateGrowthFactor = CalculatorService.CalculateInterestGrowthFactor(yearlyInstallment.Principal, yearlyInstallment.Interest, yearlyInstallment.Insurance);
-                yearlyInstallment.RemainingYears = Math.Max(0, (lastMonth / 12.0) - yearlyInstallment.Id);
+                yearlyInstallment.RemainingYears = Math.Max(0, (lastMonth / 12.0) - yearlyInstallment.Id + 1 );
                 yearlyInstallment.CAGR = CalculatorService.CalculateCompoundInterest(growthFactor, yearlyInstallment.RemainingYears);
                 yearlyInstallment.InterestRate = CalculatorService.CalculateCompoundInterest(interestRateGrowthFactor, yearlyInstallment.RemainingYears);
 
