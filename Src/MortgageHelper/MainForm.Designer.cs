@@ -58,15 +58,6 @@
             installmentBindingSource = new BindingSource(components);
             YearlyInstallmentsTab = new TabPage();
             yearlyInstallmentsDataGridView = new DataGridView();
-            Year = new DataGridViewTextBoxColumn();
-            dueDateDataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
-            principalDataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
-            interestDataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
-            insuranceDataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
-            interestRateDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
-            cAGRDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
-            totalDataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
-            creditBalanceDataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
             yearlyInstallmentBindingSource = new BindingSource(components);
             bankComboBox = new ComboBox();
             groupBox3 = new GroupBox();
@@ -75,10 +66,19 @@
             principalDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
             interestDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
             insuranceDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            totalDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
             interestRateDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             cAGRDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            totalDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
             creditBalanceDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            Year = new DataGridViewTextBoxColumn();
+            dueDateDataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
+            principalDataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
+            interestDataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
+            insuranceDataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
+            totalDataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
+            interestRateDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            cAGRDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            creditBalanceDataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             TabelDataGroupbox.SuspendLayout();
@@ -348,7 +348,7 @@
             installmentsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             installmentsDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             installmentsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            installmentsDataGridView.Columns.AddRange(new DataGridViewColumn[] { Month, dueDateDataGridViewTextBoxColumn1, principalDataGridViewTextBoxColumn1, interestDataGridViewTextBoxColumn1, insuranceDataGridViewTextBoxColumn1, interestRateDataGridViewTextBoxColumn, cAGRDataGridViewTextBoxColumn, totalDataGridViewTextBoxColumn1, creditBalanceDataGridViewTextBoxColumn1 });
+            installmentsDataGridView.Columns.AddRange(new DataGridViewColumn[] { Month, dueDateDataGridViewTextBoxColumn1, principalDataGridViewTextBoxColumn1, interestDataGridViewTextBoxColumn1, insuranceDataGridViewTextBoxColumn1, totalDataGridViewTextBoxColumn1, interestRateDataGridViewTextBoxColumn, cAGRDataGridViewTextBoxColumn, creditBalanceDataGridViewTextBoxColumn1 });
             installmentsDataGridView.DataSource = installmentBindingSource;
             installmentsDataGridView.Dock = DockStyle.Fill;
             installmentsDataGridView.Location = new Point(3, 3);
@@ -381,7 +381,7 @@
             yearlyInstallmentsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             yearlyInstallmentsDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             yearlyInstallmentsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            yearlyInstallmentsDataGridView.Columns.AddRange(new DataGridViewColumn[] { Year, dueDateDataGridViewTextBoxColumn2, principalDataGridViewTextBoxColumn2, interestDataGridViewTextBoxColumn2, insuranceDataGridViewTextBoxColumn2, interestRateDataGridViewTextBoxColumn1, cAGRDataGridViewTextBoxColumn1, totalDataGridViewTextBoxColumn2, creditBalanceDataGridViewTextBoxColumn2 });
+            yearlyInstallmentsDataGridView.Columns.AddRange(new DataGridViewColumn[] { Year, dueDateDataGridViewTextBoxColumn2, principalDataGridViewTextBoxColumn2, interestDataGridViewTextBoxColumn2, insuranceDataGridViewTextBoxColumn2, totalDataGridViewTextBoxColumn2, interestRateDataGridViewTextBoxColumn1, cAGRDataGridViewTextBoxColumn1, creditBalanceDataGridViewTextBoxColumn2 });
             yearlyInstallmentsDataGridView.DataSource = yearlyInstallmentBindingSource;
             yearlyInstallmentsDataGridView.Dock = DockStyle.Fill;
             yearlyInstallmentsDataGridView.Location = new Point(3, 3);
@@ -390,69 +390,6 @@
             yearlyInstallmentsDataGridView.RowHeadersWidth = 51;
             yearlyInstallmentsDataGridView.Size = new Size(924, 439);
             yearlyInstallmentsDataGridView.TabIndex = 0;
-            // 
-            // Year
-            // 
-            Year.DataPropertyName = "Id";
-            Year.HeaderText = "Year";
-            Year.Name = "Year";
-            Year.ReadOnly = true;
-            // 
-            // dueDateDataGridViewTextBoxColumn2
-            // 
-            dueDateDataGridViewTextBoxColumn2.DataPropertyName = "DueDate";
-            dueDateDataGridViewTextBoxColumn2.HeaderText = "DueDate";
-            dueDateDataGridViewTextBoxColumn2.Name = "dueDateDataGridViewTextBoxColumn2";
-            dueDateDataGridViewTextBoxColumn2.ReadOnly = true;
-            // 
-            // principalDataGridViewTextBoxColumn2
-            // 
-            principalDataGridViewTextBoxColumn2.DataPropertyName = "Principal";
-            principalDataGridViewTextBoxColumn2.HeaderText = "Principal";
-            principalDataGridViewTextBoxColumn2.Name = "principalDataGridViewTextBoxColumn2";
-            principalDataGridViewTextBoxColumn2.ReadOnly = true;
-            // 
-            // interestDataGridViewTextBoxColumn2
-            // 
-            interestDataGridViewTextBoxColumn2.DataPropertyName = "Interest";
-            interestDataGridViewTextBoxColumn2.HeaderText = "Interest";
-            interestDataGridViewTextBoxColumn2.Name = "interestDataGridViewTextBoxColumn2";
-            interestDataGridViewTextBoxColumn2.ReadOnly = true;
-            // 
-            // insuranceDataGridViewTextBoxColumn2
-            // 
-            insuranceDataGridViewTextBoxColumn2.DataPropertyName = "Insurance";
-            insuranceDataGridViewTextBoxColumn2.HeaderText = "Insurance";
-            insuranceDataGridViewTextBoxColumn2.Name = "insuranceDataGridViewTextBoxColumn2";
-            insuranceDataGridViewTextBoxColumn2.ReadOnly = true;
-            // 
-            // interestRateDataGridViewTextBoxColumn1
-            // 
-            interestRateDataGridViewTextBoxColumn1.DataPropertyName = "InterestRate";
-            interestRateDataGridViewTextBoxColumn1.HeaderText = "Interest Rate";
-            interestRateDataGridViewTextBoxColumn1.Name = "interestRateDataGridViewTextBoxColumn1";
-            interestRateDataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // cAGRDataGridViewTextBoxColumn1
-            // 
-            cAGRDataGridViewTextBoxColumn1.DataPropertyName = "CAGR";
-            cAGRDataGridViewTextBoxColumn1.HeaderText = "CAGR";
-            cAGRDataGridViewTextBoxColumn1.Name = "cAGRDataGridViewTextBoxColumn1";
-            cAGRDataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // totalDataGridViewTextBoxColumn2
-            // 
-            totalDataGridViewTextBoxColumn2.DataPropertyName = "Total";
-            totalDataGridViewTextBoxColumn2.HeaderText = "Total";
-            totalDataGridViewTextBoxColumn2.Name = "totalDataGridViewTextBoxColumn2";
-            totalDataGridViewTextBoxColumn2.ReadOnly = true;
-            // 
-            // creditBalanceDataGridViewTextBoxColumn2
-            // 
-            creditBalanceDataGridViewTextBoxColumn2.DataPropertyName = "CreditBalance";
-            creditBalanceDataGridViewTextBoxColumn2.HeaderText = "CreditBalance";
-            creditBalanceDataGridViewTextBoxColumn2.Name = "creditBalanceDataGridViewTextBoxColumn2";
-            creditBalanceDataGridViewTextBoxColumn2.ReadOnly = true;
             // 
             // yearlyInstallmentBindingSource
             // 
@@ -512,6 +449,13 @@
             insuranceDataGridViewTextBoxColumn1.Name = "insuranceDataGridViewTextBoxColumn1";
             insuranceDataGridViewTextBoxColumn1.ReadOnly = true;
             // 
+            // totalDataGridViewTextBoxColumn1
+            // 
+            totalDataGridViewTextBoxColumn1.DataPropertyName = "Total";
+            totalDataGridViewTextBoxColumn1.HeaderText = "Total";
+            totalDataGridViewTextBoxColumn1.Name = "totalDataGridViewTextBoxColumn1";
+            totalDataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
             // interestRateDataGridViewTextBoxColumn
             // 
             interestRateDataGridViewTextBoxColumn.DataPropertyName = "InterestRate";
@@ -526,19 +470,75 @@
             cAGRDataGridViewTextBoxColumn.Name = "cAGRDataGridViewTextBoxColumn";
             cAGRDataGridViewTextBoxColumn.ReadOnly = true;
             // 
-            // totalDataGridViewTextBoxColumn1
-            // 
-            totalDataGridViewTextBoxColumn1.DataPropertyName = "Total";
-            totalDataGridViewTextBoxColumn1.HeaderText = "Total";
-            totalDataGridViewTextBoxColumn1.Name = "totalDataGridViewTextBoxColumn1";
-            totalDataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
             // creditBalanceDataGridViewTextBoxColumn1
             // 
             creditBalanceDataGridViewTextBoxColumn1.DataPropertyName = "CreditBalance";
             creditBalanceDataGridViewTextBoxColumn1.HeaderText = "CreditBalance";
             creditBalanceDataGridViewTextBoxColumn1.Name = "creditBalanceDataGridViewTextBoxColumn1";
             creditBalanceDataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // Year
+            // 
+            Year.DataPropertyName = "Id";
+            Year.HeaderText = "Year";
+            Year.Name = "Year";
+            Year.ReadOnly = true;
+            // 
+            // dueDateDataGridViewTextBoxColumn2
+            // 
+            dueDateDataGridViewTextBoxColumn2.DataPropertyName = "DueDate";
+            dueDateDataGridViewTextBoxColumn2.HeaderText = "DueDate";
+            dueDateDataGridViewTextBoxColumn2.Name = "dueDateDataGridViewTextBoxColumn2";
+            dueDateDataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
+            // principalDataGridViewTextBoxColumn2
+            // 
+            principalDataGridViewTextBoxColumn2.DataPropertyName = "Principal";
+            principalDataGridViewTextBoxColumn2.HeaderText = "Principal";
+            principalDataGridViewTextBoxColumn2.Name = "principalDataGridViewTextBoxColumn2";
+            principalDataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
+            // interestDataGridViewTextBoxColumn2
+            // 
+            interestDataGridViewTextBoxColumn2.DataPropertyName = "Interest";
+            interestDataGridViewTextBoxColumn2.HeaderText = "Interest";
+            interestDataGridViewTextBoxColumn2.Name = "interestDataGridViewTextBoxColumn2";
+            interestDataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
+            // insuranceDataGridViewTextBoxColumn2
+            // 
+            insuranceDataGridViewTextBoxColumn2.DataPropertyName = "Insurance";
+            insuranceDataGridViewTextBoxColumn2.HeaderText = "Insurance";
+            insuranceDataGridViewTextBoxColumn2.Name = "insuranceDataGridViewTextBoxColumn2";
+            insuranceDataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
+            // totalDataGridViewTextBoxColumn2
+            // 
+            totalDataGridViewTextBoxColumn2.DataPropertyName = "Total";
+            totalDataGridViewTextBoxColumn2.HeaderText = "Total";
+            totalDataGridViewTextBoxColumn2.Name = "totalDataGridViewTextBoxColumn2";
+            totalDataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
+            // interestRateDataGridViewTextBoxColumn1
+            // 
+            interestRateDataGridViewTextBoxColumn1.DataPropertyName = "InterestRate";
+            interestRateDataGridViewTextBoxColumn1.HeaderText = "Interest Rate";
+            interestRateDataGridViewTextBoxColumn1.Name = "interestRateDataGridViewTextBoxColumn1";
+            interestRateDataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // cAGRDataGridViewTextBoxColumn1
+            // 
+            cAGRDataGridViewTextBoxColumn1.DataPropertyName = "CAGR";
+            cAGRDataGridViewTextBoxColumn1.HeaderText = "CAGR";
+            cAGRDataGridViewTextBoxColumn1.Name = "cAGRDataGridViewTextBoxColumn1";
+            cAGRDataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // creditBalanceDataGridViewTextBoxColumn2
+            // 
+            creditBalanceDataGridViewTextBoxColumn2.DataPropertyName = "CreditBalance";
+            creditBalanceDataGridViewTextBoxColumn2.HeaderText = "CreditBalance";
+            creditBalanceDataGridViewTextBoxColumn2.Name = "creditBalanceDataGridViewTextBoxColumn2";
+            creditBalanceDataGridViewTextBoxColumn2.ReadOnly = true;
             // 
             // MainForm
             // 
@@ -607,23 +607,23 @@
         private DataGridView yearlyInstallmentsDataGridView;
         private BindingSource installmentBindingSource;
         private BindingSource yearlyInstallmentBindingSource;
-        private DataGridViewTextBoxColumn Year;
-        private DataGridViewTextBoxColumn dueDateDataGridViewTextBoxColumn2;
-        private DataGridViewTextBoxColumn principalDataGridViewTextBoxColumn2;
-        private DataGridViewTextBoxColumn interestDataGridViewTextBoxColumn2;
-        private DataGridViewTextBoxColumn insuranceDataGridViewTextBoxColumn2;
-        private DataGridViewTextBoxColumn interestRateDataGridViewTextBoxColumn1;
-        private DataGridViewTextBoxColumn cAGRDataGridViewTextBoxColumn1;
-        private DataGridViewTextBoxColumn totalDataGridViewTextBoxColumn2;
-        private DataGridViewTextBoxColumn creditBalanceDataGridViewTextBoxColumn2;
         private DataGridViewTextBoxColumn Month;
         private DataGridViewTextBoxColumn dueDateDataGridViewTextBoxColumn1;
         private DataGridViewTextBoxColumn principalDataGridViewTextBoxColumn1;
         private DataGridViewTextBoxColumn interestDataGridViewTextBoxColumn1;
         private DataGridViewTextBoxColumn insuranceDataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn totalDataGridViewTextBoxColumn1;
         private DataGridViewTextBoxColumn interestRateDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn cAGRDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn totalDataGridViewTextBoxColumn1;
         private DataGridViewTextBoxColumn creditBalanceDataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn Year;
+        private DataGridViewTextBoxColumn dueDateDataGridViewTextBoxColumn2;
+        private DataGridViewTextBoxColumn principalDataGridViewTextBoxColumn2;
+        private DataGridViewTextBoxColumn interestDataGridViewTextBoxColumn2;
+        private DataGridViewTextBoxColumn insuranceDataGridViewTextBoxColumn2;
+        private DataGridViewTextBoxColumn totalDataGridViewTextBoxColumn2;
+        private DataGridViewTextBoxColumn interestRateDataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn cAGRDataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn creditBalanceDataGridViewTextBoxColumn2;
     }
 }
