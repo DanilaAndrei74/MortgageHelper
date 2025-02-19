@@ -15,14 +15,42 @@ namespace MortgageHelper
 {
     public static class Mapper
     {
+        public static List<Installment> CalculateInstallmentPlan(double creditBalance, int remainingMonths)
+        {
+            var installments = new List<Installment>();
+            var interest = new NumberGenerator();
+
+            for (int i = 0; i < remainingMonths; i++) 
+            {
+                var installment = new Installment();
+                var interestRate = interest.GetNext();
+
+                installment.RemainingMonths = remainingMonths - i;
+                installment.Id = i + 1;
+                installment.Total = CalculatorService.CalculatePayment(creditBalance, interestRate, installment.RemainingMonths);
+                installment.Interest = CalculatorService.CalculateMonthlyInterestPaid(creditBalance, interestRate);
+                installment.Principal = installment.Total - installment.Interest;
+                installment.Total += installment.Insurance;
+                installment.CreditBalance = creditBalance - installment.Principal;
+                installment.Insurance = installment.CreditBalance * 0.026 / 100;
+                
+                creditBalance -= installment.Principal;
+
+                installment.RoundDoubleProperties();
+                installments.Add(installment);
+            }
+            return installments;
+        }
+
         public static List<Installment> ReplicateInstallments(List<Installment> installments)
         {
             var result = new List<Installment>();
             var balance = installments.First().CreditBalance + installments.First().Principal;
+            var interest = new NumberGenerator();
             foreach (var installment in installments)
             {
                 var newInstallment = new Installment();
-                var interestRate = NumberGenerator.GetNext();
+                var interestRate = interest.GetNext();
 
                 newInstallment.Id = installment.Id;
 
@@ -124,12 +152,13 @@ namespace MortgageHelper
             return yearlyInstallments;
         }
     }
-    public static class NumberGenerator
+    public class NumberGenerator
     {
-        private static int count = 0; // Tracks how many times the function is called
+        private int count = 0; // Tracks how many times the function is called
 
-        public static double GetNext()
+        public double GetNext()
         {
+
             if (count < 36)
             {
                 count++;

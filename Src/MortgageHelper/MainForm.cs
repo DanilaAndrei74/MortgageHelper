@@ -60,20 +60,20 @@ namespace MortgageHelper
                 _yearlyInstallments = Mapper.ToYearlyInstallment(_installments);
 
                 var extraordinaryPayment = 50000;
+                var interest = 4.99;
+                var creditBalance = _installments.First().CreditBalance + _installments.First().Principal;
                 var remainingMonths = _installments.First().RemainingMonths -
-                    CalculatorService.CalculateMonthsSaved(
-                        _installments.First().CreditBalance,
-                        NumberGenerator.GetNext(),
+                    CalculatorService.GetNewMonthsAfterExtraordinaryPayment(
+                        creditBalance,
+                        interest,
                         _installments.Count(),
-                        _installments.Skip(37).First().Total,
                         extraordinaryPayment);
 
                 _replicatedInstallments = Mapper.ReplicateInstallments(_installments);
-                    //, _installments.First().CreditBalance, _installments.First().RemainingMonths);
-                //_newInstallments = Mapper.ReplicateInstallments(
-                //    _installments,
-                //    _installments.First().CreditBalance - extraordinaryPayment,
-                //    remainingMonths);
+
+                _newInstallments = Mapper.CalculateInstallmentPlan(
+                    creditBalance - extraordinaryPayment,
+                    remainingMonths);
 
                 newInstallmentsDataGridView.DataSource = _newInstallments;
                 replicatedInstallmentsDataGridView.DataSource = _replicatedInstallments;

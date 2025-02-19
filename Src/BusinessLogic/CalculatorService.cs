@@ -20,7 +20,7 @@ namespace BussinessLogic
                 Interest = Math.Round(installments.Sum(p => p.Interest), 2),
                 Insurance = Math.Round(installments.Sum(p => p.Insurance), 2)
             };
-            summary.Total = Math.Round(summary.Principal + summary.Total + summary.Interest, 2);
+            summary.Total = Math.Round(summary.Principal + summary.Interest + summary.Insurance, 2);
 
             return summary;
         }
@@ -48,19 +48,24 @@ namespace BussinessLogic
             return remainingPrincipal * (annualRate / 12 / 100);
         }
 
-        public static int CalculateMonthsSaved(double creditBalance, double annualRate, int months, double monthlyPayment, double extraPayment)
+        public static int GetNewMonthsAfterExtraordinaryPayment(double principal, double annualRate, int termMonths, double extraPayment)
         {
-            double monthlyRate = (annualRate / 100) / 12; // Convert annual rate to monthly decimal
-            double newPrincipal = creditBalance - extraPayment; // Reduce the principal
+            double monthlyRate = (annualRate / 100) / 12;
 
-            if (newPrincipal <= 0)
-                return months; // Loan is fully paid off!
+            // Calculate original monthly payment
+            double monthlyPayment = principal * (monthlyRate * Math.Pow(1 + monthlyRate, termMonths)) /
+                                    (Math.Pow(1 + monthlyRate, termMonths) - 1);
 
-            // Calculate new loan duration
-            double newMonths = Math.Log(monthlyPayment / (monthlyPayment - (monthlyRate * newPrincipal))) / Math.Log(1 + monthlyRate);
-            int roundedNewMonths = (int)Math.Floor(newMonths);
+            // New principal after extra payment
+            double newPrincipal = principal - extraPayment;
 
-            return months - roundedNewMonths; // Months saved
+            // Calculate the new loan term
+            int newTermMonths = (int)Math.Ceiling(
+                Math.Log(monthlyPayment / (monthlyPayment - monthlyRate * newPrincipal)) / Math.Log(1 + monthlyRate)
+            );
+
+            // Return new term months
+            return termMonths - newTermMonths;
         }
 
 
