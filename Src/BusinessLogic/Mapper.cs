@@ -19,6 +19,7 @@ namespace MortgageHelper
         {
             var installments = new List<Installment>();
             var interest = new NumberGenerator();
+            DueDates.Reset();
 
             for (int i = 0; i < remainingMonths; i++) 
             {
@@ -27,12 +28,13 @@ namespace MortgageHelper
 
                 installment.RemainingMonths = remainingMonths - i;
                 installment.Id = i + 1;
+                installment.DueDate = DueDates.Next() ?? new DateOnly();
                 installment.Total = CalculatorService.CalculatePayment(creditBalance, interestRate, installment.RemainingMonths);
                 installment.Interest = CalculatorService.CalculateMonthlyInterestPaid(creditBalance, interestRate);
                 installment.Principal = installment.Total - installment.Interest;
-                installment.Total += installment.Insurance;
                 installment.CreditBalance = creditBalance - installment.Principal;
                 installment.Insurance = CalculatorService.CalculateInsurance(installment.CreditBalance);
+                installment.Total += installment.Insurance;
                 installment.InterestRate = interestRate;
                 
                 creditBalance -= installment.Principal;
@@ -93,6 +95,7 @@ namespace MortgageHelper
         {
             var installments = new List<Installment>();
             var lastMonth = lines.Count;
+            DueDates.HardReset();
             foreach (var line in lines)
             {
                 // Split the line into columns
@@ -111,6 +114,7 @@ namespace MortgageHelper
                     //AdjustedInterest = columns.Length > (int)TableHeader.AdjustedInterest ? columns[(int)TableHeader.AdjustedInterest] : string.Empty
 
                 };
+                DueDates.AddDate(installment.DueDate);
 
                 var cagrGrowthFactor = CalculatorService.CalculateCagrGrowthFactor(installment.Principal, installment.Interest, installment.Insurance);
                 var interestRateGrowthFactor = CalculatorService.CalculateInterestGrowthFactor(installment.Principal, installment.Interest, installment.Insurance);
@@ -169,6 +173,40 @@ namespace MortgageHelper
                 return fixedRate;
             }
             return variableRate;
+        }
+    }
+
+    public static class DueDates
+    {
+        private static List<DateOnly> dates = new List<DateOnly>();
+        private static int currentIndex = 0;
+
+        // Add a date to the list
+        public static void AddDate(DateOnly date)
+        {
+            dates.Add(date);
+        }
+
+        // Get the next date in the sequence
+        public static DateOnly? Next()
+        {
+            if (dates.Count == 0) return new DateOnly(); // No dates available
+
+            DateOnly nextDate = dates[currentIndex];
+            currentIndex = (currentIndex + 1) % dates.Count; // Move to the next, loop around
+
+            return nextDate;
+        }
+
+        // Reset to the start
+        public static void Reset()
+        {
+            currentIndex = 0;
+        }
+
+        public static void HardReset()
+        {
+            dates = new List<DateOnly>();
         }
     }
 
