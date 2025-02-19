@@ -16,6 +16,13 @@ namespace Models
             public const string MISTERY_DATES = @"^\d{2}-\d{2}-\d{4}$";
             public const string MISTERY_DATA = @"^ \d.*\.\d{2}$";
         }
+
+        public static class Insurance
+        {
+            public static double Value { get; set; }
+            public const double BCR_VALUE = 0.026;
+            public const double MISTERY_VALUE = 0.0;
+        }
     }
 }
 /*

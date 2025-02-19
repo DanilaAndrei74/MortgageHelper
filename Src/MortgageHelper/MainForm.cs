@@ -60,8 +60,8 @@ namespace MortgageHelper
                 _installments = Mapper.ToInstallment(filteredLines);
                 _yearlyInstallments = Mapper.ToYearlyInstallment(_installments);
 
-                var extraordinaryPayment = 50000;
-                var interest = 4.99;
+                double extraordinaryPayment = RetreiveAdditionalPaymentFromTextBox();
+                var interest = _installments.First().InterestRate;
                 var creditBalance = _installments.First().CreditBalance + _installments.First().Principal;
                 var remainingMonths = _installments.First().RemainingMonths -
                     CalculatorService.GetNewMonthsAfterExtraordinaryPayment(
@@ -70,8 +70,14 @@ namespace MortgageHelper
                         _installments.Count(),
                         extraordinaryPayment);
 
-                _replicatedInstallments = Mapper.ReplicateInstallments(_installments);
 
+                NumberGenerator.fixedRatePeriod = CalculatorService.DetermineFixedPaymentPeriod(new List<IInstallment>(_installments));
+                var fixedRateInstallments = _installments.Take(NumberGenerator.fixedRatePeriod).ToList();
+                var variableRateInstallments = _installments.Skip(NumberGenerator.fixedRatePeriod).ToList();
+                NumberGenerator.fixedRate = fixedRateInstallments[fixedRateInstallments.Count() / 2].InterestRate;
+                if(variableRateInstallments.Count() > 0) NumberGenerator.variableRate = variableRateInstallments[variableRateInstallments.Count() / 2].InterestRate;
+
+                _replicatedInstallments = Mapper.ReplicateInstallments(_installments);
                 _newInstallments = Mapper.CalculateInstallmentPlan(
                     creditBalance - extraordinaryPayment,
                     remainingMonths);
@@ -97,6 +103,15 @@ namespace MortgageHelper
             catch (Exception ex) { MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
 
             InitializeTotalBox();
+        }
+
+        private double RetreiveAdditionalPaymentFromTextBox()
+        {
+            double extraordinaryPayment = 0; // Default value if parsing fails
+
+            double.TryParse(additionalPaymentTextBox.Text, out extraordinaryPayment);
+
+            return extraordinaryPayment;
         }
 
         private void ExportButton_Click(object sender, EventArgs e)
@@ -162,5 +177,21 @@ namespace MortgageHelper
         {
             UpdateTotals();
         }
+
+        private void additionalPaymentTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsControl(e.KeyChar)) return;
+
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != '-')
+            {
+                e.Handled = true; // Block invalid characters
+            }
+
+            if (e.KeyChar == '.' && ((TextBox)sender).Text.Contains("."))
+            {
+                e.Handled = true; // Only one decimal point allowed
+            }
+        }
+
     }
 }

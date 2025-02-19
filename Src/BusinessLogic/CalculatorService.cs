@@ -3,11 +3,13 @@ using Microsoft.VisualBasic;
 using Models;
 using Models.Interfaces;
 using Models.Models;
+using MortgageHelper.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Constants = Models.Constants;
 
 namespace BussinessLogic
 {
@@ -25,6 +27,22 @@ namespace BussinessLogic
 
             summary.RoundDoubleProperties();
             return summary;
+        }
+
+        public static int DetermineFixedPaymentPeriod(List<IInstallment> installments)
+        {
+            if (installments.Count < 3) return installments.Count;
+
+            double fixedPayment = installments[1].Total; // Use second payment as reference
+            const double tolerance = 20; // Allow small rounding differences
+
+            for (int i = 2; i < installments.Count; i++) // Start from the third payment
+            {
+                if (Math.Abs(installments[i].Total - fixedPayment) > tolerance)
+                    return i; // Return the number of months before first change
+            }
+
+            return installments.Count; // If no change, assume entire period is fixed
         }
 
         public static double CalculateCompoundInterest(double growthFactor, double numberOfYears)
@@ -96,6 +114,11 @@ namespace BussinessLogic
         public static double CalculatePeriod()
         {
             return 0;
+        }
+
+        internal static double CalculateInsurance(double creditBalance)
+        {
+            return creditBalance * Constants.Insurance.Value / 100;
         }
     }
 }

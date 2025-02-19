@@ -45,12 +45,15 @@ namespace MortgageHelper
 
         private static List<string> GetFilteredLinesForBCR(string text)
         {
+            Constants.Insurance.Value = Constants.Insurance.BCR_VALUE;
             return GetLinesFromRegex(text, Constants.RegexPatterns.BCR);
         }
 
         //TODO: Refector this method and child ones after adding unit tests 
         private static List<string> GetFilteredLinesForMistery(string text)
         {
+            Constants.Insurance.Value = Constants.Insurance.MISTERY_VALUE;
+
             //@"^\d{2}-\d{2}-\d{4}$";
             // Extract dates and numbers Remove(19, 20) -> These are not valid data
             // @"^ \d.*"; -> Returns Interest, Principal, Total, CreditBalance, Zeroes

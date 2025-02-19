@@ -32,7 +32,8 @@ namespace MortgageHelper
                 installment.Principal = installment.Total - installment.Interest;
                 installment.Total += installment.Insurance;
                 installment.CreditBalance = creditBalance - installment.Principal;
-                installment.Insurance = installment.CreditBalance * 0.026 / 100;
+                installment.Insurance = CalculatorService.CalculateInsurance(installment.CreditBalance);
+                installment.InterestRate = interestRate;
                 
                 creditBalance -= installment.Principal;
 
@@ -63,7 +64,7 @@ namespace MortgageHelper
 
                 balance -= newInstallment.Principal;
                 newInstallment.CreditBalance = balance;
-                newInstallment.InterestRate = CalculatorService.CalculateMortgageRate(newInstallment.Total, balance, newInstallment.RemainingMonths);
+                newInstallment.InterestRate = interestRate;
 
 
                 if (installment.Insurance != 0)
@@ -155,16 +156,19 @@ namespace MortgageHelper
     public class NumberGenerator
     {
         private int count = 0; // Tracks how many times the function is called
+        public static int fixedRatePeriod { get; set; }
+        public static double fixedRate { get; set; }
+        public static double variableRate { get; set; }
 
         public double GetNext()
         {
 
-            if (count < 36)
+            if (count < fixedRatePeriod)
             {
                 count++;
-                return 4.99;
+                return fixedRate;
             }
-            return 8.16;
+            return variableRate;
         }
     }
 

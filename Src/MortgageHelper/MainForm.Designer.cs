@@ -88,8 +88,6 @@
             dataGridViewTextBoxColumn7 = new DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn8 = new DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn9 = new DataGridViewTextBoxColumn();
-            bankComboBox = new ComboBox();
-            groupBox3 = new GroupBox();
             NewInstallments = new TabPage();
             newInstallmentsDataGridView = new DataGridView();
             dataGridViewTextBoxColumn10 = new DataGridViewTextBoxColumn();
@@ -101,6 +99,10 @@
             dataGridViewTextBoxColumn16 = new DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn17 = new DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn18 = new DataGridViewTextBoxColumn();
+            bankComboBox = new ComboBox();
+            groupBox3 = new GroupBox();
+            additionalPaymentGroupBox = new GroupBox();
+            additionalPaymentTextBox = new TextBox();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             TabelDataGroupbox.SuspendLayout();
@@ -114,9 +116,10 @@
             ((System.ComponentModel.ISupportInitialize)yearlyInstallmentBindingSource).BeginInit();
             replicatedInstallments.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)replicatedInstallmentsDataGridView).BeginInit();
-            groupBox3.SuspendLayout();
             NewInstallments.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)newInstallmentsDataGridView).BeginInit();
+            groupBox3.SuspendLayout();
+            additionalPaymentGroupBox.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
@@ -248,11 +251,11 @@
             TabelDataGroupbox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             TabelDataGroupbox.Controls.Add(TotalValuesBox);
             TabelDataGroupbox.Controls.Add(TabControl);
-            TabelDataGroupbox.Location = new Point(18, 63);
+            TabelDataGroupbox.Location = new Point(18, 122);
             TabelDataGroupbox.Margin = new Padding(3, 2, 3, 2);
             TabelDataGroupbox.Name = "TabelDataGroupbox";
             TabelDataGroupbox.Padding = new Padding(3, 2, 3, 2);
-            TabelDataGroupbox.Size = new Size(948, 546);
+            TabelDataGroupbox.Size = new Size(956, 607);
             TabelDataGroupbox.TabIndex = 6;
             TabelDataGroupbox.TabStop = false;
             // 
@@ -267,7 +270,7 @@
             TotalValuesBox.Controls.Add(TotalLabelText);
             TotalValuesBox.Controls.Add(TotalInterestLabelText);
             TotalValuesBox.Controls.Add(TotalInsuranceLabelText);
-            TotalValuesBox.Location = new Point(39, 490);
+            TotalValuesBox.Location = new Point(43, 551);
             TotalValuesBox.Margin = new Padding(3, 2, 3, 2);
             TotalValuesBox.Name = "TotalValuesBox";
             TotalValuesBox.Padding = new Padding(3, 2, 3, 2);
@@ -354,7 +357,7 @@
             TabControl.Location = new Point(5, 20);
             TabControl.Name = "TabControl";
             TabControl.SelectedIndex = 0;
-            TabControl.Size = new Size(938, 473);
+            TabControl.Size = new Size(946, 534);
             TabControl.TabIndex = 3;
             TabControl.SelectedIndexChanged += TabControl_SelectedIndexChanged;
             // 
@@ -364,7 +367,7 @@
             InstallmentsTab.Location = new Point(4, 24);
             InstallmentsTab.Name = "InstallmentsTab";
             InstallmentsTab.Padding = new Padding(3);
-            InstallmentsTab.Size = new Size(930, 445);
+            InstallmentsTab.Size = new Size(938, 506);
             InstallmentsTab.TabIndex = 0;
             InstallmentsTab.Text = "Installments";
             InstallmentsTab.UseVisualStyleBackColor = true;
@@ -384,7 +387,7 @@
             installmentsDataGridView.Name = "installmentsDataGridView";
             installmentsDataGridView.ReadOnly = true;
             installmentsDataGridView.RowHeadersWidth = 51;
-            installmentsDataGridView.Size = new Size(924, 439);
+            installmentsDataGridView.Size = new Size(932, 500);
             installmentsDataGridView.TabIndex = 0;
             // 
             // Month
@@ -642,25 +645,6 @@
             dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
             dataGridViewTextBoxColumn9.ReadOnly = true;
             // 
-            // bankComboBox
-            // 
-            bankComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            bankComboBox.FormattingEnabled = true;
-            bankComboBox.Location = new Point(6, 17);
-            bankComboBox.Name = "bankComboBox";
-            bankComboBox.Size = new Size(121, 23);
-            bankComboBox.TabIndex = 7;
-            // 
-            // groupBox3
-            // 
-            groupBox3.Controls.Add(bankComboBox);
-            groupBox3.Location = new Point(381, 12);
-            groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(138, 46);
-            groupBox3.TabIndex = 8;
-            groupBox3.TabStop = false;
-            groupBox3.Text = "Bank";
-            // 
             // NewInstallments
             // 
             NewInstallments.Controls.Add(newInstallmentsDataGridView);
@@ -753,11 +737,50 @@
             dataGridViewTextBoxColumn18.Name = "dataGridViewTextBoxColumn18";
             dataGridViewTextBoxColumn18.ReadOnly = true;
             // 
+            // bankComboBox
+            // 
+            bankComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            bankComboBox.FormattingEnabled = true;
+            bankComboBox.Location = new Point(6, 17);
+            bankComboBox.Name = "bankComboBox";
+            bankComboBox.Size = new Size(121, 23);
+            bankComboBox.TabIndex = 7;
+            // 
+            // groupBox3
+            // 
+            groupBox3.Controls.Add(bankComboBox);
+            groupBox3.Location = new Point(381, 12);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Size = new Size(138, 46);
+            groupBox3.TabIndex = 8;
+            groupBox3.TabStop = false;
+            groupBox3.Text = "Bank";
+            // 
+            // additionalPaymentGroupBox
+            // 
+            additionalPaymentGroupBox.Controls.Add(additionalPaymentTextBox);
+            additionalPaymentGroupBox.Location = new Point(18, 64);
+            additionalPaymentGroupBox.Name = "additionalPaymentGroupBox";
+            additionalPaymentGroupBox.Size = new Size(152, 53);
+            additionalPaymentGroupBox.TabIndex = 9;
+            additionalPaymentGroupBox.TabStop = false;
+            additionalPaymentGroupBox.Text = "Additional reinbursment";
+            // 
+            // additionalPaymentTextBox
+            // 
+            additionalPaymentTextBox.Location = new Point(9, 22);
+            additionalPaymentTextBox.Name = "additionalPaymentTextBox";
+            additionalPaymentTextBox.Size = new Size(135, 23);
+            additionalPaymentTextBox.TabIndex = 0;
+            additionalPaymentTextBox.KeyPress += additionalPaymentTextBox_KeyPress;
+
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(976, 618);
+            ClientSize = new Size(984, 738);
+            Controls.Add(additionalPaymentGroupBox);
             Controls.Add(groupBox3);
             Controls.Add(TabelDataGroupbox);
             Controls.Add(groupBox2);
@@ -779,9 +802,11 @@
             ((System.ComponentModel.ISupportInitialize)yearlyInstallmentBindingSource).EndInit();
             replicatedInstallments.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)replicatedInstallmentsDataGridView).EndInit();
-            groupBox3.ResumeLayout(false);
             NewInstallments.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)newInstallmentsDataGridView).EndInit();
+            groupBox3.ResumeLayout(false);
+            additionalPaymentGroupBox.ResumeLayout(false);
+            additionalPaymentGroupBox.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -864,5 +889,7 @@
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn16;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn17;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn18;
+        private GroupBox additionalPaymentGroupBox;
+        private TextBox additionalPaymentTextBox;
     }
 }
