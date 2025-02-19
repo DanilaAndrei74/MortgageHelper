@@ -17,6 +17,8 @@ namespace MortgageHelper
         private double _totalInsurance;
         private double _totalTotal;
         private List<Installment> _installments;
+        private List<Installment> _replicatedInstallments;
+        private List<Installment> _newInstallments;
         private List<YearlyInstallment> _yearlyInstallments;
         private IInstallment _summary;
         public MainForm()
@@ -57,6 +59,24 @@ namespace MortgageHelper
                 _installments = Mapper.ToInstallment(filteredLines);
                 _yearlyInstallments = Mapper.ToYearlyInstallment(_installments);
 
+                var extraordinaryPayment = 50000;
+                var remainingMonths = _installments.First().RemainingMonths -
+                    CalculatorService.CalculateMonthsSaved(
+                        _installments.First().CreditBalance,
+                        NumberGenerator.GetNext(),
+                        _installments.Count(),
+                        _installments.Skip(37).First().Total,
+                        extraordinaryPayment);
+
+                _replicatedInstallments = Mapper.ReplicateInstallments(_installments);
+                    //, _installments.First().CreditBalance, _installments.First().RemainingMonths);
+                //_newInstallments = Mapper.ReplicateInstallments(
+                //    _installments,
+                //    _installments.First().CreditBalance - extraordinaryPayment,
+                //    remainingMonths);
+
+                newInstallmentsDataGridView.DataSource = _newInstallments;
+                replicatedInstallmentsDataGridView.DataSource = _replicatedInstallments;
                 installmentsDataGridView.DataSource = _installments;
                 yearlyInstallmentsDataGridView.DataSource = _yearlyInstallments;
             }
@@ -70,8 +90,8 @@ namespace MortgageHelper
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
             {
                 saveFileDialog.Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*";
-                saveFileDialog.DefaultExt = "csv"; 
-                saveFileDialog.AddExtension = true; 
+                saveFileDialog.DefaultExt = "csv";
+                saveFileDialog.AddExtension = true;
 
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -92,13 +112,13 @@ namespace MortgageHelper
 
         public void InitializeTotalBox()
         {
-            _summary = CalculatorService.CalculateSummary(new List<IInstallment>(_installments));
             UpdateTotals();
             TotalValuesBox.Visible = true;
         }
 
         private void UpdateTotals()
         {
+            _summary = CalculatorService.CalculateSummary(GetListBasedOnInstallmentType());
             TotalPrincipalLabel.Text = _summary.Principal.ToString();
             TotalInterestLabel.Text = _summary.Interest.ToString();
             TotalInsuranceLabel.Text = _summary.Insurance.ToString();
@@ -113,6 +133,10 @@ namespace MortgageHelper
                     return new List<IInstallment>(_installments);
                 case (int)InstallmentTypes.YearlyInstallment:
                     return new List<IInstallment>(_yearlyInstallments);
+                case (int)InstallmentTypes.ReplicatedInstallment:
+                    return new List<IInstallment>(_replicatedInstallments);
+                case (int)InstallmentTypes.NewInstallments:
+                    return new List<IInstallment>(_newInstallments);
                 default:
                     return null;
             }
@@ -120,5 +144,9 @@ namespace MortgageHelper
 
         #endregion
 
+        private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateTotals();
+        }
     }
 }

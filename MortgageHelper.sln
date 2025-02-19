@@ -17,6 +17,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Src\Models\Models
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MortgageHelper", "Src\MortgageHelper\MortgageHelper.csproj", "{08749800-2513-40F4-ABBD-FD3BFF607AB0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{78E51B27-CAFA-4D23-8AA4-748D0A60CD22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogicTest", "Test\BusinessLogicTest\BusinessLogicTest.csproj", "{D66435E9-CA06-4460-9D1E-4F8E1D7EB5A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +39,10 @@ Global
 		{08749800-2513-40F4-ABBD-FD3BFF607AB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08749800-2513-40F4-ABBD-FD3BFF607AB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08749800-2513-40F4-ABBD-FD3BFF607AB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D66435E9-CA06-4460-9D1E-4F8E1D7EB5A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D66435E9-CA06-4460-9D1E-4F8E1D7EB5A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D66435E9-CA06-4460-9D1E-4F8E1D7EB5A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D66435E9-CA06-4460-9D1E-4F8E1D7EB5A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -43,6 +51,7 @@ Global
 		{C794D504-C4D7-42BC-8ADB-D3FBD2C882F3} = {E2DBADA3-A19C-4504-9BDD-6FE2A11BFD9F}
 		{16F7064C-204B-4858-BD1E-D6F69CCB846C} = {E2DBADA3-A19C-4504-9BDD-6FE2A11BFD9F}
 		{08749800-2513-40F4-ABBD-FD3BFF607AB0} = {E2DBADA3-A19C-4504-9BDD-6FE2A11BFD9F}
+		{D66435E9-CA06-4460-9D1E-4F8E1D7EB5A3} = {78E51B27-CAFA-4D23-8AA4-748D0A60CD22}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FDB66591-379D-4D99-9498-E595B763E323}
