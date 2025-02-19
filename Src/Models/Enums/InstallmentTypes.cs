@@ -3,6 +3,8 @@
     public enum InstallmentTypes
     {
         Installment,
-        YearlyInstallment
+        YearlyInstallment,
+        ReplicatedInstallment,
+        NewInstallments
     }
 }

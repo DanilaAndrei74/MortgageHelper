@@ -55,12 +55,6 @@
             TabControl = new TabControl();
             InstallmentsTab = new TabPage();
             installmentsDataGridView = new DataGridView();
-            installmentBindingSource = new BindingSource(components);
-            YearlyInstallmentsTab = new TabPage();
-            yearlyInstallmentsDataGridView = new DataGridView();
-            yearlyInstallmentBindingSource = new BindingSource(components);
-            bankComboBox = new ComboBox();
-            groupBox3 = new GroupBox();
             Month = new DataGridViewTextBoxColumn();
             dueDateDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
             principalDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
@@ -70,6 +64,9 @@
             interestRateDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             cAGRDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             creditBalanceDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            installmentBindingSource = new BindingSource(components);
+            YearlyInstallmentsTab = new TabPage();
+            yearlyInstallmentsDataGridView = new DataGridView();
             Year = new DataGridViewTextBoxColumn();
             dueDateDataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
             principalDataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
@@ -79,6 +76,33 @@
             interestRateDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
             cAGRDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
             creditBalanceDataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
+            yearlyInstallmentBindingSource = new BindingSource(components);
+            replicatedInstallments = new TabPage();
+            replicatedInstallmentsDataGridView = new DataGridView();
+            dataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn3 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn4 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn5 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn6 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn7 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn8 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn9 = new DataGridViewTextBoxColumn();
+            NewInstallments = new TabPage();
+            newInstallmentsDataGridView = new DataGridView();
+            dataGridViewTextBoxColumn10 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn11 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn12 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn13 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn14 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn15 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn16 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn17 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn18 = new DataGridViewTextBoxColumn();
+            bankComboBox = new ComboBox();
+            groupBox3 = new GroupBox();
+            additionalPaymentGroupBox = new GroupBox();
+            additionalPaymentTextBox = new TextBox();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             TabelDataGroupbox.SuspendLayout();
@@ -90,7 +114,12 @@
             YearlyInstallmentsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)yearlyInstallmentsDataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)yearlyInstallmentBindingSource).BeginInit();
+            replicatedInstallments.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)replicatedInstallmentsDataGridView).BeginInit();
+            NewInstallments.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)newInstallmentsDataGridView).BeginInit();
             groupBox3.SuspendLayout();
+            additionalPaymentGroupBox.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
@@ -222,11 +251,11 @@
             TabelDataGroupbox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             TabelDataGroupbox.Controls.Add(TotalValuesBox);
             TabelDataGroupbox.Controls.Add(TabControl);
-            TabelDataGroupbox.Location = new Point(18, 63);
+            TabelDataGroupbox.Location = new Point(18, 122);
             TabelDataGroupbox.Margin = new Padding(3, 2, 3, 2);
             TabelDataGroupbox.Name = "TabelDataGroupbox";
             TabelDataGroupbox.Padding = new Padding(3, 2, 3, 2);
-            TabelDataGroupbox.Size = new Size(948, 546);
+            TabelDataGroupbox.Size = new Size(956, 607);
             TabelDataGroupbox.TabIndex = 6;
             TabelDataGroupbox.TabStop = false;
             // 
@@ -241,7 +270,7 @@
             TotalValuesBox.Controls.Add(TotalLabelText);
             TotalValuesBox.Controls.Add(TotalInterestLabelText);
             TotalValuesBox.Controls.Add(TotalInsuranceLabelText);
-            TotalValuesBox.Location = new Point(39, 490);
+            TotalValuesBox.Location = new Point(43, 551);
             TotalValuesBox.Margin = new Padding(3, 2, 3, 2);
             TotalValuesBox.Name = "TotalValuesBox";
             TotalValuesBox.Padding = new Padding(3, 2, 3, 2);
@@ -323,11 +352,14 @@
             TabControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             TabControl.Controls.Add(InstallmentsTab);
             TabControl.Controls.Add(YearlyInstallmentsTab);
+            TabControl.Controls.Add(replicatedInstallments);
+            TabControl.Controls.Add(NewInstallments);
             TabControl.Location = new Point(5, 20);
             TabControl.Name = "TabControl";
             TabControl.SelectedIndex = 0;
-            TabControl.Size = new Size(938, 473);
+            TabControl.Size = new Size(946, 534);
             TabControl.TabIndex = 3;
+            TabControl.SelectedIndexChanged += TabControl_SelectedIndexChanged;
             // 
             // InstallmentsTab
             // 
@@ -335,7 +367,7 @@
             InstallmentsTab.Location = new Point(4, 24);
             InstallmentsTab.Name = "InstallmentsTab";
             InstallmentsTab.Padding = new Padding(3);
-            InstallmentsTab.Size = new Size(930, 445);
+            InstallmentsTab.Size = new Size(938, 506);
             InstallmentsTab.TabIndex = 0;
             InstallmentsTab.Text = "Installments";
             InstallmentsTab.UseVisualStyleBackColor = true;
@@ -355,64 +387,8 @@
             installmentsDataGridView.Name = "installmentsDataGridView";
             installmentsDataGridView.ReadOnly = true;
             installmentsDataGridView.RowHeadersWidth = 51;
-            installmentsDataGridView.Size = new Size(924, 439);
+            installmentsDataGridView.Size = new Size(932, 500);
             installmentsDataGridView.TabIndex = 0;
-            // 
-            // installmentBindingSource
-            // 
-            installmentBindingSource.DataSource = typeof(Models.Installment);
-            // 
-            // YearlyInstallmentsTab
-            // 
-            YearlyInstallmentsTab.Controls.Add(yearlyInstallmentsDataGridView);
-            YearlyInstallmentsTab.Location = new Point(4, 24);
-            YearlyInstallmentsTab.Name = "YearlyInstallmentsTab";
-            YearlyInstallmentsTab.Padding = new Padding(3);
-            YearlyInstallmentsTab.Size = new Size(930, 445);
-            YearlyInstallmentsTab.TabIndex = 1;
-            YearlyInstallmentsTab.Text = "Yearly Installments";
-            YearlyInstallmentsTab.UseVisualStyleBackColor = true;
-            // 
-            // yearlyInstallmentsDataGridView
-            // 
-            yearlyInstallmentsDataGridView.AllowUserToAddRows = false;
-            yearlyInstallmentsDataGridView.AllowUserToDeleteRows = false;
-            yearlyInstallmentsDataGridView.AutoGenerateColumns = false;
-            yearlyInstallmentsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            yearlyInstallmentsDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            yearlyInstallmentsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            yearlyInstallmentsDataGridView.Columns.AddRange(new DataGridViewColumn[] { Year, dueDateDataGridViewTextBoxColumn2, principalDataGridViewTextBoxColumn2, interestDataGridViewTextBoxColumn2, insuranceDataGridViewTextBoxColumn2, totalDataGridViewTextBoxColumn2, interestRateDataGridViewTextBoxColumn1, cAGRDataGridViewTextBoxColumn1, creditBalanceDataGridViewTextBoxColumn2 });
-            yearlyInstallmentsDataGridView.DataSource = yearlyInstallmentBindingSource;
-            yearlyInstallmentsDataGridView.Dock = DockStyle.Fill;
-            yearlyInstallmentsDataGridView.Location = new Point(3, 3);
-            yearlyInstallmentsDataGridView.Name = "yearlyInstallmentsDataGridView";
-            yearlyInstallmentsDataGridView.ReadOnly = true;
-            yearlyInstallmentsDataGridView.RowHeadersWidth = 51;
-            yearlyInstallmentsDataGridView.Size = new Size(924, 439);
-            yearlyInstallmentsDataGridView.TabIndex = 0;
-            // 
-            // yearlyInstallmentBindingSource
-            // 
-            yearlyInstallmentBindingSource.DataSource = typeof(Models.YearlyInstallment);
-            // 
-            // bankComboBox
-            // 
-            bankComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            bankComboBox.FormattingEnabled = true;
-            bankComboBox.Location = new Point(6, 17);
-            bankComboBox.Name = "bankComboBox";
-            bankComboBox.Size = new Size(121, 23);
-            bankComboBox.TabIndex = 7;
-            // 
-            // groupBox3
-            // 
-            groupBox3.Controls.Add(bankComboBox);
-            groupBox3.Location = new Point(381, 12);
-            groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(138, 46);
-            groupBox3.TabIndex = 8;
-            groupBox3.TabStop = false;
-            groupBox3.Text = "Bank";
             // 
             // Month
             // 
@@ -477,6 +453,39 @@
             creditBalanceDataGridViewTextBoxColumn1.Name = "creditBalanceDataGridViewTextBoxColumn1";
             creditBalanceDataGridViewTextBoxColumn1.ReadOnly = true;
             // 
+            // installmentBindingSource
+            // 
+            installmentBindingSource.DataSource = typeof(Models.Installment);
+            // 
+            // YearlyInstallmentsTab
+            // 
+            YearlyInstallmentsTab.Controls.Add(yearlyInstallmentsDataGridView);
+            YearlyInstallmentsTab.Location = new Point(4, 24);
+            YearlyInstallmentsTab.Name = "YearlyInstallmentsTab";
+            YearlyInstallmentsTab.Padding = new Padding(3);
+            YearlyInstallmentsTab.Size = new Size(930, 445);
+            YearlyInstallmentsTab.TabIndex = 1;
+            YearlyInstallmentsTab.Text = "Yearly Installments";
+            YearlyInstallmentsTab.UseVisualStyleBackColor = true;
+            // 
+            // yearlyInstallmentsDataGridView
+            // 
+            yearlyInstallmentsDataGridView.AllowUserToAddRows = false;
+            yearlyInstallmentsDataGridView.AllowUserToDeleteRows = false;
+            yearlyInstallmentsDataGridView.AutoGenerateColumns = false;
+            yearlyInstallmentsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            yearlyInstallmentsDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            yearlyInstallmentsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            yearlyInstallmentsDataGridView.Columns.AddRange(new DataGridViewColumn[] { Year, dueDateDataGridViewTextBoxColumn2, principalDataGridViewTextBoxColumn2, interestDataGridViewTextBoxColumn2, insuranceDataGridViewTextBoxColumn2, totalDataGridViewTextBoxColumn2, interestRateDataGridViewTextBoxColumn1, cAGRDataGridViewTextBoxColumn1, creditBalanceDataGridViewTextBoxColumn2 });
+            yearlyInstallmentsDataGridView.DataSource = yearlyInstallmentBindingSource;
+            yearlyInstallmentsDataGridView.Dock = DockStyle.Fill;
+            yearlyInstallmentsDataGridView.Location = new Point(3, 3);
+            yearlyInstallmentsDataGridView.Name = "yearlyInstallmentsDataGridView";
+            yearlyInstallmentsDataGridView.ReadOnly = true;
+            yearlyInstallmentsDataGridView.RowHeadersWidth = 51;
+            yearlyInstallmentsDataGridView.Size = new Size(924, 439);
+            yearlyInstallmentsDataGridView.TabIndex = 0;
+            // 
             // Year
             // 
             Year.DataPropertyName = "Id";
@@ -540,11 +549,238 @@
             creditBalanceDataGridViewTextBoxColumn2.Name = "creditBalanceDataGridViewTextBoxColumn2";
             creditBalanceDataGridViewTextBoxColumn2.ReadOnly = true;
             // 
+            // yearlyInstallmentBindingSource
+            // 
+            yearlyInstallmentBindingSource.DataSource = typeof(Models.YearlyInstallment);
+            // 
+            // replicatedInstallments
+            // 
+            replicatedInstallments.Controls.Add(replicatedInstallmentsDataGridView);
+            replicatedInstallments.Location = new Point(4, 24);
+            replicatedInstallments.Name = "replicatedInstallments";
+            replicatedInstallments.Padding = new Padding(3);
+            replicatedInstallments.Size = new Size(930, 445);
+            replicatedInstallments.TabIndex = 2;
+            replicatedInstallments.Text = "ReplicatedInstallments";
+            replicatedInstallments.UseVisualStyleBackColor = true;
+            // 
+            // replicatedInstallmentsDataGridView
+            // 
+            replicatedInstallmentsDataGridView.AllowUserToAddRows = false;
+            replicatedInstallmentsDataGridView.AllowUserToDeleteRows = false;
+            replicatedInstallmentsDataGridView.AutoGenerateColumns = false;
+            replicatedInstallmentsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            replicatedInstallmentsDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            replicatedInstallmentsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            replicatedInstallmentsDataGridView.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn1, dataGridViewTextBoxColumn2, dataGridViewTextBoxColumn3, dataGridViewTextBoxColumn4, dataGridViewTextBoxColumn5, dataGridViewTextBoxColumn6, dataGridViewTextBoxColumn7, dataGridViewTextBoxColumn8, dataGridViewTextBoxColumn9 });
+            replicatedInstallmentsDataGridView.DataSource = installmentBindingSource;
+            replicatedInstallmentsDataGridView.Dock = DockStyle.Fill;
+            replicatedInstallmentsDataGridView.Location = new Point(3, 3);
+            replicatedInstallmentsDataGridView.Name = "replicatedInstallmentsDataGridView";
+            replicatedInstallmentsDataGridView.ReadOnly = true;
+            replicatedInstallmentsDataGridView.RowHeadersWidth = 51;
+            replicatedInstallmentsDataGridView.Size = new Size(924, 439);
+            replicatedInstallmentsDataGridView.TabIndex = 1;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            dataGridViewTextBoxColumn1.DataPropertyName = "Id";
+            dataGridViewTextBoxColumn1.HeaderText = "Month";
+            dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            dataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            dataGridViewTextBoxColumn2.DataPropertyName = "DueDate";
+            dataGridViewTextBoxColumn2.HeaderText = "DueDate";
+            dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            dataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            dataGridViewTextBoxColumn3.DataPropertyName = "Principal";
+            dataGridViewTextBoxColumn3.HeaderText = "Principal";
+            dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            dataGridViewTextBoxColumn3.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            dataGridViewTextBoxColumn4.DataPropertyName = "Interest";
+            dataGridViewTextBoxColumn4.HeaderText = "Interest";
+            dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            dataGridViewTextBoxColumn4.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn5
+            // 
+            dataGridViewTextBoxColumn5.DataPropertyName = "Insurance";
+            dataGridViewTextBoxColumn5.HeaderText = "Insurance";
+            dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            dataGridViewTextBoxColumn5.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn6
+            // 
+            dataGridViewTextBoxColumn6.DataPropertyName = "Total";
+            dataGridViewTextBoxColumn6.HeaderText = "Total";
+            dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            dataGridViewTextBoxColumn6.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn7
+            // 
+            dataGridViewTextBoxColumn7.DataPropertyName = "InterestRate";
+            dataGridViewTextBoxColumn7.HeaderText = "Interest Rate";
+            dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
+            dataGridViewTextBoxColumn7.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn8
+            // 
+            dataGridViewTextBoxColumn8.DataPropertyName = "CAGR";
+            dataGridViewTextBoxColumn8.HeaderText = "CAGR";
+            dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
+            dataGridViewTextBoxColumn8.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn9
+            // 
+            dataGridViewTextBoxColumn9.DataPropertyName = "CreditBalance";
+            dataGridViewTextBoxColumn9.HeaderText = "CreditBalance";
+            dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
+            dataGridViewTextBoxColumn9.ReadOnly = true;
+            // 
+            // NewInstallments
+            // 
+            NewInstallments.Controls.Add(newInstallmentsDataGridView);
+            NewInstallments.Location = new Point(4, 24);
+            NewInstallments.Name = "NewInstallments";
+            NewInstallments.Padding = new Padding(3);
+            NewInstallments.Size = new Size(930, 445);
+            NewInstallments.TabIndex = 3;
+            NewInstallments.Text = "NewInstallments";
+            NewInstallments.UseVisualStyleBackColor = true;
+            // 
+            // newInstallmentsDataGridView
+            // 
+            newInstallmentsDataGridView.AllowUserToAddRows = false;
+            newInstallmentsDataGridView.AllowUserToDeleteRows = false;
+            newInstallmentsDataGridView.AutoGenerateColumns = false;
+            newInstallmentsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            newInstallmentsDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            newInstallmentsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            newInstallmentsDataGridView.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn10, dataGridViewTextBoxColumn11, dataGridViewTextBoxColumn12, dataGridViewTextBoxColumn13, dataGridViewTextBoxColumn14, dataGridViewTextBoxColumn15, dataGridViewTextBoxColumn16, dataGridViewTextBoxColumn17, dataGridViewTextBoxColumn18 });
+            newInstallmentsDataGridView.DataSource = installmentBindingSource;
+            newInstallmentsDataGridView.Dock = DockStyle.Fill;
+            newInstallmentsDataGridView.Location = new Point(3, 3);
+            newInstallmentsDataGridView.Name = "newInstallmentsDataGridView";
+            newInstallmentsDataGridView.ReadOnly = true;
+            newInstallmentsDataGridView.RowHeadersWidth = 51;
+            newInstallmentsDataGridView.Size = new Size(924, 439);
+            newInstallmentsDataGridView.TabIndex = 2;
+            // 
+            // dataGridViewTextBoxColumn10
+            // 
+            dataGridViewTextBoxColumn10.DataPropertyName = "Id";
+            dataGridViewTextBoxColumn10.HeaderText = "Month";
+            dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
+            dataGridViewTextBoxColumn10.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn11
+            // 
+            dataGridViewTextBoxColumn11.DataPropertyName = "DueDate";
+            dataGridViewTextBoxColumn11.HeaderText = "DueDate";
+            dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
+            dataGridViewTextBoxColumn11.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn12
+            // 
+            dataGridViewTextBoxColumn12.DataPropertyName = "Principal";
+            dataGridViewTextBoxColumn12.HeaderText = "Principal";
+            dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
+            dataGridViewTextBoxColumn12.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn13
+            // 
+            dataGridViewTextBoxColumn13.DataPropertyName = "Interest";
+            dataGridViewTextBoxColumn13.HeaderText = "Interest";
+            dataGridViewTextBoxColumn13.Name = "dataGridViewTextBoxColumn13";
+            dataGridViewTextBoxColumn13.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn14
+            // 
+            dataGridViewTextBoxColumn14.DataPropertyName = "Insurance";
+            dataGridViewTextBoxColumn14.HeaderText = "Insurance";
+            dataGridViewTextBoxColumn14.Name = "dataGridViewTextBoxColumn14";
+            dataGridViewTextBoxColumn14.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn15
+            // 
+            dataGridViewTextBoxColumn15.DataPropertyName = "Total";
+            dataGridViewTextBoxColumn15.HeaderText = "Total";
+            dataGridViewTextBoxColumn15.Name = "dataGridViewTextBoxColumn15";
+            dataGridViewTextBoxColumn15.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn16
+            // 
+            dataGridViewTextBoxColumn16.DataPropertyName = "InterestRate";
+            dataGridViewTextBoxColumn16.HeaderText = "Interest Rate";
+            dataGridViewTextBoxColumn16.Name = "dataGridViewTextBoxColumn16";
+            dataGridViewTextBoxColumn16.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn17
+            // 
+            dataGridViewTextBoxColumn17.DataPropertyName = "CAGR";
+            dataGridViewTextBoxColumn17.HeaderText = "CAGR";
+            dataGridViewTextBoxColumn17.Name = "dataGridViewTextBoxColumn17";
+            dataGridViewTextBoxColumn17.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn18
+            // 
+            dataGridViewTextBoxColumn18.DataPropertyName = "CreditBalance";
+            dataGridViewTextBoxColumn18.HeaderText = "CreditBalance";
+            dataGridViewTextBoxColumn18.Name = "dataGridViewTextBoxColumn18";
+            dataGridViewTextBoxColumn18.ReadOnly = true;
+            // 
+            // bankComboBox
+            // 
+            bankComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            bankComboBox.FormattingEnabled = true;
+            bankComboBox.Location = new Point(6, 17);
+            bankComboBox.Name = "bankComboBox";
+            bankComboBox.Size = new Size(121, 23);
+            bankComboBox.TabIndex = 7;
+            // 
+            // groupBox3
+            // 
+            groupBox3.Controls.Add(bankComboBox);
+            groupBox3.Location = new Point(381, 12);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Size = new Size(138, 46);
+            groupBox3.TabIndex = 8;
+            groupBox3.TabStop = false;
+            groupBox3.Text = "Bank";
+            // 
+            // additionalPaymentGroupBox
+            // 
+            additionalPaymentGroupBox.Controls.Add(additionalPaymentTextBox);
+            additionalPaymentGroupBox.Location = new Point(18, 64);
+            additionalPaymentGroupBox.Name = "additionalPaymentGroupBox";
+            additionalPaymentGroupBox.Size = new Size(152, 53);
+            additionalPaymentGroupBox.TabIndex = 9;
+            additionalPaymentGroupBox.TabStop = false;
+            additionalPaymentGroupBox.Text = "Additional reinbursment";
+            // 
+            // additionalPaymentTextBox
+            // 
+            additionalPaymentTextBox.Location = new Point(9, 22);
+            additionalPaymentTextBox.Name = "additionalPaymentTextBox";
+            additionalPaymentTextBox.Size = new Size(135, 23);
+            additionalPaymentTextBox.TabIndex = 0;
+            additionalPaymentTextBox.KeyPress += additionalPaymentTextBox_KeyPress;
+
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(976, 618);
+            ClientSize = new Size(984, 738);
+            Controls.Add(additionalPaymentGroupBox);
             Controls.Add(groupBox3);
             Controls.Add(TabelDataGroupbox);
             Controls.Add(groupBox2);
@@ -564,7 +800,13 @@
             YearlyInstallmentsTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)yearlyInstallmentsDataGridView).EndInit();
             ((System.ComponentModel.ISupportInitialize)yearlyInstallmentBindingSource).EndInit();
+            replicatedInstallments.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)replicatedInstallmentsDataGridView).EndInit();
+            NewInstallments.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)newInstallmentsDataGridView).EndInit();
             groupBox3.ResumeLayout(false);
+            additionalPaymentGroupBox.ResumeLayout(false);
+            additionalPaymentGroupBox.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -625,5 +867,29 @@
         private DataGridViewTextBoxColumn interestRateDataGridViewTextBoxColumn1;
         private DataGridViewTextBoxColumn cAGRDataGridViewTextBoxColumn1;
         private DataGridViewTextBoxColumn creditBalanceDataGridViewTextBoxColumn2;
+        private TabPage replicatedInstallments;
+        private DataGridView replicatedInstallmentsDataGridView;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
+        private TabPage NewInstallments;
+        private DataGridView newInstallmentsDataGridView;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn10;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn11;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn12;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn13;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn14;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn15;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn16;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn17;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn18;
+        private GroupBox additionalPaymentGroupBox;
+        private TextBox additionalPaymentTextBox;
     }
 }

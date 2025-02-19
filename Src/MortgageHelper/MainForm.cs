@@ -1,3 +1,4 @@
+using BusinessLogic;
 using BussinessLogic;
 using Models.Enums;
 using Models.Interfaces;
@@ -17,6 +18,8 @@ namespace MortgageHelper
         private double _totalInsurance;
         private double _totalTotal;
         private List<Installment> _installments;
+        private List<Installment> _replicatedInstallments;
+        private List<Installment> _newInstallments;
         private List<YearlyInstallment> _yearlyInstallments;
         private IInstallment _summary;
         public MainForm()
@@ -57,6 +60,43 @@ namespace MortgageHelper
                 _installments = Mapper.ToInstallment(filteredLines);
                 _yearlyInstallments = Mapper.ToYearlyInstallment(_installments);
 
+                double extraordinaryPayment = RetreiveAdditionalPaymentFromTextBox();
+                var interest = _installments.First().InterestRate;
+                var creditBalance = _installments.First().CreditBalance + _installments.First().Principal;
+                var remainingMonths = _installments.First().RemainingMonths -
+                    CalculatorService.GetNewMonthsAfterExtraordinaryPayment(
+                        creditBalance,
+                        interest,
+                        _installments.Count(),
+                        extraordinaryPayment);
+
+
+                NumberGenerator.fixedRatePeriod = CalculatorService.DetermineFixedPaymentPeriod(new List<IInstallment>(_installments));
+                var fixedRateInstallments = _installments.Take(NumberGenerator.fixedRatePeriod).ToList();
+                var variableRateInstallments = _installments.Skip(NumberGenerator.fixedRatePeriod).ToList();
+                NumberGenerator.fixedRate = fixedRateInstallments[fixedRateInstallments.Count() / 2].InterestRate;
+                if(variableRateInstallments.Count() > 0) NumberGenerator.variableRate = variableRateInstallments[variableRateInstallments.Count() / 2].InterestRate;
+
+                _replicatedInstallments = Mapper.ReplicateInstallments(_installments);
+                _newInstallments = Mapper.CalculateInstallmentPlan(
+                    creditBalance - extraordinaryPayment,
+                    remainingMonths);
+
+                var oldSummary = CalculatorService.CalculateSummary(new List<IInstallment>(_installments));
+                var newSummary = CalculatorService.CalculateSummary(new List<IInstallment>(_newInstallments));
+
+
+                var difference = new SimpleInstallment()
+                {
+                    Principal = oldSummary.Principal - newSummary.Principal,
+                    Interest = oldSummary.Interest - newSummary.Interest,
+                    Insurance = oldSummary.Insurance - newSummary.Insurance,
+                    Total = oldSummary.Total - newSummary.Total,
+                };
+                difference.RoundDoubleProperties();
+
+                newInstallmentsDataGridView.DataSource = _newInstallments;
+                replicatedInstallmentsDataGridView.DataSource = _replicatedInstallments;
                 installmentsDataGridView.DataSource = _installments;
                 yearlyInstallmentsDataGridView.DataSource = _yearlyInstallments;
             }
@@ -65,13 +105,22 @@ namespace MortgageHelper
             InitializeTotalBox();
         }
 
+        private double RetreiveAdditionalPaymentFromTextBox()
+        {
+            double extraordinaryPayment = 0; // Default value if parsing fails
+
+            double.TryParse(additionalPaymentTextBox.Text, out extraordinaryPayment);
+
+            return extraordinaryPayment;
+        }
+
         private void ExportButton_Click(object sender, EventArgs e)
         {
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
             {
                 saveFileDialog.Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*";
-                saveFileDialog.DefaultExt = "csv"; 
-                saveFileDialog.AddExtension = true; 
+                saveFileDialog.DefaultExt = "csv";
+                saveFileDialog.AddExtension = true;
 
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -92,13 +141,13 @@ namespace MortgageHelper
 
         public void InitializeTotalBox()
         {
-            _summary = CalculatorService.CalculateSummary(new List<IInstallment>(_installments));
             UpdateTotals();
             TotalValuesBox.Visible = true;
         }
 
         private void UpdateTotals()
         {
+            _summary = CalculatorService.CalculateSummary(GetListBasedOnInstallmentType());
             TotalPrincipalLabel.Text = _summary.Principal.ToString();
             TotalInterestLabel.Text = _summary.Interest.ToString();
             TotalInsuranceLabel.Text = _summary.Insurance.ToString();
@@ -113,12 +162,36 @@ namespace MortgageHelper
                     return new List<IInstallment>(_installments);
                 case (int)InstallmentTypes.YearlyInstallment:
                     return new List<IInstallment>(_yearlyInstallments);
+                case (int)InstallmentTypes.ReplicatedInstallment:
+                    return new List<IInstallment>(_replicatedInstallments);
+                case (int)InstallmentTypes.NewInstallments:
+                    return new List<IInstallment>(_newInstallments);
                 default:
                     return null;
             }
         }
 
         #endregion
+
+        private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateTotals();
+        }
+
+        private void additionalPaymentTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsControl(e.KeyChar)) return;
+
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != '-')
+            {
+                e.Handled = true; // Block invalid characters
+            }
+
+            if (e.KeyChar == '.' && ((TextBox)sender).Text.Contains("."))
+            {
+                e.Handled = true; // Only one decimal point allowed
+            }
+        }
 
     }
 }
