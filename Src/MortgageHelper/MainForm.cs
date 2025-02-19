@@ -1,3 +1,4 @@
+using BusinessLogic;
 using BussinessLogic;
 using Models.Enums;
 using Models.Interfaces;
@@ -74,6 +75,19 @@ namespace MortgageHelper
                 _newInstallments = Mapper.CalculateInstallmentPlan(
                     creditBalance - extraordinaryPayment,
                     remainingMonths);
+
+                var oldSummary = CalculatorService.CalculateSummary(new List<IInstallment>(_installments));
+                var newSummary = CalculatorService.CalculateSummary(new List<IInstallment>(_newInstallments));
+
+
+                var difference = new SimpleInstallment()
+                {
+                    Principal = oldSummary.Principal - newSummary.Principal,
+                    Interest = oldSummary.Interest - newSummary.Interest,
+                    Insurance = oldSummary.Insurance - newSummary.Insurance,
+                    Total = oldSummary.Total - newSummary.Total,
+                };
+                difference.RoundDoubleProperties();
 
                 newInstallmentsDataGridView.DataSource = _newInstallments;
                 replicatedInstallmentsDataGridView.DataSource = _replicatedInstallments;

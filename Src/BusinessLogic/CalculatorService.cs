@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic;
+﻿using BusinessLogic;
+using Microsoft.VisualBasic;
 using Models;
 using Models.Interfaces;
 using Models.Models;
@@ -16,12 +17,13 @@ namespace BussinessLogic
         {
             var summary = new SimpleInstallment
             {
-                Principal = Math.Round(installments.Sum(p => p.Principal), 2),
-                Interest = Math.Round(installments.Sum(p => p.Interest), 2),
-                Insurance = Math.Round(installments.Sum(p => p.Insurance), 2)
+                Principal = installments.Sum(p => p.Principal),
+                Interest = installments.Sum(p => p.Interest),
+                Insurance = installments.Sum(p => p.Insurance)
             };
-            summary.Total = Math.Round(summary.Principal + summary.Interest + summary.Insurance, 2);
+            summary.Total = summary.Principal + summary.Interest + summary.Insurance;
 
+            summary.RoundDoubleProperties();
             return summary;
         }
 
