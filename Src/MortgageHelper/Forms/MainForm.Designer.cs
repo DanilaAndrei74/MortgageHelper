@@ -102,6 +102,7 @@
             bankComboBox = new ComboBox();
             groupBox3 = new GroupBox();
             additionalPaymentGroupBox = new GroupBox();
+            ShowDifferenceButton = new Button();
             additionalPaymentTextBox = new TextBox();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -463,7 +464,7 @@
             YearlyInstallmentsTab.Location = new Point(4, 24);
             YearlyInstallmentsTab.Name = "YearlyInstallmentsTab";
             YearlyInstallmentsTab.Padding = new Padding(3);
-            YearlyInstallmentsTab.Size = new Size(930, 445);
+            YearlyInstallmentsTab.Size = new Size(938, 506);
             YearlyInstallmentsTab.TabIndex = 1;
             YearlyInstallmentsTab.Text = "Yearly Installments";
             YearlyInstallmentsTab.UseVisualStyleBackColor = true;
@@ -483,7 +484,7 @@
             yearlyInstallmentsDataGridView.Name = "yearlyInstallmentsDataGridView";
             yearlyInstallmentsDataGridView.ReadOnly = true;
             yearlyInstallmentsDataGridView.RowHeadersWidth = 51;
-            yearlyInstallmentsDataGridView.Size = new Size(924, 439);
+            yearlyInstallmentsDataGridView.Size = new Size(932, 500);
             yearlyInstallmentsDataGridView.TabIndex = 0;
             // 
             // Year
@@ -559,7 +560,7 @@
             replicatedInstallments.Location = new Point(4, 24);
             replicatedInstallments.Name = "replicatedInstallments";
             replicatedInstallments.Padding = new Padding(3);
-            replicatedInstallments.Size = new Size(930, 445);
+            replicatedInstallments.Size = new Size(938, 506);
             replicatedInstallments.TabIndex = 2;
             replicatedInstallments.Text = "ReplicatedInstallments";
             replicatedInstallments.UseVisualStyleBackColor = true;
@@ -579,7 +580,7 @@
             replicatedInstallmentsDataGridView.Name = "replicatedInstallmentsDataGridView";
             replicatedInstallmentsDataGridView.ReadOnly = true;
             replicatedInstallmentsDataGridView.RowHeadersWidth = 51;
-            replicatedInstallmentsDataGridView.Size = new Size(924, 439);
+            replicatedInstallmentsDataGridView.Size = new Size(932, 500);
             replicatedInstallmentsDataGridView.TabIndex = 1;
             // 
             // dataGridViewTextBoxColumn1
@@ -651,7 +652,7 @@
             NewInstallments.Location = new Point(4, 24);
             NewInstallments.Name = "NewInstallments";
             NewInstallments.Padding = new Padding(3);
-            NewInstallments.Size = new Size(930, 445);
+            NewInstallments.Size = new Size(938, 506);
             NewInstallments.TabIndex = 3;
             NewInstallments.Text = "NewInstallments";
             NewInstallments.UseVisualStyleBackColor = true;
@@ -671,7 +672,7 @@
             newInstallmentsDataGridView.Name = "newInstallmentsDataGridView";
             newInstallmentsDataGridView.ReadOnly = true;
             newInstallmentsDataGridView.RowHeadersWidth = 51;
-            newInstallmentsDataGridView.Size = new Size(924, 439);
+            newInstallmentsDataGridView.Size = new Size(932, 500);
             newInstallmentsDataGridView.TabIndex = 2;
             // 
             // dataGridViewTextBoxColumn10
@@ -758,13 +759,25 @@
             // 
             // additionalPaymentGroupBox
             // 
+            additionalPaymentGroupBox.Controls.Add(ShowDifferenceButton);
             additionalPaymentGroupBox.Controls.Add(additionalPaymentTextBox);
             additionalPaymentGroupBox.Location = new Point(18, 64);
             additionalPaymentGroupBox.Name = "additionalPaymentGroupBox";
-            additionalPaymentGroupBox.Size = new Size(152, 53);
+            additionalPaymentGroupBox.Size = new Size(268, 53);
             additionalPaymentGroupBox.TabIndex = 9;
             additionalPaymentGroupBox.TabStop = false;
             additionalPaymentGroupBox.Text = "Additional reinbursment";
+            // 
+            // ShowDifferenceButton
+            // 
+            ShowDifferenceButton.Location = new Point(150, 21);
+            ShowDifferenceButton.Name = "ShowDifferenceButton";
+            ShowDifferenceButton.Size = new Size(112, 23);
+            ShowDifferenceButton.TabIndex = 1;
+            ShowDifferenceButton.Text = "Show differences";
+            ShowDifferenceButton.UseVisualStyleBackColor = true;
+            ShowDifferenceButton.Visible = false;
+            ShowDifferenceButton.Click += ShowDifferences_Click;
             // 
             // additionalPaymentTextBox
             // 
@@ -773,7 +786,6 @@
             additionalPaymentTextBox.Size = new Size(135, 23);
             additionalPaymentTextBox.TabIndex = 0;
             additionalPaymentTextBox.KeyPress += additionalPaymentTextBox_KeyPress;
-
             // 
             // MainForm
             // 
@@ -891,5 +903,6 @@
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn18;
         private GroupBox additionalPaymentGroupBox;
         private TextBox additionalPaymentTextBox;
+        private Button ShowDifferenceButton;
     }
 }

@@ -1,58 +1,27 @@
-﻿using iText.Kernel.Pdf.Canvas.Parser.Listener;
-using iText.Kernel.Pdf.Canvas.Parser;
-using iText.Kernel.Pdf;
+﻿using Models;
+using MortgageHelper;
+using MortgageHelper.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Models;
-using Models.Enums;
-using iText.StyledXmlParser.Jsoup.Safety;
-using System.Globalization;
 
-namespace MortgageHelper
+namespace BusinessLogic.BankFactory.Extractors
 {
-
-    public delegate List<string> FilterFunction(string text);
-    public static class PdfService
+    public class MisteryInstallmentExtractor : BaseInstallmentExtractor
     {
-        private static string _regexPattern;
-        private static FilterFunction _getFilteredLines;
-        public static List<string> ExtractLinesFromBankPdf(string filePath, Banks bank)
+        public override List<Installment> ExtractInstallments(string filePath)
         {
-            LoadStrategy(bank);
             var pdfText = ExtractTextFromPdf(filePath);
-            return _getFilteredLines(pdfText);
-        }
-        private static string ExtractTextFromPdf(string pdfPath)
-        {
-            using (PdfReader reader = new PdfReader(pdfPath))
-            {
-                using (PdfDocument pdfDoc = new PdfDocument(reader))
-                {
-                    string text = "";
-                    for (int page = 1; page <= pdfDoc.GetNumberOfPages(); page++)
-                    {
-                        var strategy = new SimpleTextExtractionStrategy();
-                        text += PdfTextExtractor.GetTextFromPage(pdfDoc.GetPage(page), strategy);
-                    }
-                    return text;
-                }
-            }
-        }
-
-        private static List<string> GetFilteredLinesForBCR(string text)
-        {
-            Constants.Insurance.Value = Constants.Insurance.BCR_VALUE;
-            return GetLinesFromRegex(text, Constants.RegexPatterns.BCR);
+            var lines = GetFilteredLinesForMistery(pdfText);
+            return Mapper.ToInstallment(lines);
         }
 
         //TODO: Refector this method and child ones after adding unit tests 
         private static List<string> GetFilteredLinesForMistery(string text)
         {
-            Constants.Insurance.Value = Constants.Insurance.MISTERY_VALUE;
 
             //@"^\d{2}-\d{2}-\d{4}$";
             // Extract dates and numbers Remove(19, 20) -> These are not valid data
@@ -65,7 +34,7 @@ namespace MortgageHelper
             if (dates.Count >= 21)
                 dates.RemoveRange(19, 2); //Remove these values because they are useless data
             else
-                dates.RemoveRange(dates.Count-1, 2);
+                dates.RemoveRange(dates.Count - 1, 2);
 
             dates = dates
                     .Select(date => DateTime.ParseExact(date, "dd-MM-yyyy", CultureInfo.InvariantCulture)
@@ -86,7 +55,7 @@ namespace MortgageHelper
 
             var readEntries = 0;
             var pagesAdded = 0;
-            foreach(var page in pageEntrySize)
+            foreach (var page in pageEntrySize)
             {
                 var toAdd = data.Skip(readEntries).Take(5 * page).ToList();
                 readEntries += 5 * page;
@@ -95,7 +64,7 @@ namespace MortgageHelper
 
                 var pageDatesToAdd = dates.Skip(pagesAdded).Take(page).ToList();
                 pagesAdded += page;
-                pageDates.Add(pageDatesToAdd); 
+                pageDates.Add(pageDatesToAdd);
             }
 
             var j = 0;
@@ -103,8 +72,8 @@ namespace MortgageHelper
             var startingIndex = 1;
             foreach (var page in pages)
             {
-                
-                var a  = GetLinesFromPage(page, pageDates[j], pageEntrySize[j], startingIndex);
+
+                var a = GetLinesFromPage(page, pageDates[j], pageEntrySize[j], startingIndex);
                 lines.AddRange(a);
 
                 startingIndex += pageEntrySize[j];
@@ -116,10 +85,10 @@ namespace MortgageHelper
             return lines;
         }
 
-        private static List<string> GetLinesFromPage(List<string> page, List<string> dates ,int pageSize, int startingIndex)
+        private static List<string> GetLinesFromPage(List<string> page, List<string> dates, int pageSize, int startingIndex)
         {
             var lines = new List<string>();
-            for(var index = 0; index < pageSize; index++)
+            for (var index = 0; index < pageSize; index++)
             {
                 StringBuilder sb = new StringBuilder();
 
@@ -129,36 +98,10 @@ namespace MortgageHelper
                 string creditBalance = page[index + 3 * pageSize];
                 string zeroes = page[index + 4 * pageSize];
 
-                sb.AppendJoin(" ", new string[] {(startingIndex + index).ToString(), dates[index] ,principal, interest, zeroes, zeroes, total, creditBalance, zeroes });
+                sb.AppendJoin(" ", new string[] { (startingIndex + index).ToString(), dates[index], principal, interest, zeroes, zeroes, total, creditBalance, zeroes });
                 lines.Add(sb.ToString());
             }
             return lines;
-        }
-
-        private static List<string> GetLinesFromRegex(string text, string regexPattern)
-        {
-            Regex regex = new Regex(regexPattern, RegexOptions.Multiline);
-
-            List<string> matchedLines = new List<string>();
-
-            // Use regex to find matches in the text
-            MatchCollection matches = regex.Matches(text);
-            foreach (Match match in matches)
-            {
-                matchedLines.Add(match.Value); // Add the matched line to the list
-            }
-
-            return matchedLines;
-        }
-
-        private static void LoadStrategy(Banks bank)
-        {
-            _getFilteredLines = bank switch
-            {
-                Banks.BCR => GetFilteredLinesForBCR,
-                Banks.MISTERY => GetFilteredLinesForMistery,
-                _ => throw new ArgumentException("Invalid bank strategy")
-            };
         }
 
         private static int[] GeneratePageSize(int totalCount)

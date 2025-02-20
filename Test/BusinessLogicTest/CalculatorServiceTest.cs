@@ -1,4 +1,4 @@
-using BussinessLogic;
+using BusinessLogic;
 
 namespace BusinessLogicTest
 {

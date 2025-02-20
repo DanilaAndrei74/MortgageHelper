@@ -1,11 +1,9 @@
 using BusinessLogic;
-using BussinessLogic;
+using BusinessLogic.BankFactories;
+using BusinessLogic;
 using Models.Enums;
 using Models.Interfaces;
-using Models.Models;
 using MortgageHelper.Models;
-using System.Text.RegularExpressions;
-using System.Windows.Forms;
 
 namespace MortgageHelper
 {
@@ -22,6 +20,11 @@ namespace MortgageHelper
         private List<Installment> _newInstallments;
         private List<YearlyInstallment> _yearlyInstallments;
         private IInstallment _summary;
+
+        private IInstallment _newSummary;
+        private IInstallment _oldSummary;
+        private int _oldMonths;
+        private int _newMonths;
         public MainForm()
         {
             InitializeComponent();
@@ -55,45 +58,43 @@ namespace MortgageHelper
 
             try
             {
-                var filteredLines = PdfService.ExtractLinesFromBankPdf(_filePath, (Banks)bankComboBox.SelectedValue);
+                _installments = BankFactory
+                    .GetExtractor((Banks)bankComboBox.SelectedValue)
+                    .ExtractInstallments(_filePath);
+                Insurance.SetPercentageByBank((Banks)bankComboBox.SelectedValue);
 
-                _installments = Mapper.ToInstallment(filteredLines);
                 _yearlyInstallments = Mapper.ToYearlyInstallment(_installments);
 
                 double extraordinaryPayment = RetreiveAdditionalPaymentFromTextBox();
-                var interest = _installments.First().InterestRate;
                 var creditBalance = _installments.First().CreditBalance + _installments.First().Principal;
-                var remainingMonths = _installments.First().RemainingMonths -
-                    CalculatorService.GetNewMonthsAfterExtraordinaryPayment(
-                        creditBalance,
-                        interest,
-                        _installments.Count(),
-                        extraordinaryPayment);
 
 
-                NumberGenerator.fixedRatePeriod = CalculatorService.DetermineFixedPaymentPeriod(new List<IInstallment>(_installments));
-                var fixedRateInstallments = _installments.Take(NumberGenerator.fixedRatePeriod).ToList();
-                var variableRateInstallments = _installments.Skip(NumberGenerator.fixedRatePeriod).ToList();
-                NumberGenerator.fixedRate = fixedRateInstallments[fixedRateInstallments.Count() / 2].InterestRate;
-                if(variableRateInstallments.Count() > 0) NumberGenerator.variableRate = variableRateInstallments[variableRateInstallments.Count() / 2].InterestRate;
+                InterestRates.fixedRatePeriod = CalculatorService.DetermineFixedPaymentPeriod(new List<IInstallment>(_installments));
+                var fixedRateInstallments = _installments.Take(InterestRates.fixedRatePeriod).ToList();
+                var variableRateInstallments = _installments.Skip(InterestRates.fixedRatePeriod).ToList();
+                InterestRates.fixedRate = fixedRateInstallments[fixedRateInstallments.Count() / 2].InterestRate;
+                if (variableRateInstallments.Count() > 0) InterestRates.variableRate = variableRateInstallments[variableRateInstallments.Count() / 2].InterestRate;
+
+
+                _oldMonths = _installments.Count();
+                _newMonths = CalculatorService.GetNewMonthsAfterExtraordinaryPayment(
+                                        creditBalance,
+                                        InterestRates.fixedRate,
+                                        _installments.Count(),
+                                        extraordinaryPayment);
+
 
                 _replicatedInstallments = Mapper.ReplicateInstallments(_installments);
                 _newInstallments = Mapper.CalculateInstallmentPlan(
                     creditBalance - extraordinaryPayment,
-                    remainingMonths);
+                    _newMonths);
 
-                var oldSummary = CalculatorService.CalculateSummary(new List<IInstallment>(_installments));
-                var newSummary = CalculatorService.CalculateSummary(new List<IInstallment>(_newInstallments));
+                _oldSummary = CalculatorService.CalculateSummary(new List<IInstallment>(_installments));
+                _newSummary = CalculatorService.CalculateSummary(new List<IInstallment>(_newInstallments));
 
+                ShowDifferenceButton.Visible = true;
 
-                var difference = new SimpleInstallment()
-                {
-                    Principal = oldSummary.Principal - newSummary.Principal,
-                    Interest = oldSummary.Interest - newSummary.Interest,
-                    Insurance = oldSummary.Insurance - newSummary.Insurance,
-                    Total = oldSummary.Total - newSummary.Total,
-                };
-                difference.RoundDoubleProperties();
+                List<(double additionalPayment, double annualizedReturn)> result = CalculatorService.CalculateOptimalPayment(_oldSummary, _oldMonths);
 
                 newInstallmentsDataGridView.DataSource = _newInstallments;
                 replicatedInstallmentsDataGridView.DataSource = _replicatedInstallments;
@@ -104,6 +105,7 @@ namespace MortgageHelper
 
             InitializeTotalBox();
         }
+
 
         private double RetreiveAdditionalPaymentFromTextBox()
         {
@@ -193,5 +195,11 @@ namespace MortgageHelper
             }
         }
 
+        private void ShowDifferences_Click(object sender, EventArgs e)
+        {
+            var installmentDifference = Mapper.MapToInstallmentDifference(_oldSummary, _newSummary, _oldMonths, _newMonths);
+            var summaryForm = new SummaryForm(installmentDifference);
+            summaryForm.ShowDialog();
+        }
     }
 }

@@ -1,24 +1,49 @@
 ﻿using BusinessLogic;
-using BussinessLogic;
-using iText.Kernel.Geom;
+using BusinessLogic;
+using Models;
 using Models.Enums;
 using Models.Interfaces;
 using MortgageHelper.Models;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MortgageHelper
 {
     public static class Mapper
     {
+        public static InstallmentDifference MapToInstallmentDifference(IInstallment oldInstallment, IInstallment newInstallment, int oldMonths, int newMonths)
+        {
+            var installmentDifference = new InstallmentDifference();
+
+            installmentDifference.OldInstallment = oldInstallment;
+            installmentDifference.NewInstallment = newInstallment;
+            installmentDifference.OldPeriod = oldMonths;
+            installmentDifference.NewPeriod = newMonths;
+            installmentDifference.PeriodDifference = oldMonths - newMonths;
+
+            installmentDifference.Difference = new SimpleInstallment()
+            {
+                Principal = oldInstallment.Principal - newInstallment.Principal,
+                Interest = oldInstallment.Interest - newInstallment.Interest,
+                Insurance = oldInstallment.Insurance - newInstallment.Insurance,
+                Total = oldInstallment.Total - newInstallment.Total,
+            };
+            installmentDifference.Difference.RoundDoubleProperties();
+
+            var growthFactor = CalculatorService.CalculateInterestGrowthFactor(
+                installmentDifference.Difference.Principal,
+                installmentDifference.Difference.Interest,
+                installmentDifference.Difference.Insurance);
+
+            installmentDifference.AnnualizedReturn = CalculatorService.CalculateCompoundInterest(growthFactor, oldMonths / 12.00);
+            
+
+            return installmentDifference;
+
+        }
         public static List<Installment> CalculateInstallmentPlan(double creditBalance, int remainingMonths)
         {
             var installments = new List<Installment>();
-            var interest = new NumberGenerator();
+            var interest = new InterestRates();
             DueDates.Reset();
 
             for (int i = 0; i < remainingMonths; i++) 
@@ -32,7 +57,7 @@ namespace MortgageHelper
                 installment.Total = CalculatorService.CalculatePayment(creditBalance, interestRate, installment.RemainingMonths);
                 installment.Interest = CalculatorService.CalculateMonthlyInterestPaid(creditBalance, interestRate);
                 installment.Principal = installment.Total - installment.Interest;
-                installment.CreditBalance = creditBalance - installment.Principal;
+                installment.CreditBalance = Math.Max(0, creditBalance - installment.Principal);
                 installment.Insurance = CalculatorService.CalculateInsurance(installment.CreditBalance);
                 installment.Total += installment.Insurance;
                 installment.InterestRate = interestRate;
@@ -49,7 +74,7 @@ namespace MortgageHelper
         {
             var result = new List<Installment>();
             var balance = installments.First().CreditBalance + installments.First().Principal;
-            var interest = new NumberGenerator();
+            var interest = new InterestRates();
             foreach (var installment in installments)
             {
                 var newInstallment = new Installment();
@@ -157,7 +182,7 @@ namespace MortgageHelper
             return yearlyInstallments;
         }
     }
-    public class NumberGenerator
+    public class InterestRates
     {
         private int count = 0; // Tracks how many times the function is called
         public static int fixedRatePeriod { get; set; }
@@ -207,6 +232,38 @@ namespace MortgageHelper
         public static void HardReset()
         {
             dates = new List<DateOnly>();
+        }
+    }
+
+    public static class Insurance
+    {
+        public static double Percentage { get; private set; } = 0.00; 
+
+        public static void SetPercentageByBank(Banks bank, double percentage = 0)
+        {
+            switch(bank)
+            {
+                case Banks.BCR:
+                {
+                    Percentage = Constants.Insurance.BCR_VALUE;
+                    break; 
+                }
+                case Banks.MISTERY:
+                {
+                    Percentage = Constants.Insurance.MISTERY_VALUE;
+                    break;
+                }
+                case Banks.CUSTOM:
+                {
+                    Percentage = percentage;
+                    break;
+                }
+                default:
+                {
+                    Percentage = 0;
+                    break;
+                }
+            };
         }
     }
 

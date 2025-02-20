@@ -1,17 +1,10 @@
-﻿using BusinessLogic;
-using Microsoft.VisualBasic;
+﻿using Microsoft.VisualBasic;
 using Models;
 using Models.Interfaces;
-using Models.Models;
-using MortgageHelper.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MortgageHelper;
 using Constants = Models.Constants;
 
-namespace BussinessLogic
+namespace BusinessLogic
 {
     public static class CalculatorService
     {
@@ -45,6 +38,40 @@ namespace BussinessLogic
             return installments.Count; // If no change, assume entire period is fixed
         }
 
+        public static List<(double additionalPayment, double annualizedReturn)> CalculateOptimalPayment(IInstallment oldInstallment, int oldPeriod)
+        {
+            var incrementValue = 100;
+            var startingValue = 2000;
+
+            var result = new List<(double additionalPayment, double annualizedReturn)>();
+            double best = 0;
+
+            for (int additionalPayment = startingValue; additionalPayment < oldInstallment.Principal; additionalPayment += incrementValue)
+            {
+                var newMonths = CalculatorService.GetNewMonthsAfterExtraordinaryPayment(
+                                        oldInstallment.Principal,
+                                        InterestRates.fixedRate,
+                                        oldPeriod,
+                                        additionalPayment);
+
+                var newInstallments = Mapper.CalculateInstallmentPlan(
+                    oldInstallment.Principal - additionalPayment,
+                    newMonths);
+
+                var newSummary = CalculatorService.CalculateSummary(new List<IInstallment>(newInstallments));
+
+                var difference = Mapper.MapToInstallmentDifference(_oldSummary, newSummary, _oldMonths, newMonths);
+
+                if (difference.AnnualizedReturn > best)
+                {
+                    result.Add(new(additionalPayment, difference.AnnualizedReturn));
+                    best = difference.AnnualizedReturn;
+                }
+            }
+            var a = result.OrderByDescending(x => x.annualizedReturn).ToList();
+            return a;
+        }
+
         public static double CalculateCompoundInterest(double growthFactor, double numberOfYears)
         {
 
@@ -70,6 +97,8 @@ namespace BussinessLogic
 
         public static int GetNewMonthsAfterExtraordinaryPayment(double principal, double annualRate, int termMonths, double extraPayment)
         {
+            if (extraPayment == 0) return termMonths;
+
             double monthlyRate = (annualRate / 100) / 12;
 
             // Calculate original monthly payment
@@ -85,7 +114,7 @@ namespace BussinessLogic
             );
 
             // Return new term months
-            return termMonths - newTermMonths;
+            return newTermMonths;
         }
 
 
@@ -103,7 +132,7 @@ namespace BussinessLogic
 
         public static double CalculateInterestGrowthFactor(double principal, double interest, double insurance)
         {
-            return (principal + interest ) / principal;
+            return (principal + interest + insurance) / principal;
         }
 
         public static double CalculateCagrGrowthFactor(double principal, double interest, double insurance)
@@ -118,7 +147,7 @@ namespace BussinessLogic
 
         internal static double CalculateInsurance(double creditBalance)
         {
-            return creditBalance * Constants.Insurance.Value / 100;
+            return Math.Max(0 ,creditBalance * Insurance.Percentage / 100);
         }
     }
 }
