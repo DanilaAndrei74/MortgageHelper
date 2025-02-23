@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualBasic;
-using MortgageHelper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +7,7 @@ using System.Threading.Tasks;
 using Models;
 using Constants = Models.Constants;
 using Models.Enums;
+using BusinessLogic.Services;
 
 namespace BusinessLogicTest
 {
@@ -19,13 +19,19 @@ namespace BusinessLogicTest
             //Arrange
             var creditBalance = 100000;
             var months = 100;
-            InterestRates.fixedRatePeriod = months;
-            InterestRates.fixedRate = 5;
-            Insurance.SetPercentageByBank(Banks.CUSTOM, 0.026);
-            Helpers.GenerateDates(months);
+            var fixedRate = 5;
+            var variableRate = 8;
+
+            var _interestRates = new InterestRatesIterator();
+            _interestRates.SetInterestRates(months, fixedRate, variableRate);
+            var _insurace = new Insurance();
+            _insurace.SetPercentage(Banks.CUSTOM, 0.026);
+            var _dates = new DueDateIterator();
+            var _mapper = new Mapper(_insurace, _dates, _interestRates);
+            Helpers.GenerateDates(months, ref _dates);
 
             //Act
-            var installments = Mapper.CalculateInstallmentPlan(creditBalance, months);
+            var installments = _mapper.MapToNewInstallmentPlan(creditBalance, months);
 
             //Assert
             Assert.Equal(100, installments.Count());
@@ -38,13 +44,19 @@ namespace BusinessLogicTest
             //Arrange
             var creditBalance = 100000;
             var months = 100;
-            InterestRates.fixedRatePeriod = months;
-            InterestRates.fixedRate = 5;
-            Insurance.SetPercentageByBank(Banks.CUSTOM, 0.026);
-            Helpers.GenerateDates(months);
+            var fixedRate = 5;
+            var variableRate = 8;
+
+            var _interestRates = new InterestRatesIterator();
+            _interestRates.SetInterestRates(months, fixedRate, variableRate);
+            var _insurace = new Insurance();
+            _insurace.SetPercentage(Banks.CUSTOM, 0.026);
+            var _dates = new DueDateIterator();
+            var _mapper = new Mapper(_insurace, _dates, _interestRates);
+            Helpers.GenerateDates(months, ref _dates);
 
             //Act
-            var installments = Mapper.CalculateInstallmentPlan(creditBalance, months);
+            var installments = _mapper.MapToNewInstallmentPlan(creditBalance, months);
 
             //Assert
             foreach (var installment in installments)

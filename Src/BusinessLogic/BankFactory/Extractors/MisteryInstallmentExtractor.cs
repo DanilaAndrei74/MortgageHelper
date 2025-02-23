@@ -1,5 +1,5 @@
-﻿using Models;
-using MortgageHelper;
+﻿using BusinessLogic.Services;
+using Models;
 using MortgageHelper.Models;
 using System;
 using System.Collections.Generic;
@@ -12,11 +12,11 @@ namespace BusinessLogic.BankFactory.Extractors
 {
     public class MisteryInstallmentExtractor : BaseInstallmentExtractor
     {
-        public override List<Installment> ExtractInstallments(string filePath)
+        public override List<string> ExtractInstallments(string filePath)
         {
             var pdfText = ExtractTextFromPdf(filePath);
             var lines = GetFilteredLinesForMistery(pdfText);
-            return Mapper.ToInstallment(lines);
+            return lines;
         }
 
         //TODO: Refector this method and child ones after adding unit tests 

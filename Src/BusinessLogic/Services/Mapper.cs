@@ -1,16 +1,25 @@
-﻿using BusinessLogic;
-using BusinessLogic;
+﻿using BusinessLogic.Helpers;
 using Models;
-using Models.Enums;
 using Models.Interfaces;
+using MortgageHelper;
 using MortgageHelper.Models;
 using System.Globalization;
 
-namespace MortgageHelper
+namespace BusinessLogic.Services
 {
-    public static class Mapper
+    public class Mapper
     {
-        public static InstallmentDifference MapToInstallmentDifference(IInstallment oldInstallment, IInstallment newInstallment, int oldMonths, int newMonths)
+        private readonly Insurance _insurance;
+        private readonly DueDateIterator _dates;
+        private readonly InterestRatesIterator _interestRates;
+        public Mapper(Insurance insurance, DueDateIterator dates, InterestRatesIterator rates)
+        {
+            _insurance = insurance;
+            _dates = dates;
+            _interestRates = rates;
+        }
+
+        public InstallmentDifference MapToInstallmentDifference(IInstallment oldInstallment, IInstallment newInstallment, int oldMonths, int newMonths)
         {
             var installmentDifference = new InstallmentDifference();
 
@@ -29,36 +38,35 @@ namespace MortgageHelper
             };
             installmentDifference.Difference.RoundDoubleProperties();
 
-            var growthFactor = CalculatorService.CalculateInterestGrowthFactor(
+            var growthFactor = Calculator.CalculateInterestGrowthFactor(
                 installmentDifference.Difference.Principal,
                 installmentDifference.Difference.Interest,
                 installmentDifference.Difference.Insurance);
 
-            installmentDifference.AnnualizedReturn = CalculatorService.CalculateCompoundInterest(growthFactor, oldMonths / 12.00);
+            installmentDifference.AnnualizedReturn = Calculator.CalculateCompoundInterest(growthFactor, oldMonths / 12.00);
             
 
             return installmentDifference;
 
         }
-        public static List<Installment> CalculateInstallmentPlan(double creditBalance, int remainingMonths)
+        public List<Installment> MapToNewInstallmentPlan(double creditBalance, int remainingMonths)
         {
             var installments = new List<Installment>();
-            var interest = new InterestRates();
-            DueDates.Reset();
+            _dates.Reset();
 
             for (int i = 0; i < remainingMonths; i++) 
             {
                 var installment = new Installment();
-                var interestRate = interest.GetNext();
+                var interestRate = _interestRates.GetNext();
 
                 installment.RemainingMonths = remainingMonths - i;
                 installment.Id = i + 1;
-                installment.DueDate = DueDates.Next() ?? new DateOnly();
-                installment.Total = CalculatorService.CalculatePayment(creditBalance, interestRate, installment.RemainingMonths);
-                installment.Interest = CalculatorService.CalculateMonthlyInterestPaid(creditBalance, interestRate);
+                installment.DueDate = _dates.Next() ?? new DateOnly();
+                installment.Total = Calculator.CalculatePayment(creditBalance, interestRate, installment.RemainingMonths);
+                installment.Interest = Calculator.CalculateMonthlyInterestPaid(creditBalance, interestRate);
                 installment.Principal = installment.Total - installment.Interest;
                 installment.CreditBalance = Math.Max(0, creditBalance - installment.Principal);
-                installment.Insurance = CalculatorService.CalculateInsurance(installment.CreditBalance);
+                installment.Insurance = Calculator.CalculateInsurance(installment.CreditBalance, _insurance.Percentage);
                 installment.Total += installment.Insurance;
                 installment.InterestRate = interestRate;
                 
@@ -70,23 +78,57 @@ namespace MortgageHelper
             return installments;
         }
 
-        public static List<Installment> ReplicateInstallments(List<Installment> installments)
+        public List<(double additionalPayment, double annualizedReturn)> CalculateOptimalPayment(IInstallment oldInstallment, int oldPeriod, double startingValue = 1000)
+        {
+            var incrementValue = 100;
+
+
+            var result = new List<(double additionalPayment, double annualizedReturn)>();
+            double best = 0;
+
+            for (double additionalPayment = startingValue; additionalPayment < oldInstallment.Principal; additionalPayment += incrementValue)
+            {
+                var newMonths = Calculator.GetNewMonthsAfterExtraordinaryPayment(
+                                        oldInstallment.Principal,
+                                        _interestRates.fixedRate,
+                                        oldPeriod,
+                                        additionalPayment);
+
+                var newInstallments = MapToNewInstallmentPlan(
+                    oldInstallment.Principal - additionalPayment,
+                    newMonths);
+
+                var newSummary = Calculator.CalculateSummary(new List<IInstallment>(newInstallments));
+
+                var difference = MapToInstallmentDifference(oldInstallment, newSummary, oldPeriod, newMonths);
+
+                if (difference.AnnualizedReturn > best)
+                {
+                    result.Add(new(additionalPayment, difference.AnnualizedReturn));
+                    best = difference.AnnualizedReturn;
+                }
+            }
+            var a = result.OrderByDescending(x => x.annualizedReturn).ToList();
+            return a;
+        }
+
+        public List<Installment> ReplicateInstallments(List<Installment> installments)
         {
             var result = new List<Installment>();
             var balance = installments.First().CreditBalance + installments.First().Principal;
-            var interest = new InterestRates();
+
             foreach (var installment in installments)
             {
                 var newInstallment = new Installment();
-                var interestRate = interest.GetNext();
+                var interestRate = _interestRates.GetNext();
 
                 newInstallment.Id = installment.Id;
 
                 newInstallment.DueDate = installment.DueDate;
                 newInstallment.RemainingMonths = installment.RemainingMonths;
 
-                newInstallment.Total = CalculatorService.CalculatePayment(balance, interestRate, installment.RemainingMonths);
-                newInstallment.Interest = CalculatorService.CalculateMonthlyInterestPaid(balance, interestRate);
+                newInstallment.Total = Calculator.CalculatePayment(balance, interestRate, installment.RemainingMonths);
+                newInstallment.Interest = Calculator.CalculateMonthlyInterestPaid(balance, interestRate);
                 newInstallment.Principal = newInstallment.Total - newInstallment.Interest;
 
                 balance -= newInstallment.Principal;
@@ -94,11 +136,10 @@ namespace MortgageHelper
                 newInstallment.InterestRate = interestRate;
 
 
-                if (installment.Insurance != 0)
-                {
-                    newInstallment.Insurance = newInstallment.CreditBalance * 0.026 / 100;
-                    newInstallment.Total += newInstallment.Insurance;
-                }
+                newInstallment.Insurance = newInstallment.CreditBalance * _insurance.Percentage / 100;
+                newInstallment.Total += newInstallment.Insurance;
+
+
                 newInstallment.RoundDoubleProperties();
 
                 result.Add(newInstallment);
@@ -116,11 +157,11 @@ namespace MortgageHelper
             return result;
         }
 
-        public static List<Installment> ToInstallment(List<string> lines)
+        public List<Installment> ToInstallment(List<string> lines)
         {
             var installments = new List<Installment>();
             var lastMonth = lines.Count;
-            DueDates.HardReset();
+            _dates.HardReset();
             foreach (var line in lines)
             {
                 // Split the line into columns
@@ -139,14 +180,14 @@ namespace MortgageHelper
                     //AdjustedInterest = columns.Length > (int)TableHeader.AdjustedInterest ? columns[(int)TableHeader.AdjustedInterest] : string.Empty
 
                 };
-                DueDates.AddDate(installment.DueDate);
+                _dates.AddDate(installment.DueDate);
 
-                var cagrGrowthFactor = CalculatorService.CalculateCagrGrowthFactor(installment.Principal, installment.Interest, installment.Insurance);
-                var interestRateGrowthFactor = CalculatorService.CalculateInterestGrowthFactor(installment.Principal, installment.Interest, installment.Insurance);
+                var cagrGrowthFactor = Calculator.CalculateCagrGrowthFactor(installment.Principal, installment.Interest, installment.Insurance);
+                var interestRateGrowthFactor = Calculator.CalculateInterestGrowthFactor(installment.Principal, installment.Interest, installment.Insurance);
 
                 installment.RemainingMonths = lastMonth - installment.Id + 1;
-                installment.CAGR = CalculatorService.CalculateCompoundInterest(cagrGrowthFactor, installment.RemainingMonths / 12);
-                installment.InterestRate = CalculatorService.CalculateMortgageRate(
+                installment.CAGR = Calculator.CalculateCompoundInterest(cagrGrowthFactor, installment.RemainingMonths / 12);
+                installment.InterestRate = Calculator.CalculateMortgageRate(
                     installment.Total - installment.Insurance,
                     installment.CreditBalance + installment.Principal,
                     installment.RemainingMonths);
@@ -158,7 +199,7 @@ namespace MortgageHelper
             return installments;
         }
 
-        public static List<YearlyInstallment> ToYearlyInstallment(List<Installment> installments)
+        public List<YearlyInstallment> ToYearlyInstallment(List<Installment> installments)
         {
             var sortedInstallments = installments.OrderBy(x => x.Id).ToList();  
             var yearlyInstallments = new List<YearlyInstallment>();
@@ -169,101 +210,17 @@ namespace MortgageHelper
                 var batch = installments.Skip(i).Take(12).ToList(); // Take the next 12 installments
                 var yearlyInstallment = new YearlyInstallment(batch);
 
-                var growthFactor = CalculatorService.CalculateCagrGrowthFactor(yearlyInstallment.Principal, yearlyInstallment.Interest, yearlyInstallment.Insurance);
-                var interestRateGrowthFactor = CalculatorService.CalculateInterestGrowthFactor(yearlyInstallment.Principal, yearlyInstallment.Interest, yearlyInstallment.Insurance);
-                var remainingYears = Math.Max(0, (lastMonth / 12.0) - yearlyInstallment.Id + 1);
+                var growthFactor = Calculator.CalculateCagrGrowthFactor(yearlyInstallment.Principal, yearlyInstallment.Interest, yearlyInstallment.Insurance);
+                var interestRateGrowthFactor = Calculator.CalculateInterestGrowthFactor(yearlyInstallment.Principal, yearlyInstallment.Interest, yearlyInstallment.Insurance);
+                var remainingYears = Math.Max(0, lastMonth / 12.0 - yearlyInstallment.Id + 1);
                 yearlyInstallment.RemainingMonths = lastMonth - yearlyInstallment.Id * 12 + 1; ; 
-                yearlyInstallment.CAGR = CalculatorService.CalculateCompoundInterest(growthFactor, remainingYears);
-                yearlyInstallment.InterestRate = CalculatorService.CalculateCompoundInterest(interestRateGrowthFactor, remainingYears);
+                yearlyInstallment.CAGR = Calculator.CalculateCompoundInterest(growthFactor, remainingYears);
+                yearlyInstallment.InterestRate = Calculator.CalculateCompoundInterest(interestRateGrowthFactor, remainingYears);
 
                 yearlyInstallments.Add(yearlyInstallment); // Create a new YearlyInstallment with the batch
             }
 
             return yearlyInstallments;
-        }
-    }
-    public class InterestRates
-    {
-        private int count = 0; // Tracks how many times the function is called
-        public static int fixedRatePeriod { get; set; }
-        public static double fixedRate { get; set; }
-        public static double variableRate { get; set; }
-
-        public double GetNext()
-        {
-
-            if (count < fixedRatePeriod)
-            {
-                count++;
-                return fixedRate;
-            }
-            return variableRate;
-        }
-    }
-
-    public static class DueDates
-    {
-        private static List<DateOnly> dates = new List<DateOnly>();
-        private static int currentIndex = 0;
-
-        // Add a date to the list
-        public static void AddDate(DateOnly date)
-        {
-            dates.Add(date);
-        }
-
-        // Get the next date in the sequence
-        public static DateOnly? Next()
-        {
-            if (dates.Count == 0) return new DateOnly(); // No dates available
-
-            DateOnly nextDate = dates[currentIndex];
-            currentIndex = (currentIndex + 1) % dates.Count; // Move to the next, loop around
-
-            return nextDate;
-        }
-
-        // Reset to the start
-        public static void Reset()
-        {
-            currentIndex = 0;
-        }
-
-        public static void HardReset()
-        {
-            dates = new List<DateOnly>();
-        }
-    }
-
-    public static class Insurance
-    {
-        public static double Percentage { get; private set; } = 0.00; 
-
-        public static void SetPercentageByBank(Banks bank, double percentage = 0)
-        {
-            switch(bank)
-            {
-                case Banks.BCR:
-                {
-                    Percentage = Constants.Insurance.BCR_VALUE;
-                    break; 
-                }
-                case Banks.MISTERY:
-                {
-                    Percentage = Constants.Insurance.MISTERY_VALUE;
-                    break;
-                }
-                case Banks.CUSTOM:
-                {
-                    Percentage = percentage;
-                    break;
-                }
-                default:
-                {
-                    Percentage = 0;
-                    break;
-                }
-            };
         }
     }
 

@@ -10,6 +10,6 @@ namespace BusinessLogic.Interfaces
 {
     public interface IInstallmentExtractor
     {
-        List<Installment> ExtractInstallments(string filePath);
+        List<string> ExtractInstallments(string filePath);
     }
 }

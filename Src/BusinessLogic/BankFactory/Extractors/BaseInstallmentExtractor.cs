@@ -14,7 +14,7 @@ namespace BusinessLogic.BankFactory.Extractors
 {
     public abstract class BaseInstallmentExtractor : IInstallmentExtractor
     {
-        public abstract List<Installment> ExtractInstallments(string filePath);
+        public abstract List<string> ExtractInstallments(string filePath);
 
         protected static List<string> GetLinesFromRegex(string text, string regexPattern)
         {

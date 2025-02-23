@@ -1,7 +1,7 @@
 ﻿using Models.Interfaces;
 using System.Text;
 
-namespace BusinessLogic
+namespace BusinessLogic.Services
 {
     public class Exporter
     {

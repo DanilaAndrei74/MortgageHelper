@@ -1,4 +1,4 @@
-using BusinessLogic;
+using BusinessLogic.Services;
 
 namespace BusinessLogicTest
 {
@@ -11,7 +11,7 @@ namespace BusinessLogicTest
         [InlineData(1.1, 1, 10)]
         public void CalculateCompoundInterestTest(double growthFactor, double numberOfYears, double expected)
         {
-            double result = CalculatorService.CalculateCompoundInterest(growthFactor, numberOfYears);
+            double result = Calculator.CalculateCompoundInterest(growthFactor, numberOfYears);
 
             Assert.Equal(expected, result, 3);
         }

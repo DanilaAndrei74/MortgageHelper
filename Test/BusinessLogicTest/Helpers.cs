@@ -1,4 +1,5 @@
-﻿using MortgageHelper;
+﻿using BusinessLogic.Services;
+using MortgageHelper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,12 @@ namespace BusinessLogicTest
 {
     public static class Helpers
     {
-        public static void GenerateDates(int months)
+        public static void GenerateDates(int months, ref DueDateIterator dates)
         {
             DateOnly date = DateOnly.FromDateTime(DateTime.Now);
             for (int i = 0; i < months; i++)
             {
-                DueDates.AddDate(date);
+                dates.AddDate(date);
                 date.AddMonths(1);
             }
         }
