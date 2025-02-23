@@ -53,6 +53,7 @@ namespace BusinessLogic.Services
         {
             var installments = new List<Installment>();
             _dates.Reset();
+            _interestRates.Reset();
 
             for (int i = 0; i < remainingMonths; i++) 
             {
