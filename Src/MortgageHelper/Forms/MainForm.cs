@@ -14,10 +14,6 @@ namespace MortgageHelper
         private Insurance _insurance;
 
         private string _filePath;
-        private double _totalPrincipal;
-        private double _totalInterest;
-        private double _totalInsurance;
-        private double _totalTotal;
         private List<Installment> _installments;
         private List<Installment> _replicatedInstallments;
         private List<Installment> _newInstallments;
@@ -111,6 +107,18 @@ namespace MortgageHelper
                 replicatedInstallmentsDataGridView.DataSource = _replicatedInstallments;
                 installmentsDataGridView.DataSource = _installments;
                 yearlyInstallmentsDataGridView.DataSource = _yearlyInstallments;
+
+                /*
+                var installmentsLines =  BankFactory
+                    .GetExtractor((Banks)bankComboBox.SelectedValue)
+                    .ExtractInstallments(_filePath);
+                _insurance.SetPercentage(((Banks)bankComboBox.SelectedValue));
+
+                newInstallmentsDataGridView.DataSource = _mortgage.GetInstallments(InstallmentType.NewInstallment);
+                replicatedInstallmentsDataGridView.DataSource = _mortgage.GetInstallments(InstallmentType.ReplicatedInstallment);
+                installmentsDataGridView.DataSource = _mortgage.GetInstallments(InstallmentType.Installment);
+                yearlyInstallmentsDataGridView.DataSource = _mortgage.GetInstallments(InstallmentType.YearlyInstallment);
+                 */
             }
             catch (Exception ex) { MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
 
