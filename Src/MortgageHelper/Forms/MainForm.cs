@@ -94,7 +94,8 @@ namespace MortgageHelper
 
                 ShowDifferenceButton.Visible = true;
 
-                List<(double additionalPayment, double annualizedReturn)> result = CalculatorService.CalculateOptimalPayment(_oldSummary, _oldMonths);
+                List<(double additionalPayment, double annualizedReturn)> result = 
+                    CalculatorService.CalculateOptimalPayment(_oldSummary, _oldMonths, _installments.First().Principal);
 
                 newInstallmentsDataGridView.DataSource = _newInstallments;
                 replicatedInstallmentsDataGridView.DataSource = _replicatedInstallments;

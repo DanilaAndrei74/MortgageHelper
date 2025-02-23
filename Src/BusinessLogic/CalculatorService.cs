@@ -38,15 +38,15 @@ namespace BusinessLogic
             return installments.Count; // If no change, assume entire period is fixed
         }
 
-        public static List<(double additionalPayment, double annualizedReturn)> CalculateOptimalPayment(IInstallment oldInstallment, int oldPeriod)
+        public static List<(double additionalPayment, double annualizedReturn)> CalculateOptimalPayment(IInstallment oldInstallment, int oldPeriod, double startingValue = 1000)
         {
             var incrementValue = 100;
-            var startingValue = 2000;
+            
 
             var result = new List<(double additionalPayment, double annualizedReturn)>();
             double best = 0;
 
-            for (int additionalPayment = startingValue; additionalPayment < oldInstallment.Principal; additionalPayment += incrementValue)
+            for (double additionalPayment = startingValue; additionalPayment < oldInstallment.Principal; additionalPayment += incrementValue)
             {
                 var newMonths = CalculatorService.GetNewMonthsAfterExtraordinaryPayment(
                                         oldInstallment.Principal,
@@ -60,7 +60,7 @@ namespace BusinessLogic
 
                 var newSummary = CalculatorService.CalculateSummary(new List<IInstallment>(newInstallments));
 
-                var difference = Mapper.MapToInstallmentDifference(_oldSummary, newSummary, _oldMonths, newMonths);
+                var difference = Mapper.MapToInstallmentDifference(oldInstallment, newSummary, oldPeriod, newMonths);
 
                 if (difference.AnnualizedReturn > best)
                 {
