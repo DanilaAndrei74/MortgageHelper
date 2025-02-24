@@ -1,22 +1,21 @@
 ﻿using BusinessLogic.Interfaces;
-using iText.Kernel.Pdf.Canvas.Parser.Listener;
-using iText.Kernel.Pdf.Canvas.Parser;
-using iText.Kernel.Pdf;
-using MortgageHelper.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using BusinessLogic.Files;
 
-namespace BusinessLogic.BankFactory.Extractors
+namespace BusinessLogic.BankFactories.Extractors
 {
     public abstract class BaseInstallmentExtractor : IInstallmentExtractor
     {
         public abstract List<string> ExtractInstallments(string filePath);
+        private readonly IFileExtractor _pdfExtractor;
 
-        protected static List<string> GetLinesFromRegex(string text, string regexPattern)
+        protected BaseInstallmentExtractor()
+        {
+            _pdfExtractor = new PdfExtractor();
+        }
+
+
+        protected List<string> GetLinesFromRegex(string text, string regexPattern)
         {
             Regex regex = new Regex(regexPattern, RegexOptions.Multiline);
 
@@ -32,21 +31,9 @@ namespace BusinessLogic.BankFactory.Extractors
             return matchedLines;
         }
 
-        protected static string ExtractTextFromPdf(string pdfPath)
+        protected string ExtractTextFromPdf(string pdfPath)
         {
-            using (PdfReader reader = new PdfReader(pdfPath))
-            {
-                using (PdfDocument pdfDoc = new PdfDocument(reader))
-                {
-                    string text = "";
-                    for (int page = 1; page <= pdfDoc.GetNumberOfPages(); page++)
-                    {
-                        var strategy = new SimpleTextExtractionStrategy();
-                        text += PdfTextExtractor.GetTextFromPage(pdfDoc.GetPage(page), strategy);
-                    }
-                    return text;
-                }
-            }
+            return _pdfExtractor.ExtractText(pdfPath);
         }
     }
 }

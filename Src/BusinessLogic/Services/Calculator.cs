@@ -62,7 +62,7 @@ namespace BusinessLogic.Services
             return remainingPrincipal * (annualRate / 12 / 100);
         }
 
-        public static int GetNewMonthsAfterExtraordinaryPayment(double principal, double annualRate, int termMonths, double extraPayment)
+        public static int GetNewMonthsAfterAdditionalPayment(double principal, double annualRate, int termMonths, double extraPayment)
         {
             if (extraPayment == 0) return termMonths;
 

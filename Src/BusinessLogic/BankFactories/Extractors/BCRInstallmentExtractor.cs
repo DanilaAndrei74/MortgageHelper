@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.BankFactory.Extractors
+namespace BusinessLogic.BankFactories.Extractors
 {
     public class BCRInstallmentExtractor : BaseInstallmentExtractor
     {

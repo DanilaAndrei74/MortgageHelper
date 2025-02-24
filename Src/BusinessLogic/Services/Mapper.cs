@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Helpers;
+using BusinessLogic.Interfaces;
 using Models;
 using Models.Interfaces;
 using MortgageHelper;
@@ -7,7 +8,7 @@ using System.Globalization;
 
 namespace BusinessLogic.Services
 {
-    public class Mapper
+    public class Mapper : IMapper
     {
         private readonly Insurance _insurance;
         private readonly DueDateIterator _dates;
@@ -44,7 +45,7 @@ namespace BusinessLogic.Services
                 installmentDifference.Difference.Insurance);
 
             installmentDifference.AnnualizedReturn = Calculator.CalculateCompoundInterest(growthFactor, oldMonths / 12.00);
-            
+
 
             return installmentDifference;
 
@@ -55,7 +56,7 @@ namespace BusinessLogic.Services
             _dates.Reset();
             _interestRates.Reset();
 
-            for (int i = 0; i < remainingMonths; i++) 
+            for (int i = 0; i < remainingMonths; i++)
             {
                 var installment = new Installment();
                 var interestRate = _interestRates.GetNext();
@@ -70,7 +71,7 @@ namespace BusinessLogic.Services
                 installment.Insurance = Calculator.CalculateInsurance(installment.CreditBalance, _insurance.Percentage);
                 installment.Total += installment.Insurance;
                 installment.InterestRate = interestRate;
-                
+
                 creditBalance -= installment.Principal;
 
                 installment.RoundDoubleProperties();
@@ -79,19 +80,19 @@ namespace BusinessLogic.Services
             return installments;
         }
 
-        public List<(double additionalPayment, double annualizedReturn)> CalculateOptimalPayment(IInstallment oldInstallment, int oldPeriod, double startingValue = 1000)
+        public List<(double additionalPayment, double annualizedReturn)> MapOptimalPayments(IInstallment oldInstallment, int oldPeriod, double startingValue = 1000)
         {
             var incrementValue = 100;
-
+            startingValue = Math.Floor(startingValue - startingValue % 100);
 
             var result = new List<(double additionalPayment, double annualizedReturn)>();
             double best = 0;
 
             for (double additionalPayment = startingValue; additionalPayment < oldInstallment.Principal; additionalPayment += incrementValue)
             {
-                var newMonths = Calculator.GetNewMonthsAfterExtraordinaryPayment(
+                var newMonths = Calculator.GetNewMonthsAfterAdditionalPayment(
                                         oldInstallment.Principal,
-                                        _interestRates.fixedRate,
+                                        _interestRates.FixedRate,
                                         oldPeriod,
                                         additionalPayment);
 
@@ -103,20 +104,20 @@ namespace BusinessLogic.Services
 
                 var difference = MapToInstallmentDifference(oldInstallment, newSummary, oldPeriod, newMonths);
 
+                result.Add(new(additionalPayment, difference.AnnualizedReturn));
+
                 if (difference.AnnualizedReturn > best)
                 {
-                    result.Add(new(additionalPayment, difference.AnnualizedReturn));
                     best = difference.AnnualizedReturn;
                 }
             }
-            var a = result.OrderByDescending(x => x.annualizedReturn).ToList();
-            return a;
+            return result.OrderByDescending(x => x.annualizedReturn).ToList();
         }
 
         public List<Installment> ReplicateInstallments(List<Installment> installments)
         {
             var result = new List<Installment>();
-            var balance = installments.First().CreditBalance + installments.First().Principal;
+            var balance = Math.Floor(installments.First().CreditBalance + installments.First().Principal);
 
             foreach (var installment in installments)
             {
@@ -202,7 +203,7 @@ namespace BusinessLogic.Services
 
         public List<YearlyInstallment> ToYearlyInstallment(List<Installment> installments)
         {
-            var sortedInstallments = installments.OrderBy(x => x.Id).ToList();  
+            var sortedInstallments = installments.OrderBy(x => x.Id).ToList();
             var yearlyInstallments = new List<YearlyInstallment>();
             var lastMonth = installments.Count;
 
@@ -214,7 +215,7 @@ namespace BusinessLogic.Services
                 var growthFactor = Calculator.CalculateCagrGrowthFactor(yearlyInstallment.Principal, yearlyInstallment.Interest, yearlyInstallment.Insurance);
                 var interestRateGrowthFactor = Calculator.CalculateInterestGrowthFactor(yearlyInstallment.Principal, yearlyInstallment.Interest, yearlyInstallment.Insurance);
                 var remainingYears = Math.Max(0, lastMonth / 12.0 - yearlyInstallment.Id + 1);
-                yearlyInstallment.RemainingMonths = lastMonth - yearlyInstallment.Id * 12 + 1; ; 
+                yearlyInstallment.RemainingMonths = lastMonth - yearlyInstallment.Id * 12 + 1; ;
                 yearlyInstallment.CAGR = Calculator.CalculateCompoundInterest(growthFactor, remainingYears);
                 yearlyInstallment.InterestRate = Calculator.CalculateCompoundInterest(interestRateGrowthFactor, remainingYears);
 

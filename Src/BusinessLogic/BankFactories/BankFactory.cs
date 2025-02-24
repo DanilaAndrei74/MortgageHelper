@@ -1,4 +1,4 @@
-﻿using BusinessLogic.BankFactory.Extractors;
+﻿using BusinessLogic.BankFactories.Extractors;
 using BusinessLogic.Interfaces;
 using Models.Enums;
 

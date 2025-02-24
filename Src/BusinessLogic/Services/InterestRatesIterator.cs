@@ -1,33 +1,45 @@
-﻿namespace BusinessLogic.Services
+﻿using Models.Interfaces;
+using MortgageHelper.Models;
+
+namespace BusinessLogic.Services
 {
     public class InterestRatesIterator
     {
-        private int count = 0; // Tracks how many times the function is called
-        public int fixedRatePeriod { get; set; }
-        public double fixedRate { get; set; }
-        public double variableRate { get; set; }
+        private int Count = 0; // Tracks how many times the function is called
+        public int FixedRatePeriod { get; set; }
+        public double FixedRate { get; set; }
+        public double VariableRate { get; set; }
 
         public void SetInterestRates(int fixedRatePeriod, double fixedRate, double variableRate)
         {
-            this.fixedRatePeriod = fixedRatePeriod;
-            this.fixedRate = fixedRate;
-            this.variableRate = variableRate;
+            this.FixedRatePeriod = fixedRatePeriod;
+            this.FixedRate = fixedRate;
+            this.VariableRate = variableRate;
+        }
+
+        public void SetInterestRatesBasedOnInstallments(List<Installment> installments)
+        {
+            this.FixedRatePeriod = Calculator.DetermineFixedPaymentPeriod(new List<IInstallment>(installments));
+            var fixedRateInstallments = installments.Take(this.FixedRatePeriod).ToList();
+            var variableRateInstallments = installments.Skip(this.FixedRatePeriod).ToList();
+            this.FixedRate = fixedRateInstallments[fixedRateInstallments.Count() / 2].InterestRate;
+            if (variableRateInstallments.Count() > 0) this.VariableRate = variableRateInstallments[variableRateInstallments.Count() / 2].InterestRate;
         }
 
         public double GetNext()
         {
 
-            if (count < fixedRatePeriod)
+            if (Count < FixedRatePeriod)
             {
-                count++;
-                return fixedRate;
+                Count++;
+                return FixedRate;
             }
-            return variableRate;
+            return VariableRate;
         }
 
         public void Reset()
         {
-            count = 0;
+            Count = 0;
         }
     }
 

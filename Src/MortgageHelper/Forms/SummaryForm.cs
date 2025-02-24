@@ -1,6 +1,4 @@
-﻿using BusinessLogic;
-using BusinessLogic;
-using Models;
+﻿using Models;
 
 
 namespace MortgageHelper
