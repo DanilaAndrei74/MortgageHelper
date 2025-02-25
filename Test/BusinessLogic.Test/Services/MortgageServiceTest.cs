@@ -38,9 +38,9 @@ public class MortgageServiceTests
         _sut.SetBank(Banks.BCR)
                     .ExtractInstallmentsFrom(path)
                     .SetInsuranceBasedOnBank()
-                    .AssignInterestRates()
+                    .SetInterestRatesBasedOnInstallments()
                     .SetAdditionalPayment(1000)
-                    .CalculateInstallments()
+                    .CalculateDerivates()
                     .SimulateOptimalPayments();
 
         Assert.NotEmpty(_sut.Installments);
@@ -48,6 +48,25 @@ public class MortgageServiceTests
         Assert.NotEmpty(_sut.YearlyInstallments);
         Assert.NotEmpty(_sut.NewInstallments);
         Assert.NotEmpty(_sut.OptimalPayments);
+        Assert.All(
+            _sut.Installments.Zip(_sut.ReplicatedInstallments, (orig, replica) => (orig, replica)),
+            pair => Assert.InRange(pair.orig.Principal, pair.replica.Principal - 1, pair.replica.Principal + 1)
+        );
+
+        Assert.All(
+            _sut.Installments.Zip(_sut.ReplicatedInstallments, (orig, replica) => (orig, replica)),
+            pair => Assert.InRange(pair.orig.Interest, pair.replica.Interest - 1, pair.replica.Interest + 1)
+        );
+
+        Assert.All(
+            _sut.Installments.Zip(_sut.ReplicatedInstallments, (orig, replica) => (orig, replica)),
+            pair => Assert.InRange(pair.orig.Insurance, pair.replica.Insurance - 1, pair.replica.Interest + 1)
+        );
+
+        Assert.InRange(_sut.Installments.Sum(x => x.Principal),
+            _sut.ReplicatedInstallments.Sum(x => x.Principal) - 1,
+            _sut.ReplicatedInstallments.Sum(x => x.Principal) + 1);
+
     }
-    
+
 }

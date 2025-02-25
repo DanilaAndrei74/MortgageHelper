@@ -52,9 +52,9 @@ namespace MortgageHelper
                 _mortgage.SetBank((Banks)bankComboBox.SelectedValue!)
                     .ExtractInstallmentsFrom(_filePath)
                     .SetInsuranceBasedOnBank()
-                    .AssignInterestRates()
+                    .SetInterestRatesBasedOnInstallments()
                     .SetAdditionalPayment(GetAdditionalPaymentFromTextBox())
-                    .CalculateInstallments()
+                    .CalculateDerivates()
                     .SimulateOptimalPayments();
 
 

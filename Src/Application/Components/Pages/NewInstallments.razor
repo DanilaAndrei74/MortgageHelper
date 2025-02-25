@@ -1,0 +1,14 @@
+﻿@page "/newinstallments"
+@inject AppState appState;
+
+@if(appState.Mortgage.NewInstallments.Count == 0)
+{
+    <h1>LOADING</h1>
+}
+else
+{     
+    <InstallmentTable Installments="appState.Mortgage.NewInstallments" />
+}
+
+@code {
+}

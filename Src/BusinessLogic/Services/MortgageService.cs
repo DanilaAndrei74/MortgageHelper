@@ -19,18 +19,18 @@ namespace BusinessLogic.Services
 
         public Banks bank { get; private set; }
 
-        private readonly Mapper _mapper;
-        private readonly InterestRatesIterator _interestRates;
-        private readonly DueDateIterator _dates;
-        private readonly Insurance _insurance;
+        public readonly Mapper Mapper;
+        public readonly InterestRatesIterator InterestRates;
+        public readonly DueDateIterator DueDates;
+        public readonly Insurance Insurance;
         private IInstallmentExtractor _extractor;
 
         public MortgageService()
         {
-            _interestRates = new InterestRatesIterator();
-            _dates = new DueDateIterator();
-            _insurance = new Insurance();
-            _mapper = new Mapper(_insurance, _dates, _interestRates);
+            InterestRates = new InterestRatesIterator();
+            DueDates = new DueDateIterator();
+            Insurance = new Insurance();
+            Mapper = new Mapper(Insurance, DueDates, InterestRates);
 
             Installments = new List<Installment>();
             YearlyInstallments = new List<YearlyInstallment>();
@@ -49,19 +49,38 @@ namespace BusinessLogic.Services
         public MortgageService ExtractInstallmentsFrom(string filePath)
         {
             var installmentsLines = _extractor.ExtractInstallments(filePath);
-            Installments = _mapper.ToInstallment(installmentsLines);
+            Installments = Mapper.ToInstallment(installmentsLines);
 
             return this;
         }
 
-        public MortgageService AssignInterestRates()
+        public MortgageService GenerateInstallments(double creditBalance, int remainingMonths)
         {
-            _interestRates.SetInterestRatesBasedOnInstallments(Installments);
+            Installments = Mapper.MapToNewInstallmentPlan(creditBalance, remainingMonths);
+
+            return this;
+        }
+
+        public MortgageService SetInterestRatesBasedOnInstallments()
+        {
+            InterestRates.SetInterestRatesBasedOnInstallments(Installments);
+            return this;
+        }
+        
+        public MortgageService SetInterestRates(int fixedRatePeriod, double fixedRate, double variableRate)
+        {
+            InterestRates.SetInterestRates(fixedRatePeriod, fixedRate, variableRate);
+            return this;
+        }
+        
+        public MortgageService SetInsurance(double percentage)
+        {
+            Insurance.SetPercentage(Banks.CUSTOM, percentage);
             return this;
         }
         public MortgageService SetInsuranceBasedOnBank()
         {
-            _insurance.SetPercentage(bank);
+            Insurance.SetPercentage(bank);
             return this;
         }
 
@@ -71,38 +90,44 @@ namespace BusinessLogic.Services
             return this;
         }
 
-        public MortgageService CalculateInstallments()
+        public MortgageService CalculateDerivates()
         {
-            YearlyInstallments = _mapper.ToYearlyInstallment(Installments);
-            ReplicatedInstallments = _mapper.ReplicateInstallments(Installments);
+            YearlyInstallments = Mapper.ToYearlyInstallment(Installments);
+            ReplicatedInstallments = Mapper.ReplicateInstallments(Installments);
 
             var creditBalance = Math.Floor(Installments.First().CreditBalance + Installments.First().Principal);
            
 
 
 
-            AdditionalPaymentSummary.OldPeriod = Installments.Count();
-            AdditionalPaymentSummary.NewPeriod = Calculator.GetNewMonthsAfterAdditionalPayment(
+            var oldPeriod = Installments.Count();
+            var newPeriod = Calculator.GetNewMonthsAfterAdditionalPayment(
                                     creditBalance,
-                                    _interestRates.FixedRate,
+                                    InterestRates.FixedRate,
                                     Installments.Count(),
                                     _additionalPayment);
 
 
-            NewInstallments = _mapper.MapToNewInstallmentPlan(
+            NewInstallments = Mapper.MapToNewInstallmentPlan(
                 creditBalance - _additionalPayment,
-                AdditionalPaymentSummary.NewPeriod);
+                newPeriod);
 
-            AdditionalPaymentSummary.OldInstallment = Calculator.CalculateSummary(new List<IInstallment>(Installments));
-            AdditionalPaymentSummary.NewInstallment = Calculator.CalculateSummary(new List<IInstallment>(NewInstallments));
-
+            var oldInstallmentSummary = Calculator.CalculateSummary(new List<IInstallment>(Installments));
+            var newInstallmentSummary = Calculator.CalculateSummary(new List<IInstallment>(NewInstallments));
+            AdditionalPaymentSummary = Mapper.MapToInstallmentDifference(
+                oldInstallmentSummary,
+                newInstallmentSummary,
+                oldPeriod,
+                newPeriod
+                );
+            
             return this;
         }
 
         public MortgageService SimulateOptimalPayments()
         {
             OptimalPayments =
-                _mapper.MapOptimalPayments(AdditionalPaymentSummary.OldInstallment, AdditionalPaymentSummary.OldPeriod, Installments.First().Principal);
+                Mapper.MapOptimalPayments(AdditionalPaymentSummary.OldInstallment, AdditionalPaymentSummary.OldPeriod, Installments.First().Principal);
 
             return this;
         }
