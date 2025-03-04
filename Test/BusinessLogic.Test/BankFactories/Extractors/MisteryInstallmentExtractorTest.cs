@@ -11,14 +11,14 @@ using TestHelpers.Helpers;
 namespace BusinessLogic.Test.BankFactories.Extractors
 {
     [Collection("FileAccessTests")]
-    public class MisteryInstallmentExtractorTest
+    public class OTPInstallmentExtractorTest
     {
         [Fact]
         public void ExtractInstallments_ShouldReturnEmptyList_WhenInValidPdfProvided()
         {
             // Arrange
             string testPdfPath = TestPdfGenerator.CreateSamplePdf("100 \n 200 \n 300 \n");
-            var extractor = BankFactory.GetExtractor(Banks.MISTERY);
+            var extractor = BankFactory.GetExtractor(Banks.OTP);
 
             // Act
             List<string> extractedLines = extractor.ExtractInstallments(testPdfPath);

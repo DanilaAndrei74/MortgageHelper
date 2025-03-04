@@ -16,7 +16,7 @@ namespace BusinessLogic.Files
                 for (int page = 1; page <= pdfDoc.GetNumberOfPages(); page++)
                 {
                     var strategy = new SimpleTextExtractionStrategy();
-                    text += PdfTextExtractor.GetTextFromPage(pdfDoc.GetPage(page), strategy);
+                    text += "\n" + PdfTextExtractor.GetTextFromPage(pdfDoc.GetPage(page), strategy);
                 }
                 return text;
             }

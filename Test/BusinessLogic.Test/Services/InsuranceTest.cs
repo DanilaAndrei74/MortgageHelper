@@ -20,16 +20,16 @@ namespace BusinessLogicTest.Services
         }
 
         [Fact]
-        public void SetPercentage_ShouldSetMisteryValue_WhenBankIsMISTERY()
+        public void SetPercentage_ShouldSetOTPValue_WhenBankIsOTP()
         {
             // Arrange
             var insurance = new Insurance();
 
             // Act
-            insurance.SetPercentage(Banks.MISTERY);
+            insurance.SetPercentage(Banks.OTP);
 
             // Assert
-            Assert.Equal(Constants.Insurance.MISTERY_VALUE, insurance.Percentage);
+            Assert.Equal(Constants.Insurance.OTP_VALUE, insurance.Percentage);
         }
 
         [Fact]

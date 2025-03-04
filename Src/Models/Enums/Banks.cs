@@ -3,7 +3,8 @@
     public enum Banks
     {
         BCR = 0,
-        MISTERY = 1,
+        OTP = 1,
+        BT = 2,
         CUSTOM = 99,
     }
 }

@@ -8,10 +8,12 @@ namespace BusinessLogic.BankFactories
     {
         public static IInstallmentExtractor GetExtractor(Banks bank)
         {
+            //TODO: Refactor this to use a foreach in enum instead of a switch
             return bank switch
             {
                 Banks.BCR => new BCRInstallmentExtractor(),
-                Banks.MISTERY => new MisteryInstallmentExtractor(),
+                Banks.OTP => new OTPInstallmentExtractor(),
+                Banks.BT => new BTInstallmentExtractor(),
                 _ => throw new ArgumentException("Invalid bank strategy")
             };
         }

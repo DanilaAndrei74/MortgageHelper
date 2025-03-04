@@ -16,9 +16,9 @@ namespace BusinessLogic.Services
                     Percentage = Constants.Insurance.BCR_VALUE;
                     break; 
                 }
-                case Banks.MISTERY:
+                case Banks.OTP:
                 {
-                    Percentage = Constants.Insurance.MISTERY_VALUE;
+                    Percentage = Constants.Insurance.OTP_VALUE;
                     break;
                 }
                 case Banks.CUSTOM:

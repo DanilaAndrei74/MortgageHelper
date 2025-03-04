@@ -7,17 +7,17 @@ namespace BusinessLogic.BankFactories.Extractors
 {
     //TODO: Add unit tests for this some day
     [ExcludeFromCodeCoverage]
-    public class MisteryInstallmentExtractor : BaseInstallmentExtractor
+    public class OTPInstallmentExtractor : BaseInstallmentExtractor
     {
         public override List<string> ExtractInstallments(string filePath)
         {
             var pdfText = ExtractTextFromPdf(filePath);
-            var lines = GetFilteredLinesForMistery(pdfText);
+            var lines = GetFilteredLinesForOTP(pdfText);
             return lines;
         }
 
         //TODO: Refector this method and child ones after adding unit tests 
-        private List<string> GetFilteredLinesForMistery(string text)
+        private List<string> GetFilteredLinesForOTP(string text)
         {
             var lines = new List<string>();
 
@@ -29,7 +29,7 @@ namespace BusinessLogic.BankFactories.Extractors
                 // First page is 19 entries then 27 for each one after. So last is (Count - 19 - 2)% 27
                 var firstPageEntries = 19;
 
-                var dates = GetLinesFromRegex(text, Constants.RegexPatterns.MISTERY_DATES);
+                var dates = GetLinesFromRegex(text, Constants.RegexPatterns.OTP_DATES);
 
                 if (dates.Count >= 21)
                     dates.RemoveRange(19, 2); //Remove these values because they are useless data
@@ -47,7 +47,7 @@ namespace BusinessLogic.BankFactories.Extractors
 
 
                 var line = 0; // "{index},{dates[index - 1];}, {dates."
-                var data = GetLinesFromRegex(text, Constants.RegexPatterns.MISTERY_DATA);
+                var data = GetLinesFromRegex(text, Constants.RegexPatterns.OTP_DATA);
                 data.RemoveAt(data.Count - 1);
 
                 var pages = new List<List<string>>();

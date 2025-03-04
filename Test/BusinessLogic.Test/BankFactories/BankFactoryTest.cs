@@ -18,14 +18,14 @@ public class BankFactoryTests
     }
 
     [Fact]
-    public void GetExtractor_ShouldReturnMisteryExtractor_WhenBankIsMISTERY()
+    public void GetExtractor_ShouldReturnOTPExtractor_WhenBankIsOTP()
     {
         // Act
-        var extractor = BankFactory.GetExtractor(Banks.MISTERY);
+        var extractor = BankFactory.GetExtractor(Banks.OTP);
 
         // Assert
         Assert.NotNull(extractor);
-        Assert.IsType<MisteryInstallmentExtractor>(extractor);
+        Assert.IsType<OTPInstallmentExtractor>(extractor);
     }
 
     [Fact]
