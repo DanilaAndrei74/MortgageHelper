@@ -1,7 +1,9 @@
-﻿namespace BusinessLogic.Interfaces
+﻿using MortgageHelper.Models;
+
+namespace BusinessLogic.Interfaces
 {
     public interface IInstallmentExtractor
     {
-        List<string> ExtractInstallments(string filePath);
+        List<Installment> ExtractInstallments(string filePath);
     }
 }

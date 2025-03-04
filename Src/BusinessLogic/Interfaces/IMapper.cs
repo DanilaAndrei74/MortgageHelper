@@ -10,7 +10,6 @@ namespace BusinessLogic.Interfaces
         InstallmentDifference MapToInstallmentDifference(IInstallment oldInstallment, IInstallment newInstallment, int oldMonths, int newMonths);
         List<Installment> MapToNewInstallmentPlan(double creditBalance, int remainingMonths);
         List<Installment> ReplicateInstallments(List<Installment> installments);
-        List<Installment> ToInstallment(List<string> lines);
         List<YearlyInstallment> ToYearlyInstallment(List<Installment> installments);
     }
 }

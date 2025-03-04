@@ -1,12 +1,13 @@
 ﻿using BusinessLogic.Interfaces;
 using System.Text.RegularExpressions;
 using BusinessLogic.Files;
+using MortgageHelper.Models;
 
 namespace BusinessLogic.BankFactories.Extractors
 {
     public abstract class BaseInstallmentExtractor : IInstallmentExtractor
     {
-        public abstract List<string> ExtractInstallments(string filePath);
+        public abstract List<Installment> ExtractInstallments(string filePath);
         private readonly IFileExtractor _pdfExtractor;
 
         protected BaseInstallmentExtractor()
@@ -35,5 +36,7 @@ namespace BusinessLogic.BankFactories.Extractors
         {
             return _pdfExtractor.ExtractText(pdfPath);
         }
+
+        protected abstract List<Installment> ToInstallment(List<string> lines);
     }
 }

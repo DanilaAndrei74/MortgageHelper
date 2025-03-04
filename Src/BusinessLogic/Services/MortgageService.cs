@@ -4,6 +4,7 @@ using Models;
 using Models.Enums;
 using Models.Interfaces;
 using MortgageHelper.Models;
+using System.ComponentModel;
 
 namespace BusinessLogic.Services
 {
@@ -48,9 +49,8 @@ namespace BusinessLogic.Services
 
         public MortgageService ExtractInstallmentsFrom(string filePath)
         {
-            var installmentsLines = _extractor.ExtractInstallments(filePath);
-            Installments = Mapper.ToInstallment(installmentsLines);
-
+            Installments = _extractor.ExtractInstallments(filePath);
+            InitializeDueDatesFromInstallments();
             return this;
         }
 
@@ -66,7 +66,13 @@ namespace BusinessLogic.Services
             InterestRates.SetInterestRatesBasedOnInstallments(Installments);
             return this;
         }
-        
+
+        private MortgageService InitializeDueDatesFromInstallments()
+        {
+            Installments.ForEach(installment => DueDates.AddDate(installment.DueDate));
+            return this;
+        }
+
         public MortgageService SetInterestRates(int fixedRatePeriod, double fixedRate, double variableRate)
         {
             InterestRates.SetInterestRates(fixedRatePeriod, fixedRate, variableRate);
