@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.BankFactories.Extractors;
 using BusinessLogic.Interfaces;
+using MortgageHelper.Models;
 
 namespace BusinessLogicTest.BankFactories.Extractors
 {
@@ -10,9 +11,9 @@ namespace BusinessLogicTest.BankFactories.Extractors
         {
         }
 
-        public override List<string> ExtractInstallments(string filePath)
+        public override List<Installment> ExtractInstallments(string filePath)
         {
-            return new List<string>(); // Not needed for testing protected methods
+            return new List<Installment>(); // Not needed for testing protected methods
         }
 
         // Expose protected methods for testing
@@ -24,6 +25,11 @@ namespace BusinessLogicTest.BankFactories.Extractors
         public string ExtractTextFromPdf(string pdfPath)
         {
             return base.ExtractTextFromPdf(pdfPath);
+        }
+
+        protected override List<Installment> ToInstallment(List<string> lines)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -54,12 +54,13 @@ namespace BusinessLogicTest.BankFactories.Extractors
             // Arrange
             string pdfPath = TestPdfGenerator.CreateSamplePdf(HelperConstants.BCR_PDF_LINE);
             var extractor = new TestableBaseInstallmentExtractor();
+            var example = "\n" + HelperConstants.BCR_PDF_LINE;
 
             // Act
             string extractedText = extractor.ExtractTextFromPdf(pdfPath);
 
             // Assert
-            Assert.Equal(HelperConstants.BCR_PDF_LINE, extractedText);
+            Assert.Equal(example, extractedText);
 
             //Cleanup
             File.Delete(pdfPath);

@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.BankFactories;
 using Models.Enums;
+using MortgageHelper.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,10 @@ namespace BusinessLogic.Test.BankFactories.Extractors
             var extractor = BankFactory.GetExtractor(Banks.OTP);
 
             // Act
-            List<string> extractedLines = extractor.ExtractInstallments(testPdfPath);
+            List<Installment> extractedLines = extractor.ExtractInstallments(testPdfPath);
 
             // Assert
-            Assert.Equal(new List<string>(), extractedLines);
+            Assert.Equal(new List<Installment>(), extractedLines);
 
 
             // Cleanup
