@@ -1,0 +1,29 @@
+﻿<h3>StackedChart</h3>
+
+<div>
+    <MudChart ChartType="ChartType.StackedBar" ChartSeries="@Values" @bind-SelectedIndex="Index" LegendPosition="@LegendPosition" XAxisLabels="@XAxisLabels" Width="100%" Height="350px"></MudChart>
+</div>
+
+
+@code {
+    private int Index = -1; //default value cannot be 0 -> first selectedindex is 0.
+
+    private Position LegendPosition = Position.Right;
+
+    [Parameter]
+    public List<Installment> Installments { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Values = new List<ChartSeries>()
+        {
+            new ChartSeries() { Name = "Principal", Data = Installments.Select(x => x.Principal).ToArray() },
+            new ChartSeries() { Name = "Interest", Data =  Installments.Select(x => x.Interest).ToArray() },
+            new ChartSeries() { Name = "Insurance", Data =  Installments.Select(x => x.Insurance).ToArray() },
+        };
+        XAxisLabels = Installments.Select(x => x.Id.ToString()).ToArray();
+    }
+
+    public string[] XAxisLabels;
+    public List<ChartSeries> Values;
+}

@@ -6,6 +6,8 @@ namespace Application.Client.Services
     {
         public readonly MortgageService Mortgage;
 
+        public bool NavbarEnabled = false;
+
         public AppState(MortgageService mortgage)
         {
             Mortgage = mortgage;

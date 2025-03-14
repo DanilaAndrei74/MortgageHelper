@@ -1,0 +1,12 @@
+﻿@page "/statistics"
+@inject AppState appState;
+
+Old
+<StackedChart Installments="appState.Mortgage.Installments"></StackedChart>
+
+New
+<StackedChart Installments="appState.Mortgage.NewInstallments"></StackedChart>
+
+@code {
+
+}

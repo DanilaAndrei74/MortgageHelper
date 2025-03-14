@@ -6,8 +6,14 @@
     <h1>LOADING</h1>
 }
 else
-{     
+{
+    <InstallmentSummaryTable Installment="appState.Mortgage.AdditionalPaymentSummary.NewInstallment"
+                             RemainingMonths="appState.Mortgage.AdditionalPaymentSummary.NewPeriod" />
+
     <InstallmentTable Installments="appState.Mortgage.NewInstallments" />
+
+    <InstallmentSummaryTable Installment="appState.Mortgage.AdditionalPaymentSummary.NewInstallment"
+                             RemainingMonths="appState.Mortgage.AdditionalPaymentSummary.NewPeriod" />
 }
 
 @code {
