@@ -1,0 +1,57 @@
+@using Models
+
+<br />
+<p>
+    See how much you would save by reimbursing early:
+</p>
+
+
+<MudSimpleTable Dense="true" Hover="true" Bordered="true" Striped="true" FixedHeader="true" Elevation="0" AllowUnsorted="false">
+    <thead>
+        <th></th>
+        <th>Principal</th>
+        <th>Interest</th>
+        <th>Insurance</th>
+        <th>Credit balance</th>
+        <th>Remaining Months</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Old</td>
+            <td>@InstallmentDifference.OldInstallment.Principal</td>
+            <td>@InstallmentDifference.OldInstallment.Interest</td>
+            <td>@InstallmentDifference.OldInstallment.Insurance</td>
+            <td>@InstallmentDifference.OldInstallment.Total</td>
+            <td>@InstallmentDifference.OldPeriod</td>
+        </tr>
+        <tr>
+            <td>New</td>
+            <td>@InstallmentDifference.NewInstallment.Principal</td>
+            <td>@InstallmentDifference.NewInstallment.Interest</td>
+            <td>@InstallmentDifference.NewInstallment.Insurance</td>
+            <td>@InstallmentDifference.NewInstallment.Total</td>
+            <td>@InstallmentDifference.NewPeriod</td>
+        </tr>
+        <tr>
+            <td>Difference</td>
+            <td>@InstallmentDifference.Difference.Principal</td>
+            <td>@InstallmentDifference.Difference.Interest</td>
+            <td>@InstallmentDifference.Difference.Insurance</td>
+            <td>@InstallmentDifference.Difference.Total</td>
+            <td>@InstallmentDifference.PeriodDifference</td>
+        </tr>
+    </tbody>
+</MudSimpleTable>
+
+<br />
+<p>
+    That's a @InstallmentDifference.AnnualizedReturn % annualized return!
+</p>
+
+@code {
+
+    [Parameter]
+    public InstallmentDifference InstallmentDifference { get; set; }
+
+
+}

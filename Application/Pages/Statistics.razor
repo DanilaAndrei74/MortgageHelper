@@ -1,6 +1,13 @@
 ﻿@page "/statistics"
 @inject AppState appState;
 
+<AdditionalPaymentsTable OptimalPayments="appState.Mortgage.OptimalPayments"/>
+
+
+<br/>
+<br/>
+
+
 Old
 <StackedChart Installments="appState.Mortgage.Installments"></StackedChart>
 

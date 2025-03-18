@@ -1,0 +1,26 @@
+
+<MudTable Items="OptimalPayments" Dense="true" Hover="true" Bordered="true" Striped="true" FixedHeader="true" SortLabel="Sort By" Elevation="0" AllowUnsorted="false">
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortBy="new Func<(double, double), object>(x=>x.Item1)">Principal</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<(double, double), object>(x=>x.Item2)">Annualized return</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Principal">@context.Item1</MudTd>
+        <MudTd DataLabel="Annualized return">@context.Item2</MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[] { 25, 50, 100 }" />
+    </PagerContent>
+</MudTable>
+
+@code{
+
+    [Parameter]
+    public List<(double, double)> OptimalPayments { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        OptimalPayments.Count();
+    }
+}

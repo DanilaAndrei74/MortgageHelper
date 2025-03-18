@@ -100,10 +100,11 @@
         AppState.Mortgage.SetInterestRatesBasedOnInstallments()
                     .SetInsuranceBasedOnBank()
                     .SetAdditionalPayment(additionalPayment)
-                    .CalculateDerivates();
+                    .CalculateDerivates()
+                    .SimulateOptimalPayments();
 
         AppState.NavbarEnabled = true;
         StateHasChanged();
-        //Navigation.NavigateTo("installments");
+        Navigation.NavigateTo("newInstallments");
     }
 }
