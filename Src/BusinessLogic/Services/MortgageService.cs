@@ -3,6 +3,7 @@ using BusinessLogic.Interfaces;
 using Models;
 using Models.Enums;
 using Models.Interfaces;
+using Models.Models;
 using MortgageHelper.Models;
 using System.ComponentModel;
 
@@ -15,7 +16,7 @@ namespace BusinessLogic.Services
         public List<Installment> ReplicatedInstallments { get; private set; }
         public List<Installment> NewInstallments { get; private set; }
         public InstallmentDifference AdditionalPaymentSummary { get; private set; }
-        public List<(double additionalPayment, double annualizedReturn)> OptimalPayments { get; private set; }
+        public List<EstimatedPerformance> OptimalPayments { get; private set; }
         private double _additionalPayment { get; set; }
 
         public Banks bank { get; private set; }

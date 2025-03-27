@@ -65,6 +65,8 @@ namespace MortgageHelper
                 replicatedInstallmentsDataGridView.DataSource = _mortgage.ReplicatedInstallments;
                 installmentsDataGridView.DataSource = _mortgage.Installments;
                 yearlyInstallmentsDataGridView.DataSource = _mortgage.YearlyInstallments;
+                estimatedPerformanceDataGridView.DataSource = _mortgage.OptimalPayments;
+
 
             }
             catch (Exception ex) { MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }

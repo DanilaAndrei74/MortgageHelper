@@ -1,4 +1,6 @@
-﻿namespace MortgageHelper
+﻿using Models.Models;
+
+namespace MortgageHelper
 {
     partial class MainForm
     {
@@ -99,11 +101,16 @@
             dataGridViewTextBoxColumn16 = new DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn17 = new DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn18 = new DataGridViewTextBoxColumn();
+            EstimatedPerformanceTab = new TabPage();
+            estimatedPerformanceDataGridView = new DataGridView();
+            estimatedPerformanceBindingSource = new BindingSource(components);
             bankComboBox = new ComboBox();
             groupBox3 = new GroupBox();
             additionalPaymentGroupBox = new GroupBox();
             ShowDifferenceButton = new Button();
             additionalPaymentTextBox = new TextBox();
+            principalDataGridViewTextBoxColumn3 = new DataGridViewTextBoxColumn();
+            estimatedReturnDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             TabelDataGroupbox.SuspendLayout();
@@ -119,6 +126,9 @@
             ((System.ComponentModel.ISupportInitialize)replicatedInstallmentsDataGridView).BeginInit();
             NewInstallments.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)newInstallmentsDataGridView).BeginInit();
+            EstimatedPerformanceTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)estimatedPerformanceDataGridView).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)estimatedPerformanceBindingSource).BeginInit();
             groupBox3.SuspendLayout();
             additionalPaymentGroupBox.SuspendLayout();
             SuspendLayout();
@@ -355,6 +365,7 @@
             TabControl.Controls.Add(YearlyInstallmentsTab);
             TabControl.Controls.Add(replicatedInstallments);
             TabControl.Controls.Add(NewInstallments);
+            TabControl.Controls.Add(EstimatedPerformanceTab);
             TabControl.Location = new Point(5, 20);
             TabControl.Name = "TabControl";
             TabControl.SelectedIndex = 0;
@@ -738,6 +749,39 @@
             dataGridViewTextBoxColumn18.Name = "dataGridViewTextBoxColumn18";
             dataGridViewTextBoxColumn18.ReadOnly = true;
             // 
+            // EstimatedPerformanceTab
+            // 
+            EstimatedPerformanceTab.Controls.Add(estimatedPerformanceDataGridView);
+            EstimatedPerformanceTab.Location = new Point(4, 24);
+            EstimatedPerformanceTab.Name = "EstimatedPerformanceTab";
+            EstimatedPerformanceTab.Padding = new Padding(3);
+            EstimatedPerformanceTab.Size = new Size(938, 506);
+            EstimatedPerformanceTab.TabIndex = 4;
+            EstimatedPerformanceTab.Text = "EstimatedPerformance";
+            EstimatedPerformanceTab.UseVisualStyleBackColor = true;
+            // 
+            // estimatedPerformanceDataGridView
+            // 
+            estimatedPerformanceDataGridView.AllowUserToAddRows = false;
+            estimatedPerformanceDataGridView.AllowUserToDeleteRows = false;
+            estimatedPerformanceDataGridView.AutoGenerateColumns = false;
+            estimatedPerformanceDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            estimatedPerformanceDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            estimatedPerformanceDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            estimatedPerformanceDataGridView.Columns.AddRange(new DataGridViewColumn[] { principalDataGridViewTextBoxColumn3, estimatedReturnDataGridViewTextBoxColumn });
+            estimatedPerformanceDataGridView.DataSource = estimatedPerformanceBindingSource;
+            estimatedPerformanceDataGridView.Dock = DockStyle.Fill;
+            estimatedPerformanceDataGridView.Location = new Point(3, 3);
+            estimatedPerformanceDataGridView.Name = "estimatedPerformanceDataGridView";
+            estimatedPerformanceDataGridView.ReadOnly = true;
+            estimatedPerformanceDataGridView.RowHeadersWidth = 51;
+            estimatedPerformanceDataGridView.Size = new Size(932, 500);
+            estimatedPerformanceDataGridView.TabIndex = 3;
+            // 
+            // estimatedPerformanceBindingSource
+            // 
+            estimatedPerformanceBindingSource.DataSource = typeof(EstimatedPerformance);
+            // 
             // bankComboBox
             // 
             bankComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -787,6 +831,20 @@
             additionalPaymentTextBox.TabIndex = 0;
             additionalPaymentTextBox.KeyPress += additionalPaymentTextBox_KeyPress;
             // 
+            // principalDataGridViewTextBoxColumn3
+            // 
+            principalDataGridViewTextBoxColumn3.DataPropertyName = "Principal";
+            principalDataGridViewTextBoxColumn3.HeaderText = "Principal";
+            principalDataGridViewTextBoxColumn3.Name = "principalDataGridViewTextBoxColumn3";
+            principalDataGridViewTextBoxColumn3.ReadOnly = true;
+            // 
+            // estimatedReturnDataGridViewTextBoxColumn
+            // 
+            estimatedReturnDataGridViewTextBoxColumn.DataPropertyName = "EstimatedReturn";
+            estimatedReturnDataGridViewTextBoxColumn.HeaderText = "EstimatedReturn";
+            estimatedReturnDataGridViewTextBoxColumn.Name = "estimatedReturnDataGridViewTextBoxColumn";
+            estimatedReturnDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -816,6 +874,9 @@
             ((System.ComponentModel.ISupportInitialize)replicatedInstallmentsDataGridView).EndInit();
             NewInstallments.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)newInstallmentsDataGridView).EndInit();
+            EstimatedPerformanceTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)estimatedPerformanceDataGridView).EndInit();
+            ((System.ComponentModel.ISupportInitialize)estimatedPerformanceBindingSource).EndInit();
             groupBox3.ResumeLayout(false);
             additionalPaymentGroupBox.ResumeLayout(false);
             additionalPaymentGroupBox.PerformLayout();
@@ -904,5 +965,10 @@
         private GroupBox additionalPaymentGroupBox;
         private TextBox additionalPaymentTextBox;
         private Button ShowDifferenceButton;
+        private TabPage EstimatedPerformanceTab;
+        private DataGridView estimatedPerformanceDataGridView;
+        private BindingSource estimatedPerformanceBindingSource;
+        private DataGridViewTextBoxColumn principalDataGridViewTextBoxColumn3;
+        private DataGridViewTextBoxColumn estimatedReturnDataGridViewTextBoxColumn;
     }
 }

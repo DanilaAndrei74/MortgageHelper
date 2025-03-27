@@ -2,6 +2,7 @@
 using BusinessLogic.Interfaces;
 using Models;
 using Models.Interfaces;
+using Models.Models;
 using MortgageHelper;
 using MortgageHelper.Models;
 using System.Globalization;
@@ -80,12 +81,12 @@ namespace BusinessLogic.Services
             return installments;
         }
 
-        public List<(double additionalPayment, double annualizedReturn)> MapOptimalPayments(IInstallment oldInstallment, int oldPeriod, double startingValue = 1000)
+        public List<EstimatedPerformance> MapOptimalPayments(IInstallment oldInstallment, int oldPeriod, double startingValue = 1000)
         {
             var incrementValue = 100;
             startingValue = Math.Floor(startingValue - startingValue % 100);
 
-            var result = new List<(double additionalPayment, double annualizedReturn)>();
+            var result = new List<EstimatedPerformance>();
             double best = 0;
 
             for (double additionalPayment = startingValue; additionalPayment < oldInstallment.Principal; additionalPayment += incrementValue)
@@ -104,14 +105,14 @@ namespace BusinessLogic.Services
 
                 var difference = MapToInstallmentDifference(oldInstallment, newSummary, oldPeriod, newMonths);
 
-                result.Add(new(additionalPayment, difference.AnnualizedReturn));
+                result.Add(new EstimatedPerformance { Principal = additionalPayment, EstimatedReturn = difference.AnnualizedReturn });
 
                 if (difference.AnnualizedReturn > best)
                 {
                     best = difference.AnnualizedReturn;
                 }
             }
-            return result.OrderByDescending(x => x.annualizedReturn).ToList();
+            return result.OrderByDescending(x => x.EstimatedReturn).ToList();
         }
 
         public List<Installment> ReplicateInstallments(List<Installment> installments)
