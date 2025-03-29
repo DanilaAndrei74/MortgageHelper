@@ -130,6 +130,7 @@ namespace BusinessLogic.Services
                 newInstallment.DueDate = installment.DueDate;
                 newInstallment.RemainingMonths = installment.RemainingMonths;
 
+                //newInstallment.Total = installment.Total - installment.Insurance;
                 newInstallment.Total = Calculator.CalculatePayment(balance, interestRate, installment.RemainingMonths);
                 newInstallment.Interest = Calculator.CalculateMonthlyInterestPaid(balance, interestRate);
                 newInstallment.Principal = newInstallment.Total - newInstallment.Interest;
@@ -156,6 +157,8 @@ namespace BusinessLogic.Services
                 TotalDiff = newPay.Total - oldPay.Total,
                 CreditBalanceDiff = newPay.CreditBalance - oldPay.CreditBalance
             });
+            differences.RoundDoubleProperties();
+
 
             return result;
         }

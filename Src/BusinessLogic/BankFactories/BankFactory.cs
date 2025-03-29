@@ -13,6 +13,7 @@ namespace BusinessLogic.BankFactories
             {
                 Banks.BCR => new BCRInstallmentExtractor(),
                 Banks.OTP => new OTPInstallmentExtractor(),
+                Banks.ING => new INGInstallmentExtractor(),
                 Banks.BT => new BTInstallmentExtractor(),
                 _ => throw new ArgumentException("Invalid bank strategy")
             };

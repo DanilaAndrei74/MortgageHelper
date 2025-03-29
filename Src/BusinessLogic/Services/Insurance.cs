@@ -21,6 +21,11 @@ namespace BusinessLogic.Services
                     Percentage = Constants.Insurance.OTP_VALUE;
                     break;
                 }
+                case Banks.ING:
+                {
+                    Percentage = Constants.Insurance.ING_VALUE;
+                    break;
+                }
                 case Banks.CUSTOM:
                 {
                     Percentage = percentage;
