@@ -1,7 +1,5 @@
-using BusinessLogic.BankFactories;
 using Models.Enums;
 using Models.Interfaces;
-using MortgageHelper.Models;
 using BusinessLogic.Services;
 
 namespace MortgageHelper

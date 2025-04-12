@@ -1,5 +1,5 @@
 ﻿using BusinessLogic.Services;
-using MortgageHelper.Models;
+using Models.Models;
 using System.Reflection;
 
 namespace TestHelpers.Helpers

@@ -27,7 +27,7 @@ if (!(Test-Path -path $dir/TestCoverage/CoverageHistory)) {
 }
 
 # Generate the Code Coverage HTML Report
-reportgenerator -reports:"$dir/**/coverage.cobertura.xml" -targetdir:"$dir/TestCoverage/CoverageReport" -reporttypes:Html -historydir:$dir/TestCoverage/CoverageHistory 
+reportgenerator -reports:"$dir/**/coverage.cobertura.xml" -targetdir:"$dir/TestCoverage/CoverageReport" -reporttypes:Html -historydir:$dir/TestCoverage/CoverageHistory  #-classfilters:"-*.Models.*"
 
 # Open the Code Coverage HTML Report (if running on a WorkStation)
 $osInfo = Get-CimInstance -ClassName Win32_OperatingSystem

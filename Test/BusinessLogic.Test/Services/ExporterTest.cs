@@ -1,13 +1,7 @@
-﻿using BusinessLogic.Services;
-using Models.Enums;
-using Models.Interfaces;
+﻿using Models.Interfaces;
+using Models.Models;
 using Moq;
-using MortgageHelper.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace BusinessLogicTest.Services
 {

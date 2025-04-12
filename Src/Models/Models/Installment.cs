@@ -1,6 +1,4 @@
-﻿using Models;
-
-namespace MortgageHelper.Models
+﻿namespace Models.Models
 {
     public class Installment : SimpleInstallment
     {

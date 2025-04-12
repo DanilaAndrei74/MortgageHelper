@@ -1,11 +1,7 @@
 ﻿using BusinessLogic.Helpers;
 using BusinessLogic.Interfaces;
-using Models;
 using Models.Interfaces;
 using Models.Models;
-using MortgageHelper;
-using MortgageHelper.Models;
-using System.Globalization;
 
 namespace BusinessLogic.Services
 {

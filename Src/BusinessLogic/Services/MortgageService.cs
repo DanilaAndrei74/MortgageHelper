@@ -1,10 +1,8 @@
 ﻿using BusinessLogic.BankFactories;
 using BusinessLogic.Interfaces;
-using Models;
 using Models.Enums;
 using Models.Interfaces;
 using Models.Models;
-using MortgageHelper.Models;
 using System.ComponentModel;
 
 namespace BusinessLogic.Services

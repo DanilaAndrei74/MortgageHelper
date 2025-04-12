@@ -1,5 +1,5 @@
 ﻿using Models.Interfaces;
-using MortgageHelper.Models;
+using Models.Models;
 
 namespace BusinessLogic.Services
 {

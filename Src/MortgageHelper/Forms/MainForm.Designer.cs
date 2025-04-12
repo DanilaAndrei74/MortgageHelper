@@ -467,7 +467,7 @@ namespace MortgageHelper
             // 
             // installmentBindingSource
             // 
-            installmentBindingSource.DataSource = typeof(Models.Installment);
+            installmentBindingSource.DataSource = typeof(Installment);
             // 
             // YearlyInstallmentsTab
             // 
@@ -563,7 +563,7 @@ namespace MortgageHelper
             // 
             // yearlyInstallmentBindingSource
             // 
-            yearlyInstallmentBindingSource.DataSource = typeof(Models.YearlyInstallment);
+            yearlyInstallmentBindingSource.DataSource = typeof(YearlyInstallment);
             // 
             // replicatedInstallments
             // 

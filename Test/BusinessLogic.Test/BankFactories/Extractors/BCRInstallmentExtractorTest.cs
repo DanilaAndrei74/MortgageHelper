@@ -1,7 +1,7 @@
 ﻿using BusinessLogic.BankFactories;
 using BusinessLogic.BankFactories.Extractors;
 using Models.Enums;
-using MortgageHelper.Models;
+using Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

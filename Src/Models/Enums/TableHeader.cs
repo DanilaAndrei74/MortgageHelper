@@ -1,4 +1,4 @@
-﻿namespace MortgageHelper
+﻿namespace Models.Enums
 {
     public enum TableHeader
     {

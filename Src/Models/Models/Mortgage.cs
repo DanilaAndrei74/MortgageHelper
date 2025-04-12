@@ -1,5 +1,4 @@
 ﻿using Models.Enums;
-using MortgageHelper.Models;
 
 namespace Models.Models
 {

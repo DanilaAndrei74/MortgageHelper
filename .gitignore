@@ -12,6 +12,7 @@
 
 # Ignore the test coverage generated items
 Test/TestCoverage/CoverageReport/*
+Test/TestCoverage/CoverageHistory/*
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

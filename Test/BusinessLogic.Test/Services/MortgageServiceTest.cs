@@ -1,18 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Xunit;
-using Moq;
-using BusinessLogic.Interfaces;
-using BusinessLogic.Services;
+﻿using BusinessLogic.Services;
 using Models.Enums;
-using MortgageHelper.Models;
-using Microsoft.VisualBasic;
 using TestHelpers.Helpers;
-using BusinessLogic.BankFactories;
-using Models.Models;
-using System.Text;
-
 public class MortgageServiceTests
 {
     private readonly MortgageService _sut;

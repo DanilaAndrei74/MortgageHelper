@@ -1,4 +1,4 @@
-﻿namespace MortgageHelper.Models
+﻿namespace Models.Models
 {
     public class YearlyInstallment : Installment
     {
@@ -13,7 +13,7 @@
 
             Installments = installments.AsReadOnly();
 
-            Id = (Installments.First().Id / 12) + 1;
+            Id = Installments.First().Id / 12 + 1;
             DueDate = Installments.First().DueDate;
             Principal = Math.Round(Installments.Sum(x => x.Principal), 2);
             Interest = Math.Round(Installments.Sum(x => x.Interest), 2);

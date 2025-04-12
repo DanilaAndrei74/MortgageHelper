@@ -1,4 +1,4 @@
-﻿using MortgageHelper.Models;
+﻿using Models.Models;
 
 namespace BusinessLogic.Interfaces
 {

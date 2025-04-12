@@ -1,7 +1,7 @@
 ﻿using BusinessLogic.Interfaces;
 using System.Text.RegularExpressions;
 using BusinessLogic.Files;
-using MortgageHelper.Models;
+using Models.Models;
 
 namespace BusinessLogic.BankFactories.Extractors
 {

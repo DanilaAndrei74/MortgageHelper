@@ -1,7 +1,7 @@
 ﻿using BusinessLogic.Services;
 using Models;
-using MortgageHelper;
-using MortgageHelper.Models;
+using Models.Enums;
+using Models.Models;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text;

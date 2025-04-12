@@ -1,6 +1,6 @@
 ﻿using BusinessLogic.BankFactories.Extractors;
 using BusinessLogic.Interfaces;
-using MortgageHelper.Models;
+using Models.Models;
 
 namespace BusinessLogicTest.BankFactories.Extractors
 {
